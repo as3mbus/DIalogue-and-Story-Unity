@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class StoryController : MonoBehaviour
 {
-    private bool transition = false;
+    private bool pageLR = true;
     public int currentPage;
     public List<Sprite> Pages;
-    public GameObject activePage, nextPage, prevPage;
+    public GameObject PageL, PageR;
     // Use this for initialization
     void Start()
     {
@@ -18,31 +18,44 @@ public class StoryController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") )
+        if (Input.GetButtonDown("Fire1"))
         {
-            if (currentPage < Pages.Count -1)
-            {
-                currentPage++;
-                loadPage(currentPage);
-                activePage.GetComponent<Animation>().Play("FadeOut");
-                nextPage.GetComponent<Animation>().Play("FadeIn");
-            }
-            else
-            {
-                
-            }
-
+            nextPage();
+        }
+        if (Input.GetButtonDown("Fire2"))
+        {
+            prevPage();
         }
     }
-    void loadPage(int pageNum){
-        if (pageNum>0){
-            prevPage.GetComponent<Image>().sprite = Pages[pageNum-1];
-        }
-        activePage.GetComponent<Image>().sprite = Pages[pageNum];
-        if (pageNum<Pages.Count-1){
-            nextPage.GetComponent<Image>().sprite = Pages[pageNum+1];
+    void nextPage()
+    {
+        if (currentPage < Pages.Count - 1)
+        {
+            currentPage++;
+            pageLoad();
         }
     }
-    void opacityTransition(){
+    void prevPage()
+    {
+        if (currentPage > 0)
+        {
+            currentPage--;
+            pageLoad();
+        }
+    }
+    void pageLoad(){
+        if (pageLR)
+            {
+                PageR.GetComponent<Image>().sprite = Pages[currentPage];
+                PageL.GetComponent<Animation>().Play("FadeOut");
+                PageR.GetComponent<Animation>().Play("FadeIn");
+                pageLR=false;
+            }
+            else{
+                PageL.GetComponent<Image>().sprite = Pages[currentPage];
+                PageR.GetComponent<Animation>().Play("FadeOut");
+                PageL.GetComponent<Animation>().Play("FadeIn");
+                pageLR=true;
+            }
     }
 }
