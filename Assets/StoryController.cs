@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class StoryController : MonoBehaviour
 {
-    private bool pageLR = true;
+    private bool pageLR;
+    public GameObject[] Page;
     public int currentPage;
     public List<Sprite> Pages;
-    public GameObject PageL, PageR;
     // Use this for initialization
     void Start()
     {
-
+        pageLR = true;
     }
 
     // Update is called once per frame
@@ -43,19 +43,12 @@ public class StoryController : MonoBehaviour
             pageLoad();
         }
     }
-    void pageLoad(){
-        if (pageLR)
-            {
-                PageR.GetComponent<Image>().sprite = Pages[currentPage];
-                PageL.GetComponent<Animation>().Play("FadeOut");
-                PageR.GetComponent<Animation>().Play("FadeIn");
-                pageLR=false;
-            }
-            else{
-                PageL.GetComponent<Image>().sprite = Pages[currentPage];
-                PageR.GetComponent<Animation>().Play("FadeOut");
-                PageL.GetComponent<Animation>().Play("FadeIn");
-                pageLR=true;
-            }
+    void pageLoad()
+    {
+        Page[pageLR ? 1 : 0].GetComponent<Image>().sprite = Pages[currentPage];
+        Page[!pageLR ? 1 : 0].GetComponent<Animation>().Play("FadeOut");
+        Page[pageLR ? 1 : 0].GetComponent<Animation>().Play("FadeIn");
+        pageLR = !pageLR;
+
     }
 }
