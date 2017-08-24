@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StoryController : MonoBehaviour
+public class ComicController : MonoBehaviour
 {
     private bool pageLR;
     public GameObject[] Page;
@@ -50,5 +50,8 @@ public class StoryController : MonoBehaviour
         Page[pageLR ? 1 : 0].GetComponent<Animation>().Play("FadeIn");
         pageLR = !pageLR;
 
+    }
+    public void loadComic(Comic source){
+        Pages=source.pages;
     }
 }
