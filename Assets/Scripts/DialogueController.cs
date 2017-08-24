@@ -7,23 +7,21 @@ using LitJson;
 public class DialogueController : MonoBehaviour
 {
     public GameObject[] Chara;
-    public GameObject dPanel;
     public Text dName, dText;
-    public string[] dialogueLines;
+    public string[] dialogueLines,characterNames;
     public int currentLine = 0;
+    private StorySceneController ssControl;
 
-    // Use this for initialization
-    void Awake()
-    {
-
-    }
-    void Start()
-    {
+    public void startDialogue(Dialogue dialog){
+        dialogueLines=dialog.message.ToArray();
         currentLine=0;
         showDialogue(dialogueLines[currentLine]);
     }
-
     // Update is called once per frame
+    void Start(){
+        ssControl=FindObjectOfType<StorySceneController>();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -42,13 +40,12 @@ public class DialogueController : MonoBehaviour
     }
     public void showDialogue(string dialogue)
     {
-        dPanel.SetActive(true);
         dText.text = dialogue;
-        Cursor.lockState = CursorLockMode.None;
     }
     public void hideDialogue()
     {
-        dPanel.SetActive(false);
+        gameObject.SetActive(false);
+        ssControl.nextPhase();
     }
 
 }

@@ -460,6 +460,7 @@ MonoBehaviour:
   - i kno
   - okay
   - later
+  characterNames: []
   currentLine: 0
 --- !u!1 &1012218866
 GameObject:
@@ -962,7 +963,7 @@ GameObject:
   - component: {fileID: 1645652686}
   - component: {fileID: 1645652685}
   m_Layer: 5
-  m_Name: Story
+  m_Name: Comic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -976,7 +977,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1645652684}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61f467991e928db42851524aeb4f6a85, type: 3}
+  m_Script: {fileID: 11500000, guid: 0237164d1cd5f714499f60bffa1a708a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Page:
@@ -1066,6 +1067,47 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1851657670
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1851657671}
+  - component: {fileID: 1851657672}
+  m_Layer: 0
+  m_Name: Story
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1851657671
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1851657670}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 240, y: 320, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1851657672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1851657670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf0b6cb3d14a3b54094d6676bb6e1902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  filename: Story1
 --- !u!1 &2035846363
 GameObject:
   m_ObjectHideFlags: 0

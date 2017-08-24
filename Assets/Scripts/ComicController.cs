@@ -9,12 +9,19 @@ public class ComicController : MonoBehaviour
     public GameObject[] Page;
     public int currentPage;
     public List<Sprite> Pages;
+    private StorySceneController ssControl;
     // Use this for initialization
-    void Start()
+    public void startComic(Comic source)
     {
+        Pages=source.pages;
         pageLR = true;
-    }
+        currentPage = 0;
+        Page[!pageLR ? 1 : 0].GetComponent<Animation>().Play("FadeIn");
 
+    }
+    void Start(){
+        ssControl=FindObjectOfType<StorySceneController>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -29,10 +36,14 @@ public class ComicController : MonoBehaviour
     }
     void nextPage()
     {
-        if (currentPage < Pages.Count - 1)
+        currentPage++;
+        if (currentPage < Pages.Count)
         {
-            currentPage++;
             pageLoad();
+        }
+        else{
+            gameObject.SetActive(false);
+            ssControl.nextPhase();
         }
     }
     void prevPage()
@@ -51,7 +62,9 @@ public class ComicController : MonoBehaviour
         pageLR = !pageLR;
 
     }
-    public void loadComic(Comic source){
-        Pages=source.pages;
+    void closeComic(){
+        gameObject.SetActive(false);
+        ssControl.nextPhase();
     }
+    
 }

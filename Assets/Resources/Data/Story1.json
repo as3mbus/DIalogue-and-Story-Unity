@@ -1,0 +1,19 @@
+{
+    "Story" : [
+        {
+            "type" : "Dialogue",
+            "content" : {
+                "character" : [
+                    "luo jiang","luoluo"
+                ],
+                "message" : [
+                    "hai coy","hai juga"
+                ]
+            }
+        },
+        {
+            "type" : "Comic",
+            "content" : "sample comic"
+        }
+    ]
+}
