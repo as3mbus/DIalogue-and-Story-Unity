@@ -360,7 +360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &891813625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,8 +451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Chara: []
-  dPanel: {fileID: 1563542006}
-  dName: {fileID: 0}
+  dName: {fileID: 718685409}
   dText: {fileID: 780736366}
   dialogueLines:
   - hello
@@ -669,7 +668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -985,10 +984,10 @@ MonoBehaviour:
   - {fileID: 641811638}
   currentPage: 0
   Pages:
-  - {fileID: 21300000, guid: bd4c1ddcd7919b0428edfde3404bc20c, type: 3}
-  - {fileID: 21300000, guid: 2528cbfad5c0e4f4b9c9a93f56f5a3c5, type: 3}
-  - {fileID: 21300000, guid: ac53b8e0666f2bd42a1bec54ba14deca, type: 3}
-  - {fileID: 21300000, guid: 026573055f2110e4abeb2034192610df, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1645652686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,6 +1106,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf0b6cb3d14a3b54094d6676bb6e1902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogueCanvas: {fileID: 891813624}
+  comicCanvas: {fileID: 1645652684}
+  currentPhase: 0
   filename: Story1
 --- !u!1 &2035846363
 GameObject:
