@@ -4,16 +4,29 @@
             "type" : "Dialogue",
             "content" : {
                 "character" : [
-                    "luo jiang","luoluo"
+                    "luo jiang",
+                    "luoluo"
                 ],
                 "message" : [
-                    "hai coy","hai juga"
+                    "hai coy",
+                    "hai juga"
                 ]
             }
         },
         {
             "type" : "Comic",
             "content" : "sample comic"
+        },
+        {
+            "type" : "Dialogue",
+            "content" : {
+                "character" : [
+                    "luo jiang","luoluo"
+                ],
+                "message" : [
+                    "hai coy","hai juga"
+                ]
+            }
         }
     ]
 }

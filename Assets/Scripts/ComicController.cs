@@ -11,6 +11,7 @@ public class ComicController : MonoBehaviour
     public List<Sprite> Pages;
     private StorySceneController ssControl;
     // Use this for initialization
+    
     public void startComic(Comic source)
     {
         Pages=source.pages;

@@ -32,6 +32,7 @@ public class StorySceneController : MonoBehaviour
             comicCanvas.GetComponent<ComicController>().startComic(komik);
         }
     }
+    
     public void nextPhase()
     {
         currentPhase++;

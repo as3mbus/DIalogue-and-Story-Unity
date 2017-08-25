@@ -14,8 +14,9 @@ public class DialogueController : MonoBehaviour
 
     public void startDialogue(Dialogue dialog){
         dialogueLines=dialog.message.ToArray();
+        characterNames=dialog.character.ToArray();
         currentLine=0;
-        showDialogue(dialogueLines[currentLine]);
+        readDialogue(currentLine);
     }
     // Update is called once per frame
     void Start(){
@@ -29,7 +30,7 @@ public class DialogueController : MonoBehaviour
             if (currentLine < dialogueLines.Length - 1)
             {
                 currentLine++;
-                showDialogue(dialogueLines[currentLine]);
+                readDialogue(currentLine);
             }
             else
             {
@@ -40,6 +41,16 @@ public class DialogueController : MonoBehaviour
     }
     public void showDialogue(string dialogue)
     {
+        dText.text = dialogue;
+    }
+    public void readDialogue(int n)
+    {
+        dName.text = characterNames[n];
+        dText.text = dialogueLines[n];
+    }
+    public void showDialogue(string character, string dialogue)
+    {
+        dName.text = character;
         dText.text = dialogue;
     }
     public void hideDialogue()
