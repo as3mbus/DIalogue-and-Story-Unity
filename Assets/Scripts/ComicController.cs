@@ -17,6 +17,7 @@ public class ComicController : MonoBehaviour
         Pages=source.pages;
         pageLR = true;
         currentPage = 0;
+        Page[!pageLR ? 1 : 0].GetComponent<Image>().sprite = Pages[currentPage];
         Page[!pageLR ? 1 : 0].GetComponent<Animation>().Play("FadeIn");
 
     }

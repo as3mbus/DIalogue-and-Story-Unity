@@ -8,51 +8,74 @@ public class DialogueController : MonoBehaviour
 {
     public GameObject[] Chara;
     public Text dName, dText;
-    public string[] dialogueLines,characterNames;
+    public string[] dialogueLines, characterNames;
     public int currentLine = 0;
+    int currentChar = 0;
+    float timeCount;
     private StorySceneController ssControl;
 
-    public void startDialogue(Dialogue dialog){
-        dialogueLines=dialog.message.ToArray();
-        characterNames=dialog.character.ToArray();
-        currentLine=0;
+
+    public void startDialogue(Dialogue dialog)
+    {
+        dialogueLines = dialog.message.ToArray();
+        characterNames = dialog.character.ToArray();
+        currentLine = 0;
         readDialogue(currentLine);
     }
     // Update is called once per frame
-    void Start(){
-        ssControl=FindObjectOfType<StorySceneController>();
+    void Start()
+    {
+        ssControl = FindObjectOfType<StorySceneController>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetButtonDown("Fire1"))
         {
-            if (currentLine < dialogueLines.Length - 1)
+            if (currentChar >= dialogueLines[currentLine].Length)
             {
-                currentLine++;
-                readDialogue(currentLine);
+                if (currentLine < dialogueLines.Length - 1)
+                {
+                    currentLine++;
+                    readDialogue(currentLine);
+                }
+                else
+                {
+                    hideDialogue();
+                }
             }
             else
             {
-                hideDialogue();
+                showDialogue(dialogueLines[currentLine]);
             }
-
         }
+        textPerSec(currentLine, 0.2f);
     }
     public void showDialogue(string dialogue)
     {
         dText.text = dialogue;
+        currentChar = dialogue.Length;
     }
-    public void readDialogue(int n)
+    public void readDialogue(int line)
     {
-        dName.text = characterNames[n];
-        dText.text = dialogueLines[n];
+        currentChar = 0;
+        dName.text = characterNames[line];
+        dText.text = "";
     }
-    public void showDialogue(string character, string dialogue)
+    public void textPerSec(int line, float delay)
     {
-        dName.text = character;
-        dText.text = dialogue;
+        if (currentChar >= dialogueLines[line].Length)
+            return;
+        timeCount += Time.deltaTime;
+        if (timeCount > delay)
+        {
+
+            dText.text = dText.text + dialogueLines[line][currentChar];
+            currentChar++;
+            timeCount = 0;
+        }
     }
+
     public void hideDialogue()
     {
         gameObject.SetActive(false);
