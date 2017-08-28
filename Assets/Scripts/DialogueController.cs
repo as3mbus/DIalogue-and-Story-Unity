@@ -12,6 +12,7 @@ public class DialogueController : MonoBehaviour
     public int currentLine = 0;
     int currentChar = 0;
     float timeCount;
+    float typeDelay = 0.2f;
     private StorySceneController ssControl;
 
 
@@ -49,7 +50,7 @@ public class DialogueController : MonoBehaviour
                 showDialogue(dialogueLines[currentLine]);
             }
         }
-        textPerSec(currentLine, 0.2f);
+        textPerSec(currentLine, typeDelay);
     }
     public void showDialogue(string dialogue)
     {
