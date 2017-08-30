@@ -3,6 +3,13 @@
         {
             "type" : "Dialogue",
             "content" : {
+                "image":"",
+                "path":{
+                    "x" : "",
+                    "y" : "",
+                    "z" : ""
+                },
+                "zoom":"",
                 "character" : [
                     "luo jiang",
                     "luoluo"
