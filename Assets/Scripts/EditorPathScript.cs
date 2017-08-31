@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using LitJson;
+
 
 public class EditorPathScript : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class EditorPathScript : MonoBehaviour
     public List<Transform> pathObjects = new List<Transform>();
     Transform[] theArray;
 
+    JsonData pathJson;
     Pathing paths;
     void OnDrawGizmos()
     {
@@ -43,10 +46,4 @@ public class EditorPathScript : MonoBehaviour
             //tesPath.paths = pathObjects.ToArray;
         }
     }
-}
-
-[System.Serializable]
-public class Pathing{
-    public float[] x,y,z;
-    //public List<float> camSize;
 }

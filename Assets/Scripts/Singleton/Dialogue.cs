@@ -6,6 +6,8 @@ public class Dialogue
 {
     public List<string> character=new List<string>();
     public List<string> message=new List<string>();
+    public Pathing paths;
+    public Comic comic;
     public Dialogue(JsonData chara,JsonData msg){
         for (int i = 0; i < chara.Count; i++)
         {

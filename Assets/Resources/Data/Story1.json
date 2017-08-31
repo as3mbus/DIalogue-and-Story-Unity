@@ -1,38 +1,38 @@
 {
-    "Story" : [
+    "Story": [
         {
-            "type" : "Dialogue",
-            "content" : {
-                "comic":"",
-                "page": "",
-                "path":{
-                    "x" : "",
-                    "y" : "",
-                    "z" : ""
-                },
-                "zoom":"",
-                "character" : [
+            "type": "Dialogue",
+            "comic": "",
+            "page": "",
+            "path": {
+                "x": "",
+                "y": "",
+                "z": ""
+            },
+            "zoom": "",
+            "character": [
+                "luo jiang",
+                "luoluo"
+            ],
+            "message": [
+                "hai coy",
+                "hai juga"
+            ]
+        },
+        {
+            "type": "Comic",
+            "content": "sample comic"
+        },
+        {
+            "type": "Dialogue",
+            "content": {
+                "character": [
                     "luo jiang",
                     "luoluo"
                 ],
-                "message" : [
+                "message": [
                     "hai coy",
                     "hai juga"
-                ]
-            }
-        },
-        {
-            "type" : "Comic",
-            "content" : "sample comic"
-        },
-        {
-            "type" : "Dialogue",
-            "content" : {
-                "character" : [
-                    "luo jiang","luoluo"
-                ],
-                "message" : [
-                    "hai coy","hai juga"
                 ]
             }
         }
