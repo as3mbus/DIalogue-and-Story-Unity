@@ -3,7 +3,8 @@
         {
             "type" : "Dialogue",
             "content" : {
-                "image":"",
+                "comic":"",
+                "page": "",
                 "path":{
                     "x" : "",
                     "y" : "",
