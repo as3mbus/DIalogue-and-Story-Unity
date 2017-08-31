@@ -2,14 +2,14 @@
     "Story": [
         {
             "type": "Dialogue",
-            "comic": "",
-            "page": "",
+            "comic": "sample comic",
+            "page": [1,1,1,1],
             "path": {
-                "x": "",
-                "y": "",
-                "z": ""
+                "x": [1.2,3.3],
+                "y": [1.2,3.3],
+                "z": [1.2,3.3]
             },
-            "zoom": "",
+            "zoom": [1.2,3.3],
             "character": [
                 "luo jiang",
                 "luoluo"
@@ -22,19 +22,6 @@
         {
             "type": "Comic",
             "content": "sample comic"
-        },
-        {
-            "type": "Dialogue",
-            "content": {
-                "character": [
-                    "luo jiang",
-                    "luoluo"
-                ],
-                "message": [
-                    "hai coy",
-                    "hai juga"
-                ]
-            }
         }
     ]
 }
