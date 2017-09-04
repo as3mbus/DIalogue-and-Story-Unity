@@ -633,7 +633,7 @@ GameObject:
   - component: {fileID: 252329739}
   - component: {fileID: 252329738}
   m_Layer: 5
-  m_Name: Next Line Button
+  m_Name: NewLine Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -873,7 +873,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Option A
+  m_Text: Character 1
 --- !u!222 &324272889
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1970,7 +1970,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 45
   m_Viewport: {fileID: 236446361}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 1372495163}
@@ -2267,7 +2267,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Option A
+  m_Text: Page 1
 --- !u!222 &1216099407
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2341,7 +2341,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Add New
 --- !u!222 &1239068312
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3089,7 +3089,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Option A
+  m_Text: Line 1
 --- !u!222 &1548857309
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3587,13 +3587,13 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Option A
+    - m_Text: Page 1
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Option B
+    - m_Text: Page 2
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Option C
+    - m_Text: Page 3
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Option D
+    - m_Text: Page 4
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3716,13 +3716,13 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Option A
+    - m_Text: Line 1
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Option B
+    - m_Text: Line 2
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Option C
+    - m_Text: Line 3
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Option D
+    - m_Text: Line 4
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4067,7 +4067,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Save and Exit
 --- !u!222 &2039281497
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4141,7 +4141,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Remove
 --- !u!222 &2060589531
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4300,13 +4300,13 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Option A
+    - m_Text: Character 1
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Option B
+    - m_Text: Character 2
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Option C
+    - m_Text: Character 3
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Option D
+    - m_Text: Character 4
       m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
   m_OnValueChanged:
     m_PersistentCalls:
