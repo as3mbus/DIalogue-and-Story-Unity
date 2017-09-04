@@ -49,6 +49,7 @@ public class DialogueController : MonoBehaviour
             }
         }
         textPerSec(typeDelay);
+
     }
     public void showDialogue(string dialogue)
     {
@@ -74,14 +75,14 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-    // public void camRoute(){
-    //     float distance = Vector3.Distance(pathRoute.pathObjects[currentWaypoint].position, transform.position);
-    //     transform.position = Vector3.MoveTowards(transform.position, pathRoute.pathObjects[currentWaypoint].position, Time.deltaTime * speed);
-    //     if (Input.GetButtonDown("Fire1") && distance <= routeRadius && currentWaypoint < pathRoute.pathObjects.Count)
-    //     {
-    //         currentWaypoint++;
-    //     }
-    // }
+    public void camRoute(){
+        float distance = Vector3.Distance(activeDialogue.paths[currentLine], transform.position);
+        transform.position = Vector3.MoveTowards(transform.position,activeDialogue.paths[currentLine], Time.deltaTime * speed);
+        // if (Input.GetButtonDown("Fire1") && currentLine < activeDialogue.paths.Count)
+        // {
+        //     currentLine++;
+        // }
+    }
 
     public void hideDialogue()
     {
