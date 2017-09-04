@@ -17,7 +17,7 @@ public class Story
         {
             if (cerita["type"].ToString() == "Dialogue")
             {
-                Dialogue dialog = new Dialogue(cerita["character"], cerita["message"]);
+                Dialogue dialog = new Dialogue(cerita);
                 this.phase.Add(dialog);
             }
             else if (cerita["type"].ToString() == "Comic")

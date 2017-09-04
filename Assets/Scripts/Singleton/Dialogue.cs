@@ -8,7 +8,7 @@ public class Dialogue
     public List<string> message = new List<string>();
     public List<int> page = new List<int>();
     public List<float> zoom = new List<float>();
-    public List<Vector3> paths;
+    public List<Vector3> paths = new List<Vector3>();
     public Comic comic;
     public Dialogue(JsonData chara, JsonData msg)
     {
@@ -29,12 +29,13 @@ public class Dialogue
                 this.page.Add((int)dialogueData["page"][i]);
                 this.paths.Add(
                     new Vector3(
-                        (float)dialogueData["path"]["x"][i],
-                        (float)dialogueData["path"]["y"][i],
-                        (float)dialogueData["path"]["z"][i]
+                        float.Parse(dialogueData["x"][i].ToString()),
+                        float.Parse(dialogueData["y"][i].ToString()),
+                        float.Parse(dialogueData["z"][i].ToString())
                     )
                 );
-                this.zoom.Add((float)dialogueData["zoom"][i]);
+                Debug.Log("Testing " + paths[i].ToString());
+                this.zoom.Add(float.Parse (dialogueData["zoom"][i].ToString()));
                 this.character.Add(dialogueData["character"][i].ToString());
                 this.message.Add(dialogueData["message"][i].ToString());
             }

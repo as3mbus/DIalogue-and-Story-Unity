@@ -10,14 +10,14 @@ public class DialogueController : MonoBehaviour
     public GameObject[] Chara;
     public Text dName, dText;
     public int currentLine = 0, currentChar = 0;
-    public float speed = 1f, routeRadius = 1f, rotationSpeed = 5f, typeDelay = 0.2f;
+    public float speed = 5f, routeRadius = 1f, rotationSpeed = 5f, typeDelay = 0.2f;
     float timeCount;
     Dialogue activeDialogue;
     private StorySceneController ssControl;
 
     public void startDialogue(Dialogue dialog)
     {
-        this.activeDialogue=dialog;
+        this.activeDialogue = dialog;
         currentLine = 0;
         readDialogue(currentLine);
     }
@@ -49,6 +49,7 @@ public class DialogueController : MonoBehaviour
             }
         }
         textPerSec(typeDelay);
+        camRoute();
 
     }
     public void showDialogue(string dialogue)
@@ -75,9 +76,11 @@ public class DialogueController : MonoBehaviour
         }
     }
 
-    public void camRoute(){
-        float distance = Vector3.Distance(activeDialogue.paths[currentLine], transform.position);
-        transform.position = Vector3.MoveTowards(transform.position,activeDialogue.paths[currentLine], Time.deltaTime * speed);
+    public void camRoute()
+    {
+        float distance = Vector3.Distance(activeDialogue.paths[currentLine], kamera.position);
+        if (distance != 0)
+            kamera.position = Vector3.MoveTowards(kamera.position, activeDialogue.paths[currentLine], Time.deltaTime * speed);
         // if (Input.GetButtonDown("Fire1") && currentLine < activeDialogue.paths.Count)
         // {
         //     currentLine++;
