@@ -17,7 +17,11 @@ public class DialogueController : MonoBehaviour
 
     public void startDialogue(Dialogue dialog)
     {
+        // JsonDialogue tes = new JsonDialogue(dialog);
+        // tes.writeJson();
+
         this.activeDialogue = dialog;
+        Debug.Log(dialog.toJson());
         currentLine = 0;
         readDialogue(currentLine);
     }
