@@ -5,7 +5,8 @@ using LitJson;
 
 public class Comic
 {
-    public string toString(){
+    public string toString()
+    {
         return source;
     }
     public List<Sprite> pages = new List<Sprite>();

@@ -40,10 +40,4 @@ public class EditorPathScript : MonoBehaviour
 
 		}
     }
-    void Update(){
-        if(Input.GetKeyDown(KeyCode.S)){
-            Pathing tesPath=new Pathing();
-            //tesPath.paths = pathObjects.ToArray;
-        }
-    }
 }
