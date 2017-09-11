@@ -27,33 +27,55 @@ public class DialogueCreatorControl : MonoBehaviour
 
     public void newLine()
     {
-        if (currentLine > 0)
+        if (targetDialogue.messages.Count > 0)
             targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
         Debug.Log(targetDialogue.toJson());
         targetDialogue.newLine();
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetDialogue.messages.Count));
-		lineDDown.value=currentLine+1;
+        lineDDown.value = currentLine + 1;
     }
     public void deleteLine()
     {
+        if (targetDialogue.messages.Count == 0)
+            return;
         targetDialogue.deleteLine(currentLine);
         Debug.Log(targetDialogue.toJson());
-        currentLine--;
+        if (currentLine > 0)
+            currentLine--;
         lineDDown.value = currentLine;
+        lineDDown.options.RemoveAt(targetDialogue.messages.Count);
+        if (targetDialogue.messages.Count > 0)
+            loadLine(currentLine);
+        else
+            lineDDown.captionText.text = "";
     }
     public void insertLine()
     {
-        if (currentLine > 0)
+        if (targetDialogue.messages.Count > 0)
+        {
             targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
+            currentLine++;
+        }
         Debug.Log(targetDialogue.toJson());
-        currentLine++;
         targetDialogue.insertLine(currentLine);
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetDialogue.messages.Count));
         lineDDown.value = currentLine;
+        //loadLine(currentLine--);
     }
     public void changeLine()
     {
-
+        //targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
+        currentLine = lineDDown.value;
+        print(lineDDown.value);
+        loadLine(currentLine);
+    }
+    public void loadLine(int index)
+    {
+        characterDDown.value = characterDDown.options.IndexOf(characterDDown.options.Find(x => x.text == targetDialogue.characters[index]));
+        messageField.text = targetDialogue.messages[index];
+        pageDDown.value = pageDDown.options.IndexOf(pageDDown.options.Find(x => x.text == targetDialogue.pages[index].ToString()));
+        cam.transform.position = targetDialogue.paths[index];
+        cam.orthographicSize = targetDialogue.zooms[index];
     }
 
 }

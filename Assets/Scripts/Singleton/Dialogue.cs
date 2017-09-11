@@ -121,7 +121,7 @@ public class Dialogue
         this.characters.Add("");
         this.messages.Add("");
         this.pages.Add(0);
-        this.zooms.Add(0f);
+        this.zooms.Add(5f);
         this.paths.Add(new Vector3());
     }
     public void deleteLine(int index){
@@ -142,7 +142,7 @@ public class Dialogue
         this.characters.Insert(index,"");
         this.messages.Insert(index,"");
         this.pages.Insert(index,0);
-        this.zooms.Insert(index,0f);
+        this.zooms.Insert(index,5f);
         this.paths.Insert(index,new Vector3());
     }
 }

@@ -43,6 +43,7 @@ public class MouseCamControlPan : MonoBehaviour
             mouseX = 0;
             mouseY = 0;
         }
-		this.GetComponent<Camera>().orthographicSize=zoom;
+        if (Input.GetAxis("Mouse ScrollWheel")!=0)
+		    this.GetComponent<Camera>().orthographicSize=zoom;
     }
 }
