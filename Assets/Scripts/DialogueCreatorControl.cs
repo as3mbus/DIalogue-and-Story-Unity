@@ -56,15 +56,17 @@ public class DialogueCreatorControl : MonoBehaviour
             targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
             currentLine++;
         }
+        else{
+            lineDDown.captionText.text = "Line 1";
+        }
         Debug.Log(targetDialogue.toJson());
         targetDialogue.insertLine(currentLine);
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetDialogue.messages.Count));
         lineDDown.value = currentLine;
-        //loadLine(currentLine--);
     }
     public void changeLine()
     {
-        //targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
+        targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
         currentLine = lineDDown.value;
         print(lineDDown.value);
         loadLine(currentLine);

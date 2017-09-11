@@ -11,7 +11,8 @@ public class Dialogue
     public List<float> zooms = new List<float>();
     public List<Vector3> paths = new List<Vector3>();
     public Comic comic;
-    public Dialogue(){
+    public Dialogue()
+    {
 
     }
     public Dialogue(JsonData chara, JsonData msg)
@@ -26,8 +27,8 @@ public class Dialogue
     {
         StringBuilder sb = new StringBuilder();
         JsonWriter writer = new JsonWriter(sb);
-        writer.PrettyPrint=true;
-        writer.IndentValue=4;
+        writer.PrettyPrint = true;
+        writer.IndentValue = 4;
 
         writer.WriteObjectStart();
         writer.WritePropertyName("type");
@@ -117,33 +118,37 @@ public class Dialogue
         }
 
     }
-    public void newLine(){
+    public void newLine()
+    {
         this.characters.Add("");
         this.messages.Add("");
         this.pages.Add(0);
         this.zooms.Add(5f);
         this.paths.Add(new Vector3());
     }
-    public void deleteLine(int index){
+    public void deleteLine(int index)
+    {
         this.characters.RemoveAt(index);
         this.messages.RemoveAt(index);
         this.pages.RemoveAt(index);
         this.zooms.RemoveAt(index);
         this.paths.RemoveAt(index);
     }
-    public void UpdateLine(string character,string message, int pageNo, float zoom, Vector3 path, int index ){
-        this.characters[index]=character;
-        this.messages[index]=message;
-        this.pages[index]=pageNo;
-        this.zooms[index]=zoom;
-        this.paths[index]=path;
+    public void UpdateLine(string character, string message, int pageNo, float zoom, Vector3 path, int index)
+    {
+        this.characters[index] = character;
+        this.messages[index] = message;
+        this.pages[index] = pageNo;
+        this.zooms[index] = zoom;
+        this.paths[index] = path;
     }
-    public void insertLine(int index){
-        this.characters.Insert(index,"");
-        this.messages.Insert(index,"");
-        this.pages.Insert(index,0);
-        this.zooms.Insert(index,5f);
-        this.paths.Insert(index,new Vector3());
+    public void insertLine(int index)
+    {
+        this.characters.Insert(index, "");
+        this.messages.Insert(index, "");
+        this.pages.Insert(index, 0);
+        this.zooms.Insert(index, 5f);
+        this.paths.Insert(index, new Vector3());
     }
 }
 
