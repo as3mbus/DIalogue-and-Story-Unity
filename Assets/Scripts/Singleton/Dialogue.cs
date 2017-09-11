@@ -5,18 +5,21 @@ using UnityEngine;
 using LitJson;
 public class Dialogue
 {
-    public List<string> character = new List<string>();
-    public List<string> message = new List<string>();
-    public List<int> page = new List<int>();
-    public List<float> zoom = new List<float>();
+    public List<string> characters = new List<string>();
+    public List<string> messages = new List<string>();
+    public List<int> pages = new List<int>();
+    public List<float> zooms = new List<float>();
     public List<Vector3> paths = new List<Vector3>();
     public Comic comic;
+    public Dialogue(){
+
+    }
     public Dialogue(JsonData chara, JsonData msg)
     {
         for (int i = 0; i < chara.Count; i++)
         {
-            this.character.Add(chara[i].ToString());
-            this.message.Add(msg[i].ToString());
+            this.characters.Add(chara[i].ToString());
+            this.messages.Add(msg[i].ToString());
         }
     }
     public string toJson()
@@ -33,7 +36,7 @@ public class Dialogue
         writer.Write(this.comic.toString());
         writer.WritePropertyName("page");
         writer.WriteArrayStart();
-        foreach (var item in this.page)
+        foreach (var item in this.pages)
         {
             writer.Write(item);
         }
@@ -52,30 +55,23 @@ public class Dialogue
             writer.Write(item.y);
         }
         writer.WriteArrayEnd();
-        writer.WritePropertyName("z");
-        writer.WriteArrayStart();
-        foreach (var item in this.paths)
-        {
-            writer.Write(item.z);
-        }
-        writer.WriteArrayEnd();
         writer.WritePropertyName("zoom");
         writer.WriteArrayStart();
-        foreach (var item in this.zoom)
+        foreach (var item in this.zooms)
         {
             writer.Write(item);
         }
         writer.WriteArrayEnd();
         writer.WritePropertyName("character");
         writer.WriteArrayStart();
-        foreach (var item in this.character)
+        foreach (var item in this.characters)
         {
             writer.Write(item);
         }
         writer.WriteArrayEnd();
         writer.WritePropertyName("message");
         writer.WriteArrayStart();
-        foreach (var item in this.message)
+        foreach (var item in this.messages)
         {
             writer.Write(item);
         }
@@ -96,60 +92,88 @@ public class Dialogue
             for (int i = 0; i < dialogueData["message"].Count; i++)
             {
 
-                this.page.Add((int)dialogueData["page"][i]);
+                this.pages.Add((int)dialogueData["page"][i]);
                 this.paths.Add(
                     new Vector3(
                         float.Parse(dialogueData["x"][i].ToString()),
                         float.Parse(dialogueData["y"][i].ToString()),
-                        float.Parse(dialogueData["z"][i].ToString())
+                        -10f
                     )
                 );
                 Debug.Log("Testing " + paths[i].ToString());
-                this.zoom.Add(float.Parse(dialogueData["zoom"][i].ToString()));
-                this.character.Add(dialogueData["character"][i].ToString());
-                this.message.Add(dialogueData["message"][i].ToString());
+                this.zooms.Add(float.Parse(dialogueData["zoom"][i].ToString()));
+                this.characters.Add(dialogueData["character"][i].ToString());
+                this.messages.Add(dialogueData["message"][i].ToString());
             }
         }
         catch (System.Exception)
         {
             for (int i = 0; i < dialogueData["message"].Count; i++)
             {
-                this.character.Add(dialogueData["character"][i].ToString());
-                this.message.Add(dialogueData["message"][i].ToString());
+                this.characters.Add(dialogueData["character"][i].ToString());
+                this.messages.Add(dialogueData["message"][i].ToString());
             }
             throw;
         }
 
     }
-}
-
-[System.Serializable]
-public class JsonDialogue
-{
-    public string comic;
-    public string[] character;
-    public string[] message;
-    public int[] page;
-    public float[] zoom;
-    public string[] x, y, z;
-    public JsonDialogue(Dialogue source)
-    {
-        this.comic = source.comic.ToString();
-        this.character = source.character.ToArray();
-        this.message = source.message.ToArray();
-        this.page = source.page.ToArray();
-        this.zoom = source.zoom.ToArray();
-
-        var pathcount = source.paths.Count;
-        this.x = new string[pathcount];
-        this.y = new string[pathcount];
-        this.z = new string[pathcount];
-        for (int i = 0; i < pathcount; i++)
-        {
-            this.x[i] = source.paths[i].x.ToString();
-            this.y[i] = source.paths[i].y.ToString();
-            this.z[i] = source.paths[i].z.ToString();
-        }
-
+    public void newLine(){
+        this.characters.Add("");
+        this.messages.Add("");
+        this.pages.Add(0);
+        this.zooms.Add(0f);
+        this.paths.Add(new Vector3());
+    }
+    public void deleteLine(int index){
+        this.characters.RemoveAt(index);
+        this.messages.RemoveAt(index);
+        this.pages.RemoveAt(index);
+        this.zooms.RemoveAt(index);
+        this.paths.RemoveAt(index);
+    }
+    public void UpdateLine(string character,string message, int pageNo, float zoom, Vector3 path, int index ){
+        this.characters[index]=character;
+        this.messages[index]=message;
+        this.pages[index]=pageNo;
+        this.zooms[index]=zoom;
+        this.paths[index]=path;
+    }
+    public void insertLine(int index){
+        this.characters.Insert(index,"");
+        this.messages.Insert(index,"");
+        this.pages.Insert(index,0);
+        this.zooms.Insert(index,0f);
+        this.paths.Insert(index,new Vector3());
     }
 }
+
+// [System.Serializable]
+// public class JsonDialogue
+// {
+//     public string comic;
+//     public string[] character;
+//     public string[] message;
+//     public int[] page;
+//     public float[] zoom;
+//     public string[] x, y, z;
+//     public JsonDialogue(Dialogue source)
+//     {
+//         this.comic = source.comic.ToString();
+//         this.character = source.characters.ToArray();
+//         this.message = source.messages.ToArray();
+//         this.page = source.pages.ToArray();
+//         this.zoom = source.zooms.ToArray();
+
+//         var pathcount = source.paths.Count;
+//         this.x = new string[pathcount];
+//         this.y = new string[pathcount];
+//         this.z = new string[pathcount];
+//         for (int i = 0; i < pathcount; i++)
+//         {
+//             this.x[i] = source.paths[i].x.ToString();
+//             this.y[i] = source.paths[i].y.ToString();
+//             this.z[i] = source.paths[i].z.ToString();
+//         }
+
+//     }
+// }

@@ -20,4 +20,12 @@ public class Comic
             this.pages.Add(item);
         }
     }
+    public Comic(string resDir)
+    {
+        this.source = resDir.ToString();
+        foreach (var item in Resources.LoadAll<Sprite>("Comic/" + resDir.ToString()))
+        {
+            this.pages.Add(item);
+        }
+    }
 }

@@ -35,9 +35,9 @@ public class DialogueController : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            if (currentChar >= activeDialogue.message[currentLine].Length)
+            if (currentChar >= activeDialogue.messages[currentLine].Length)
             {
-                if (currentLine < activeDialogue.message.Count - 1)
+                if (currentLine < activeDialogue.messages.Count - 1)
                 {
                     currentLine++;
                     readDialogue(currentLine);
@@ -49,7 +49,7 @@ public class DialogueController : MonoBehaviour
             }
             else
             {
-                showDialogue(activeDialogue.message[currentLine]);
+                showDialogue(activeDialogue.messages[currentLine]);
             }
         }
         textPerSec(typeDelay);
@@ -64,17 +64,17 @@ public class DialogueController : MonoBehaviour
     public void readDialogue(int line)
     {
         currentChar = 0;
-        dName.text = activeDialogue.character[line];
+        dName.text = activeDialogue.characters[line];
         dText.text = "";
     }
     public void textPerSec(float delay)
     {
-        if (currentChar >= activeDialogue.message[currentLine].Length)
+        if (currentChar >= activeDialogue.messages[currentLine].Length)
             return;
         timeCount += Time.deltaTime;
         if (timeCount > delay)
         {
-            dText.text = dText.text + activeDialogue.message[currentLine][currentChar];
+            dText.text = dText.text + activeDialogue.messages[currentLine][currentChar];
             currentChar++;
             timeCount = 0;
         }
@@ -83,8 +83,11 @@ public class DialogueController : MonoBehaviour
     public void camRoute()
     {
         float distance = Vector3.Distance(activeDialogue.paths[currentLine], kamera.position);
+        float zoomDistance = Mathf.Abs(kamera.GetComponent<Camera>().orthographicSize - activeDialogue.zooms[currentLine]);
         if (distance != 0)
             kamera.position = Vector3.MoveTowards(kamera.position, activeDialogue.paths[currentLine], Time.deltaTime * speed);
+        if (zoomDistance!=0)
+            kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(kamera.GetComponent<Camera>().orthographicSize, activeDialogue.zooms[currentLine], Time.deltaTime * speed);
         // if (Input.GetButtonDown("Fire1") && currentLine < activeDialogue.paths.Count)
         // {
         //     currentLine++;

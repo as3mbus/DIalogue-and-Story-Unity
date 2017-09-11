@@ -9,13 +9,13 @@ public class FollowPath : MonoBehaviour
     public float speed = 1f, routeRadius = 1f, rotationSpeed = 5f;
     public string pathName;
 
-    Vector3 lastPosition, currentPosition;
+    Vector3  currentPosition;
 
     // Use this for initialization
     void Start()
     {
         pathRoute = GameObject.Find(pathName).GetComponent<EditorPathScript>();
-        lastPosition = transform.position;
+        //lastPosition = transform.position;
     }
 
     // Update is called once per frame

@@ -34,7 +34,7 @@ public class MouseCamControlPan : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		zoom += Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+		zoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
         if (Input.GetButton("Fire1"))
         {
             mouseRead();
