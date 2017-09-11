@@ -6,7 +6,9 @@ using LitJson;
 public class Story
 {
     public ArrayList phase = new ArrayList();
-
+    public Story(){
+        
+    }
     public Story(string filename)
     {
         JsonData jsonStory;
