@@ -6,11 +6,11 @@ using LitJson;
 
 public class DialogueController : MonoBehaviour
 {
-    public Transform kamera, paths;
+    public Transform kamera;
     public GameObject[] Chara;
     public Text dName, dText;
     public int currentLine = 0, currentChar = 0;
-    public float speed = 5f, routeRadius = 1f, rotationSpeed = 5f, typeDelay = 0.2f;
+    public float speed = 5f, routeRadius = 1f, typeDelay = 0.2f;
     float timeCount;
     Dialogue activeDialogue;
     private StorySceneController ssControl;
