@@ -20,6 +20,7 @@ public class StoryCreatorControl : MonoBehaviour
         targetStory = new Story();
         loadComics();
         print(listComicJson());
+        writeComicJson();
     }
 
     // Update is called once per frame
@@ -65,6 +66,12 @@ public class StoryCreatorControl : MonoBehaviour
     }
     void loadComics()
     {
+        JsonData jsonComic;
+        jsonComic = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath+"/comic.json"));
+        foreach (JsonData comic in jsonComic["comic"])
+        {
+            comicDropdown.options.Add(new Dropdown.OptionData(comic["name"].ToString()));
+        }
         // var comicPath = "jar:file://" + Application.dataPath + "!/assets/Comic/";
         // var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
         // foreach (DirectoryInfo dir in comicDirectories) comicDropdown.options.Add(new Dropdown.OptionData(dir.Name));
@@ -100,5 +107,10 @@ public class StoryCreatorControl : MonoBehaviour
         writer.WriteObjectEnd();
 
         return sb.ToString();
+    }
+    void writeComicJson(){
+        var sr = File.CreateText(Application.streamingAssetsPath+"/comic.json");
+        sr.Write(listComicJson());
+        sr.Close();
     }
 }
