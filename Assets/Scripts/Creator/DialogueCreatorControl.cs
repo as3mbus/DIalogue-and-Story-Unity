@@ -68,7 +68,6 @@ public class DialogueCreatorControl : MonoBehaviour
     {
         targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
         currentLine = lineDDown.value;
-        print(lineDDown.value);
         loadLine(currentLine);
     }
     public void loadLine(int index)
@@ -79,5 +78,11 @@ public class DialogueCreatorControl : MonoBehaviour
         cam.transform.position = targetDialogue.paths[index];
         cam.orthographicSize = targetDialogue.zooms[index];
     }
-
+    public void loadDialogue(Dialogue dialog){
+        targetDialogue=dialog;
+        for (int i = 0; i < dialog.messages.Count; i++)
+            lineDDown.options.Add(new Dropdown.OptionData("Line " + i));
+        loadLine(0);
+        lineDDown.value=0;
+    }
 }
