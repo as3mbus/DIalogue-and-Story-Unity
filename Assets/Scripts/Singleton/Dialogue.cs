@@ -29,6 +29,11 @@ public class Dialogue
         JsonWriter writer = new JsonWriter(sb);
         writer.PrettyPrint = true;
         writer.IndentValue = 4;
+        toJson(writer);
+        return sb.ToString();
+    }
+    public void toJson(JsonWriter writer)
+    {
 
         writer.WriteObjectStart();
         writer.WritePropertyName("type");
@@ -81,8 +86,6 @@ public class Dialogue
         // writer.WriteArrayEnd();
 
         writer.WriteObjectEnd();
-
-        return sb.ToString();
     }
     public Dialogue(JsonData dialogueData)
     {

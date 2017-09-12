@@ -1,11 +1,14 @@
 ﻿using System.Collections;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using LitJson;
 
 public class StoryCreatorControl : MonoBehaviour
 {
+
     Story targetStory;
     public GameObject typeCanvas, phaseScrollView;
     public InputField storyNameField;
@@ -16,6 +19,7 @@ public class StoryCreatorControl : MonoBehaviour
     {
         targetStory = new Story();
         loadComics();
+        print(listComicJson());
     }
 
     // Update is called once per frame
@@ -61,11 +65,40 @@ public class StoryCreatorControl : MonoBehaviour
     }
     void loadComics()
     {
-        var info = new DirectoryInfo(System.IO.Directory.GetCurrentDirectory() + "\\Assets\\Resources\\Comic");
-        // print(info);
-        var fileInfo = info.GetDirectories();
-        // storyNameField.text = "Success";
-        foreach (DirectoryInfo dir in fileInfo) comicDropdown.options.Add(new Dropdown.OptionData(dir.Name));
+        // var comicPath = "jar:file://" + Application.dataPath + "!/assets/Comic/";
+        // var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
+        // foreach (DirectoryInfo dir in comicDirectories) comicDropdown.options.Add(new Dropdown.OptionData(dir.Name));
     }
-	
+    string listComicJson()
+    {
+        var comicPath = Application.streamingAssetsPath+"/Comic/";
+        var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
+        StringBuilder sb = new StringBuilder();
+        JsonWriter writer = new JsonWriter(sb);
+        writer.PrettyPrint = true;
+        writer.IndentValue = 4;
+
+        writer.WriteObjectStart();
+        writer.WritePropertyName("comic");
+        writer.WriteArrayStart();
+        foreach (DirectoryInfo dir in comicDirectories)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName("name");
+            writer.Write(dir.Name);
+            writer.WritePropertyName("content");
+            writer.WriteArrayStart();
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                if(file.Extension==".png")
+                    writer.Write(Path.GetFileNameWithoutExtension(file.Name));
+            }
+            writer.WriteArrayEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+        writer.WriteObjectEnd();
+
+        return sb.ToString();
+    }
 }
