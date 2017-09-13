@@ -10,7 +10,7 @@ public class StoryCreatorControl : MonoBehaviour
 {
 
     Story targetStory;
-    public GameObject typeCanvas, phaseScrollView;
+    public GameObject phasePanel, phaseScrollView, dialogueCreator, phaseButton, newPhaseButton;
     public InputField storyNameField;
     public Dropdown comicDropdown;
 
@@ -43,6 +43,7 @@ public class StoryCreatorControl : MonoBehaviour
     public void newComic()
     {
         typeWindowActive(false);
+        newContentButton();   
     }
     public void cancelPhase()
     {
@@ -50,7 +51,7 @@ public class StoryCreatorControl : MonoBehaviour
     }
     void typeWindowActive(bool mode)
     {
-        typeCanvas.SetActive(mode);
+        phasePanel.SetActive(mode);
         foreach (Transform child in phaseScrollView.transform.Find("Viewport").transform.Find("Content").transform)
         {
             if (child.name.Contains("Content"))
@@ -76,7 +77,7 @@ public class StoryCreatorControl : MonoBehaviour
         // var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
         // foreach (DirectoryInfo dir in comicDirectories) comicDropdown.options.Add(new Dropdown.OptionData(dir.Name));
     }
-    string listComicJson()
+    public static string listComicJson()
     {
         var comicPath = Application.streamingAssetsPath+"/Comic/";
         var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
@@ -105,12 +106,27 @@ public class StoryCreatorControl : MonoBehaviour
         }
         writer.WriteArrayEnd();
         writer.WriteObjectEnd();
-
         return sb.ToString();
     }
-    void writeComicJson(){
+    public static void writeComicJson(){
         var sr = File.CreateText(Application.streamingAssetsPath+"/comic.json");
         sr.Write(listComicJson());
         sr.Close();
+    }
+    void contentResize(){
+        Vector2 contentSize =  phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta;
+        contentSize.y=250*(targetStory.phase.Count+1)+50;
+        phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta=contentSize;
+    }
+    void newContentButton(){
+        GameObject newButton= Object.Instantiate(phaseButton,phaseScrollView.GetComponent<ScrollRect>().content);
+        Vector3 newpos = newButton.GetComponent<RectTransform>().localPosition;
+        newpos.y -= 250*(targetStory.phase.Count);
+        newButton.GetComponent<RectTransform>().localPosition=newpos;
+
+        targetStory.phase.Add(new Comic("tes"));
+        newpos.y -= 250;
+        newPhaseButton.GetComponent<RectTransform>().localPosition=newpos;
+        contentResize();
     }
 }
