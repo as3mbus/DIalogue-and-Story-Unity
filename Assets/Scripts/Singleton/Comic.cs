@@ -5,6 +5,7 @@ using LitJson;
 
 public class Comic
 {
+    public string name;
     public string toString()
     {
         return source;

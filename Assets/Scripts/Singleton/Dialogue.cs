@@ -11,9 +11,16 @@ public class Dialogue
     public List<float> zooms = new List<float>();
     public List<Vector3> paths = new List<Vector3>();
     public Comic comic;
+    public string name;
     public Dialogue()
     {
-
+        this.name="";
+        this.comic=new Comic("sample comic");
+    }
+    public Dialogue(string name, string comicDir)
+    {
+        this.name=name;
+        this.comic=new Comic(comicDir);
     }
     public Dialogue(JsonData chara, JsonData msg)
     {
@@ -36,6 +43,8 @@ public class Dialogue
     {
 
         writer.WriteObjectStart();
+        writer.WritePropertyName("name");
+        writer.Write(this.name);
         writer.WritePropertyName("type");
         writer.Write("dialogue");
         writer.WritePropertyName("comic");
@@ -91,7 +100,7 @@ public class Dialogue
     {
         try
         {
-
+            this.name = dialogueData["name"].ToString();
             this.comic = new Comic(dialogueData["comic"]);
             for (int i = 0; i < dialogueData["message"].Count; i++)
             {
