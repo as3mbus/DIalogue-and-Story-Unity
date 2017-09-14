@@ -1,6 +1,7 @@
 {
     "Story": [
         {
+            "name": "test dialogue",
             "type": "Dialogue",
             "comic": "sample comic",
             "page": [

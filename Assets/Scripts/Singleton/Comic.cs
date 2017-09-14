@@ -12,7 +12,16 @@ public class Comic
     }
     public List<Sprite> pages = new List<Sprite>();
     public string source;
-
+    public Comic(string name, string comicDir)
+    {
+        this.name=name;
+        Debug.Log(this.name);
+        this.source = comicDir.ToString();
+        foreach (var item in Resources.LoadAll<Sprite>("Comic/" + comicDir.ToString()))
+        {
+            this.pages.Add(item);
+        }
+    }
     public Comic(JsonData directory)
     {
         this.source = directory.ToString();

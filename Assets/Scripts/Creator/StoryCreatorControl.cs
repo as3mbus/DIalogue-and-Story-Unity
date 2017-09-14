@@ -31,17 +31,18 @@ public class StoryCreatorControl : MonoBehaviour
     public void newPhase()
     {
         typeWindowActive(true);
-
-
+        
     }
     public void newDialogue()
     {
-        targetStory.phase.Add(new Dialogue());
+        targetStory.phase.Add(new Dialogue(phasePanel.GetComponentInChildren<InputField>().text,comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
         typeWindowActive(false);
+        newContentButton();
 
     }
     public void newComic()
     {
+        targetStory.phase.Add(new Comic(phasePanel.GetComponentInChildren<InputField>().text,comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
         typeWindowActive(false);
         newContentButton();   
     }
@@ -52,17 +53,11 @@ public class StoryCreatorControl : MonoBehaviour
     void typeWindowActive(bool mode)
     {
         phasePanel.SetActive(mode);
-        foreach (Transform child in phaseScrollView.transform.Find("Viewport").transform.Find("Content").transform)
+        var storyButtons = GetComponentsInChildren<Button>();
+        GetComponentInChildren<InputField>().interactable=!mode;
+        foreach (var button in storyButtons)
         {
-            if (child.name.Contains("Content"))
-            {
-                child.GetChild(0).GetComponent<Button>().interactable = !mode;
-                child.GetChild(1).GetComponent<Button>().interactable = !mode;
-            }
-            else
-            {
-                child.GetComponent<Button>().interactable = !mode;
-            }
+            button.interactable=!mode;
         }
     }
     void loadComics()
@@ -121,12 +116,33 @@ public class StoryCreatorControl : MonoBehaviour
     void newContentButton(){
         GameObject newButton= Object.Instantiate(phaseButton,phaseScrollView.GetComponent<ScrollRect>().content);
         Vector3 newpos = newButton.GetComponent<RectTransform>().localPosition;
-        newpos.y -= 250*(targetStory.phase.Count);
+        newpos.y -= 250*(targetStory.phase.Count-1);
         newButton.GetComponent<RectTransform>().localPosition=newpos;
-
+        contentButtonUpdate(newButton);
         targetStory.phase.Add(new Comic("tes"));
         newpos.y -= 250;
         newPhaseButton.GetComponent<RectTransform>().localPosition=newpos;
         contentResize();
     }
+    void contentButtonUpdate(GameObject button){
+        int index = button.transform.GetSiblingIndex()-1;
+        print("index = "+index);
+        if (targetStory.phase[index].GetType().Equals(new Dialogue().GetType())){
+            Dialogue dialog =  (Dialogue)targetStory.phase[index];
+            button.transform.GetChild(0).Find("Name").GetComponent<Text>().text=dialog.name;
+            button.transform.GetChild(0).Find("Type").GetComponent<Text>().text="D";
+            button.transform.GetChild(0).Find("BG").GetComponent<Text>().text=dialog.comic.toString();
+            button.transform.GetChild(0).Find("Line").GetComponent<Text>().text=dialog.messages.Count.ToString()+" Line";
+        }
+        else {
+            Comic komik =  (Comic)targetStory.phase[index];
+            print("Komik"+komik.name+komik.toString());
+            
+            button.transform.GetChild(0).Find("Name").GetComponent<Text>().text=komik.name;
+            button.transform.GetChild(0).Find("Type").GetComponent<Text>().text="C";
+            button.transform.GetChild(0).Find("BG").GetComponent<Text>().text=komik.toString();
+            button.transform.GetChild(0).Find("Line").GetComponent<Text>().text="";
+        }
+    }
+    
 }
