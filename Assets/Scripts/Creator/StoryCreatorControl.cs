@@ -4,13 +4,15 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using LitJson;
 
 public class StoryCreatorControl : MonoBehaviour
 {
 
-    Story targetStory;
+    static Story targetStory;
     public GameObject phasePanel, phaseScrollView, dialogueCreator, phaseButton, newPhaseButton;
+    public DialogueCreatorControl dialogControl;
     public InputField storyNameField;
     public Dropdown comicDropdown;
 
@@ -31,20 +33,20 @@ public class StoryCreatorControl : MonoBehaviour
     public void newPhase()
     {
         typeWindowActive(true);
-        
+
     }
     public void newDialogue()
     {
-        targetStory.phase.Add(new Dialogue(phasePanel.GetComponentInChildren<InputField>().text,comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
+        targetStory.phase.Add(new Dialogue(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
         typeWindowActive(false);
         newContentButton();
 
     }
     public void newComic()
     {
-        targetStory.phase.Add(new Comic(phasePanel.GetComponentInChildren<InputField>().text,comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
+        targetStory.phase.Add(new Comic(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
         typeWindowActive(false);
-        newContentButton();   
+        newContentButton();
     }
     public void cancelPhase()
     {
@@ -54,16 +56,16 @@ public class StoryCreatorControl : MonoBehaviour
     {
         phasePanel.SetActive(mode);
         var storyButtons = GetComponentsInChildren<Button>();
-        GetComponentInChildren<InputField>().interactable=!mode;
+        GetComponentInChildren<InputField>().interactable = !mode;
         foreach (var button in storyButtons)
         {
-            button.interactable=!mode;
+            button.interactable = !mode;
         }
     }
     void loadComics()
     {
         JsonData jsonComic;
-        jsonComic = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath+"/comic.json"));
+        jsonComic = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/comic.json"));
         foreach (JsonData comic in jsonComic["comic"])
         {
             comicDropdown.options.Add(new Dropdown.OptionData(comic["name"].ToString()));
@@ -74,7 +76,7 @@ public class StoryCreatorControl : MonoBehaviour
     }
     public static string listComicJson()
     {
-        var comicPath = Application.streamingAssetsPath+"/Comic/";
+        var comicPath = Application.streamingAssetsPath + "/Comic/";
         var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
         StringBuilder sb = new StringBuilder();
         JsonWriter writer = new JsonWriter(sb);
@@ -93,7 +95,7 @@ public class StoryCreatorControl : MonoBehaviour
             writer.WriteArrayStart();
             foreach (FileInfo file in dir.GetFiles())
             {
-                if(file.Extension==".png")
+                if (file.Extension == ".png")
                     writer.Write(Path.GetFileNameWithoutExtension(file.Name));
             }
             writer.WriteArrayEnd();
@@ -103,46 +105,67 @@ public class StoryCreatorControl : MonoBehaviour
         writer.WriteObjectEnd();
         return sb.ToString();
     }
-    public static void writeComicJson(){
-        var sr = File.CreateText(Application.streamingAssetsPath+"/comic.json");
+    public static void writeComicJson()
+    {
+        var sr = File.CreateText(Application.streamingAssetsPath + "/comic.json");
         sr.Write(listComicJson());
         sr.Close();
     }
-    void contentResize(){
-        Vector2 contentSize =  phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta;
-        contentSize.y=250*(targetStory.phase.Count+1)+50;
-        phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta=contentSize;
+    void contentResize()
+    {
+        Vector2 contentSize = phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta;
+        contentSize.y = 250 * (targetStory.phase.Count + 1) + 50;
+        phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta = contentSize;
     }
-    void newContentButton(){
-        GameObject newButton= Object.Instantiate(phaseButton,phaseScrollView.GetComponent<ScrollRect>().content);
+    void newContentButton()
+    {
+        GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.GetComponent<ScrollRect>().content);
         Vector3 newpos = newButton.GetComponent<RectTransform>().localPosition;
-        newpos.y -= 250*(targetStory.phase.Count-1);
-        newButton.GetComponent<RectTransform>().localPosition=newpos;
+        newpos.y -= 250 * (targetStory.phase.Count - 1);
+        newButton.GetComponent<RectTransform>().localPosition = newpos;
+        newButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => editPhase());
         contentButtonUpdate(newButton);
-        targetStory.phase.Add(new Comic("tes"));
         newpos.y -= 250;
-        newPhaseButton.GetComponent<RectTransform>().localPosition=newpos;
+        newPhaseButton.GetComponent<RectTransform>().localPosition = newpos;
         contentResize();
     }
-    void contentButtonUpdate(GameObject button){
-        int index = button.transform.GetSiblingIndex()-1;
-        print("index = "+index);
-        if (targetStory.phase[index].GetType().Equals(new Dialogue().GetType())){
-            Dialogue dialog =  (Dialogue)targetStory.phase[index];
-            button.transform.GetChild(0).Find("Name").GetComponent<Text>().text=dialog.name;
-            button.transform.GetChild(0).Find("Type").GetComponent<Text>().text="D";
-            button.transform.GetChild(0).Find("BG").GetComponent<Text>().text=dialog.comic.toString();
-            button.transform.GetChild(0).Find("Line").GetComponent<Text>().text=dialog.messages.Count.ToString()+" Line";
+    void contentButtonUpdate(GameObject button)
+    {
+        int index = button.transform.GetSiblingIndex() - 1;
+        if (targetStory.phase[index].GetType().Equals(new Dialogue().GetType()))
+        {
+            Dialogue dialog = (Dialogue)targetStory.phase[index];
+            button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = dialog.name;
+            button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "D";
+            button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = dialog.comic.toString();
+            button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = dialog.messages.Count.ToString() + " Line";
         }
-        else {
-            Comic komik =  (Comic)targetStory.phase[index];
-            print("Komik"+komik.name+komik.toString());
-            
-            button.transform.GetChild(0).Find("Name").GetComponent<Text>().text=komik.name;
-            button.transform.GetChild(0).Find("Type").GetComponent<Text>().text="C";
-            button.transform.GetChild(0).Find("BG").GetComponent<Text>().text=komik.toString();
-            button.transform.GetChild(0).Find("Line").GetComponent<Text>().text="";
+        else
+        {
+            Comic komik = (Comic)targetStory.phase[index];
+            button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = komik.name;
+            button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "C";
+            button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = komik.toString();
+            button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = "";
         }
     }
-    
+    public void editPhase()
+    {
+        int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex() - 1;
+        print(phaseIndex);
+        if (targetStory.phase[phaseIndex].GetType().Equals(new Dialogue().GetType()))
+        {
+            Dialogue dialog =(Dialogue) targetStory.phase[phaseIndex];
+            
+            editDialogue(dialog);
+        }
+    }
+    public void editDialogue(Dialogue dialog)
+    {
+        dialogControl.loadDialogue(dialog);
+        
+        dialogControl.gameObject.SetActive(true);
+        gameObject.SetActive(false);
+    }
+
 }

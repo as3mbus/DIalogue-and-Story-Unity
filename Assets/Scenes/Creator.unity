@@ -8858,6 +8858,7 @@ MonoBehaviour:
   phaseButton: {fileID: 1749336780010538, guid: 13936d02e1731493d8cc58da0773b070,
     type: 2}
   newPhaseButton: {fileID: 73528109}
+  dialogControl: {fileID: 1448860104}
   storyNameField: {fileID: 794522169}
   comicDropdown: {fileID: 861081945}
 --- !u!1 &2144305494
