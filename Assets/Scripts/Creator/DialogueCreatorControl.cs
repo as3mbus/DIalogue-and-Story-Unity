@@ -8,9 +8,10 @@ public class DialogueCreatorControl : MonoBehaviour
     public Camera cam;
     public InputField messageField;
     public Dropdown characterDDown, pageDDown, lineDDown;
+    public StoryCreatorControl storyController;
     public Text statusText;
     public Dialogue targetDialogue;
-    public int currentLine = 0;
+    public int currentLine = -1;
     // Use this for initialization
     void Start()
     {
@@ -29,7 +30,6 @@ public class DialogueCreatorControl : MonoBehaviour
     {
         if (targetDialogue.messages.Count > 0)
             targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
-        Debug.Log(targetDialogue.toJson());
         targetDialogue.newLine();
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetDialogue.messages.Count));
         lineDDown.value = currentLine + 1;
@@ -39,7 +39,6 @@ public class DialogueCreatorControl : MonoBehaviour
         if (targetDialogue.messages.Count == 0)
             return;
         targetDialogue.deleteLine(currentLine);
-        Debug.Log(targetDialogue.toJson());
         if (currentLine > 0)
             currentLine--;
         lineDDown.value = currentLine;
@@ -60,7 +59,6 @@ public class DialogueCreatorControl : MonoBehaviour
         {
             lineDDown.captionText.text = "Line 1";
         }
-        Debug.Log(targetDialogue.toJson());
         targetDialogue.insertLine(currentLine);
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetDialogue.messages.Count));
         lineDDown.value = currentLine;
@@ -69,6 +67,7 @@ public class DialogueCreatorControl : MonoBehaviour
     {
         targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
         currentLine = lineDDown.value;
+        Debug.Log(targetDialogue.toJson());
         loadLine(currentLine);
     }
     public void loadLine(int index)
@@ -81,16 +80,42 @@ public class DialogueCreatorControl : MonoBehaviour
             cam.transform.position = targetDialogue.paths[index];
             cam.orthographicSize = targetDialogue.zooms[index];
             lineDDown.value = index;
+            lineDDown.captionText.text = "Line " + (index + 1);
         }
-        else{
+        else
+        {
             lineDDown.value = -1;
+            lineDDown.captionText.text = "";
         }
     }
     public void loadDialogue(Dialogue dialog)
     {
         targetDialogue = dialog;
         for (int i = 0; i < dialog.messages.Count; i++)
-            lineDDown.options.Add(new Dropdown.OptionData("Line " + i));
+            lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
         loadLine(0);
+
+    }
+    public void saveDialogue()
+    {
+        if (targetDialogue.messages.Count > 0)
+            targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
+        resetInterface();
+        storyController.gameObject.SetActive(true);
+        storyController.contentDialogueButtonUpdate(targetDialogue);
+        this.gameObject.SetActive(false);
+    }
+    public void resetCam()
+    {
+        cam.transform.position = new Vector3(0, 0, -10);
+        cam.orthographicSize = 5;
+        cam.GetComponent<MouseCamControlPan>().enabled = false;
+    }
+    void resetInterface()
+    {
+        messageField.text = "";
+        lineDDown.ClearOptions();
+        lineDDown.value = -1;
+        lineDDown.captionText.text = "";
     }
 }

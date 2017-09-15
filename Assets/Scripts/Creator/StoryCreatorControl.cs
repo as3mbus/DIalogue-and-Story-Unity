@@ -149,21 +149,32 @@ public class StoryCreatorControl : MonoBehaviour
             button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = "";
         }
     }
+    public void contentDialogueButtonUpdate(Dialogue dialog)
+    {
+        int index = targetStory.phase.IndexOf(dialog) + 1;
+        GameObject button = phaseScrollView.GetComponent<ScrollRect>().content.GetChild(index).gameObject;
+
+        button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = dialog.name;
+        button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "D";
+        button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = dialog.comic.toString();
+        button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = dialog.messages.Count.ToString() + " Line";
+
+    }
     public void editPhase()
     {
         int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex() - 1;
         print(phaseIndex);
         if (targetStory.phase[phaseIndex].GetType().Equals(new Dialogue().GetType()))
         {
-            Dialogue dialog =(Dialogue) targetStory.phase[phaseIndex];
-            
+            Dialogue dialog = (Dialogue)targetStory.phase[phaseIndex];
+
             editDialogue(dialog);
         }
     }
     public void editDialogue(Dialogue dialog)
     {
         dialogControl.loadDialogue(dialog);
-        
+
         dialogControl.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }

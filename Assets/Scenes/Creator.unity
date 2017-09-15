@@ -2839,7 +2839,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 734054626}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1448860104}
+        m_MethodName: saveDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &734054626
@@ -5766,6 +5777,7 @@ MonoBehaviour:
   characterDDown: {fileID: 2101189840}
   pageDDown: {fileID: 1827039965}
   lineDDown: {fileID: 1835238892}
+  storyController: {fileID: 2118616193}
   statusText: {fileID: 1489159280}
   currentLine: 0
 --- !u!1 &1449638715

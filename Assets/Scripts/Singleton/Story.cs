@@ -1,13 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using LitJson;
 
 public class Story
 {
-    public ArrayList phase = new ArrayList();
+    public ArrayList phases = new ArrayList();
     public Story(){
         
+    }
+    public string toJson(){
+        StringBuilder sb = new StringBuilder();
+        JsonWriter writer = new JsonWriter(sb);
+        writer.PrettyPrint = true;
+        writer.IndentValue = 4;
+        foreach (var phase in phases)
+        {
+            
+        }
+        return "";
     }
     public Story(string filename)
     {
@@ -20,12 +32,12 @@ public class Story
             if (cerita["type"].ToString() == "Dialogue")
             {
                 Dialogue dialog = new Dialogue(cerita);
-                this.phase.Add(dialog);
+                this.phases.Add(dialog);
             }
             else if (cerita["type"].ToString() == "Comic")
             {
                 Comic komik = new Comic(cerita["content"]);
-                this.phase.Add(komik);
+                this.phases.Add(komik);
             }
         }
     }
