@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Text;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using LitJson;
 public class Dialogue
@@ -153,6 +153,7 @@ public class Dialogue
         this.pages[index] = pageNo;
         this.zooms[index] = zoom;
         this.paths[index] = path;
+        Debug.Log(this.toJson());
     }
     public void insertLine(int index)
     {

@@ -19,16 +19,16 @@ public class StorySceneController : MonoBehaviour
     }
     void loadPhase(int number)
     {
-        if (cerita.phase[number].GetType().ToString() == "Dialogue")
+        if (cerita.phases[number].GetType().ToString() == "Dialogue")
         {
             dialogueCanvas.SetActive(true);
-            Dialogue dialog = (Dialogue)cerita.phase[number];
+            Dialogue dialog = (Dialogue)cerita.phases[number];
             dialogueCanvas.GetComponent<DialogueController>().startDialogue(dialog);
         }
-        else if (cerita.phase[number].GetType().ToString() == "Comic")
+        else if (cerita.phases[number].GetType().ToString() == "Comic")
         {
             comicCanvas.SetActive(true);
-            Comic komik = (Comic)cerita.phase[number];
+            Comic komik = (Comic)cerita.phases[number];
             comicCanvas.GetComponent<ComicController>().startComic(komik);
         }
     }
@@ -36,7 +36,7 @@ public class StorySceneController : MonoBehaviour
     public void nextPhase()
     {
         currentPhase++;
-        if (currentPhase < cerita.phase.Count)
+        if (currentPhase < cerita.phases.Count)
         {
             loadPhase(currentPhase);
         }

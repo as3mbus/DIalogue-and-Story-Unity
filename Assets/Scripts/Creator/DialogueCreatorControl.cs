@@ -11,7 +11,7 @@ public class DialogueCreatorControl : MonoBehaviour
     public StoryCreatorControl storyController;
     public Text statusText;
     public Dialogue targetDialogue;
-    public int currentLine = -1;
+    public int currentLine = 0;
     // Use this for initialization
     void Start()
     {
@@ -28,47 +28,43 @@ public class DialogueCreatorControl : MonoBehaviour
 
     public void newLine()
     {
-        if (targetDialogue.messages.Count > 0)
-            targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
         targetDialogue.newLine();
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetDialogue.messages.Count));
-        lineDDown.value = currentLine + 1;
+        lineDDown.value++;
     }
     public void deleteLine()
     {
         if (targetDialogue.messages.Count == 0)
             return;
-        targetDialogue.deleteLine(currentLine);
-        if (currentLine > 0)
-            currentLine--;
-        lineDDown.value = currentLine;
+        lineDDown.value--;
+        targetDialogue.deleteLine(lineDDown.value);
         lineDDown.options.RemoveAt(targetDialogue.messages.Count);
-        if (targetDialogue.messages.Count > 0)
-            loadLine(currentLine);
-        else
+        if (targetDialogue.messages.Count <= 0)
             lineDDown.captionText.text = "";
     }
     public void insertLine()
     {
-        if (targetDialogue.messages.Count > 0)
-        {
-            targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
-            currentLine++;
-        }
-        else
-        {
+        if (targetDialogue.messages.Count <= 0)
             lineDDown.captionText.text = "Line 1";
-        }
-        targetDialogue.insertLine(currentLine);
+        targetDialogue.insertLine(lineDDown.value);
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetDialogue.messages.Count));
-        lineDDown.value = currentLine;
+        lineDDown.value++;
     }
     public void changeLine()
     {
+        if (targetDialogue.messages.Count <= 0)
+            return;
         targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
         currentLine = lineDDown.value;
-        Debug.Log(targetDialogue.toJson());
         loadLine(currentLine);
+    }
+    public void saveDialogue()
+    {
+        lineDDown.value=-1;
+        resetInterface();
+        storyController.gameObject.SetActive(true);
+        storyController.contentDialogueButtonUpdate(targetDialogue);
+        this.gameObject.SetActive(false);
     }
     public void loadLine(int index)
     {
@@ -79,7 +75,6 @@ public class DialogueCreatorControl : MonoBehaviour
             pageDDown.value = pageDDown.options.IndexOf(pageDDown.options.Find(x => x.text == targetDialogue.pages[index].ToString()));
             cam.transform.position = targetDialogue.paths[index];
             cam.orthographicSize = targetDialogue.zooms[index];
-            lineDDown.value = index;
             lineDDown.captionText.text = "Line " + (index + 1);
         }
         else
@@ -96,15 +91,6 @@ public class DialogueCreatorControl : MonoBehaviour
         loadLine(0);
 
     }
-    public void saveDialogue()
-    {
-        if (targetDialogue.messages.Count > 0)
-            targetDialogue.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
-        resetInterface();
-        storyController.gameObject.SetActive(true);
-        storyController.contentDialogueButtonUpdate(targetDialogue);
-        this.gameObject.SetActive(false);
-    }
     public void resetCam()
     {
         cam.transform.position = new Vector3(0, 0, -10);
@@ -115,7 +101,7 @@ public class DialogueCreatorControl : MonoBehaviour
     {
         messageField.text = "";
         lineDDown.ClearOptions();
-        lineDDown.value = -1;
+        lineDDown.value = 0;
         lineDDown.captionText.text = "";
     }
 }

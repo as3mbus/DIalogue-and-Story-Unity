@@ -37,14 +37,14 @@ public class StoryCreatorControl : MonoBehaviour
     }
     public void newDialogue()
     {
-        targetStory.phase.Add(new Dialogue(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
+        targetStory.phases.Add(new Dialogue(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
         typeWindowActive(false);
         newContentButton();
 
     }
     public void newComic()
     {
-        targetStory.phase.Add(new Comic(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
+        targetStory.phases.Add(new Comic(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
         typeWindowActive(false);
         newContentButton();
     }
@@ -114,14 +114,14 @@ public class StoryCreatorControl : MonoBehaviour
     void contentResize()
     {
         Vector2 contentSize = phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta;
-        contentSize.y = 250 * (targetStory.phase.Count + 1) + 50;
+        contentSize.y = 250 * (targetStory.phases.Count + 1) + 50;
         phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta = contentSize;
     }
     void newContentButton()
     {
         GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.GetComponent<ScrollRect>().content);
         Vector3 newpos = newButton.GetComponent<RectTransform>().localPosition;
-        newpos.y -= 250 * (targetStory.phase.Count - 1);
+        newpos.y -= 250 * (targetStory.phases.Count - 1);
         newButton.GetComponent<RectTransform>().localPosition = newpos;
         newButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => editPhase());
         contentButtonUpdate(newButton);
@@ -132,9 +132,9 @@ public class StoryCreatorControl : MonoBehaviour
     void contentButtonUpdate(GameObject button)
     {
         int index = button.transform.GetSiblingIndex() - 1;
-        if (targetStory.phase[index].GetType().Equals(new Dialogue().GetType()))
+        if (targetStory.phases[index].GetType().Equals(new Dialogue().GetType()))
         {
-            Dialogue dialog = (Dialogue)targetStory.phase[index];
+            Dialogue dialog = (Dialogue)targetStory.phases[index];
             button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = dialog.name;
             button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "D";
             button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = dialog.comic.toString();
@@ -142,7 +142,7 @@ public class StoryCreatorControl : MonoBehaviour
         }
         else
         {
-            Comic komik = (Comic)targetStory.phase[index];
+            Comic komik = (Comic)targetStory.phases[index];
             button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = komik.name;
             button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "C";
             button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = komik.toString();
@@ -151,7 +151,7 @@ public class StoryCreatorControl : MonoBehaviour
     }
     public void contentDialogueButtonUpdate(Dialogue dialog)
     {
-        int index = targetStory.phase.IndexOf(dialog) + 1;
+        int index = targetStory.phases.IndexOf(dialog) + 1;
         GameObject button = phaseScrollView.GetComponent<ScrollRect>().content.GetChild(index).gameObject;
 
         button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = dialog.name;
@@ -163,10 +163,9 @@ public class StoryCreatorControl : MonoBehaviour
     public void editPhase()
     {
         int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex() - 1;
-        print(phaseIndex);
-        if (targetStory.phase[phaseIndex].GetType().Equals(new Dialogue().GetType()))
+        if (targetStory.phases[phaseIndex].GetType().Equals(new Dialogue().GetType()))
         {
-            Dialogue dialog = (Dialogue)targetStory.phase[phaseIndex];
+            Dialogue dialog = (Dialogue)targetStory.phases[phaseIndex];
 
             editDialogue(dialog);
         }
