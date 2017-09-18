@@ -20,9 +20,10 @@ public class StoryCreatorControl : MonoBehaviour
     void Start()
     {
         targetStory = new Story();
-        loadComics();
+
         print(listComicJson());
         writeComicJson();
+        loadComics();
     }
 
     // Update is called once per frame
@@ -62,10 +63,35 @@ public class StoryCreatorControl : MonoBehaviour
             button.interactable = !mode;
         }
     }
-    void loadComics()
+    
+    void loadComics(){
+        if(Application.platform==RuntimePlatform.Android){
+            loadComicsAndroid();
+        }
+        else{
+            loadComicsDesktop();
+        }
+    }
+    void loadComicsAndroid()
+    {
+        string comicPath = Application.streamingAssetsPath + "/comic.json";
+        WWW data = new WWW(comicPath);
+        while(!data.isDone) {}
+
+        string text = data.text;
+        storyNameField.text = (text);
+        insertComicData(text);
+    }
+    void loadComicsDesktop()
+    {
+        string comicPath = Application.streamingAssetsPath + "/comic.json";
+        string text = (File.ReadAllText(Application.streamingAssetsPath + "/comic.json"));
+        insertComicData(text);
+    }
+    void insertComicData(string Data)
     {
         JsonData jsonComic;
-        jsonComic = JsonMapper.ToObject(File.ReadAllText(Application.streamingAssetsPath + "/comic.json"));
+        jsonComic = JsonMapper.ToObject(Data);
         foreach (JsonData comic in jsonComic["comic"])
         {
             comicDropdown.options.Add(new Dropdown.OptionData(comic["name"].ToString()));
