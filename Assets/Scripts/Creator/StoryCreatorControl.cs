@@ -11,7 +11,8 @@ public class StoryCreatorControl : MonoBehaviour
 {
 
     static Story targetStory;
-    public GameObject phasePanel, phaseScrollView, dialogueCreator, phaseButton, newPhaseButton;
+    public GameObject phasePanel, dialogueCreator, phaseButton, newPhaseButton;
+    public ScrollRect phaseScrollView;
     public DialogueCreatorControl dialogControl;
     public InputField storyNameField;
     public Dropdown comicDropdown;
@@ -63,12 +64,15 @@ public class StoryCreatorControl : MonoBehaviour
             button.interactable = !mode;
         }
     }
-    
-    void loadComics(){
-        if(Application.platform==RuntimePlatform.Android){
+
+    void loadComics()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
             loadComicsAndroid();
         }
-        else{
+        else
+        {
             loadComicsDesktop();
         }
     }
@@ -76,7 +80,7 @@ public class StoryCreatorControl : MonoBehaviour
     {
         string comicPath = Application.streamingAssetsPath + "/comic.json";
         WWW data = new WWW(comicPath);
-        while(!data.isDone) {}
+        while (!data.isDone) { }
 
         string text = data.text;
         storyNameField.text = (text);
@@ -139,17 +143,19 @@ public class StoryCreatorControl : MonoBehaviour
     }
     void contentResize()
     {
-        Vector2 contentSize = phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta;
+        Vector2 contentSize = phaseScrollView.content.sizeDelta;
         contentSize.y = 250 * (targetStory.phases.Count + 1) + 50;
-        phaseScrollView.GetComponent<ScrollRect>().content.sizeDelta = contentSize;
+        phaseScrollView.content.sizeDelta = contentSize;
     }
     void newContentButton()
     {
-        GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.GetComponent<ScrollRect>().content);
+        GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.content);
         Vector3 newpos = newButton.GetComponent<RectTransform>().localPosition;
         newpos.y -= 250 * (targetStory.phases.Count - 1);
         newButton.GetComponent<RectTransform>().localPosition = newpos;
         newButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => editPhase());
+        newButton.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => deletePhase());
+
         contentButtonUpdate(newButton);
         newpos.y -= 250;
         newPhaseButton.GetComponent<RectTransform>().localPosition = newpos;
@@ -178,7 +184,7 @@ public class StoryCreatorControl : MonoBehaviour
     public void contentDialogueButtonUpdate(Dialogue dialog)
     {
         int index = targetStory.phases.IndexOf(dialog) + 1;
-        GameObject button = phaseScrollView.GetComponent<ScrollRect>().content.GetChild(index).gameObject;
+        GameObject button = phaseScrollView.content.GetChild(index).gameObject;
 
         button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = dialog.name;
         button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "D";
@@ -195,6 +201,26 @@ public class StoryCreatorControl : MonoBehaviour
 
             editDialogue(dialog);
         }
+    }
+    public void deletePhase()
+    {
+        int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex() - 1;
+        Destroy(EventSystem.current.currentSelectedGameObject.transform.parent.gameObject);
+        Vector3 newpos = newPhaseButton.GetComponent<RectTransform>().localPosition;
+        newpos.y += 250;
+        newPhaseButton.GetComponent<RectTransform>().localPosition = newpos;
+        for (int i = phaseIndex + 1; i < phaseScrollView.content.childCount; i++)
+        {
+            var newButton = phaseScrollView.content.GetChild(i);
+            newpos = newButton.GetComponent<RectTransform>().localPosition;
+            newpos.y += 250;
+            newButton.GetComponent<RectTransform>().localPosition = newpos;
+
+        }
+        
+        targetStory.phases.RemoveAt(phaseIndex);
+        contentResize();
+
     }
     public void editDialogue(Dialogue dialog)
     {

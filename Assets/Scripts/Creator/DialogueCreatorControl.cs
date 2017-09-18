@@ -89,7 +89,7 @@ public class DialogueCreatorControl : MonoBehaviour
         for (int i = 0; i < dialog.messages.Count; i++)
             lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
         loadLine(0);
-
+        cam.GetComponent<MouseCamControlPan>().enabled = true;
     }
     public void resetCam()
     {
@@ -103,5 +103,6 @@ public class DialogueCreatorControl : MonoBehaviour
         lineDDown.ClearOptions();
         lineDDown.value = 0;
         lineDDown.captionText.text = "";
+        resetCam();
     }
 }
