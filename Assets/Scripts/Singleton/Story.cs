@@ -5,19 +5,31 @@ using UnityEngine;
 using LitJson;
 
 public class Story
-{
+{  
+    public string name;
     public ArrayList phases = new ArrayList();
-    public Story(){
-        
+    public Story()
+    {
+
     }
-    public string toJson(){
+    public string toJson()
+    {
         StringBuilder sb = new StringBuilder();
         JsonWriter writer = new JsonWriter(sb);
         writer.PrettyPrint = true;
         writer.IndentValue = 4;
         foreach (var phase in phases)
         {
-            
+            if (phase.GetType() == typeof(Dialogue))
+            {
+                Dialogue dialog = (Dialogue)phase;
+                dialog.toJson(writer);
+            }
+            else
+            {
+                Comic komik = (Comic)phase;
+                komik.toJson(writer);
+            }
         }
         return "";
     }

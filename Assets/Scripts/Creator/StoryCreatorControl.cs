@@ -224,7 +224,6 @@ public class StoryCreatorControl : MonoBehaviour
     public void editDialogue(Dialogue dialog)
     {
         dialogControl.loadDialogue(dialog);
-
         dialogControl.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
