@@ -1,5 +1,6 @@
 {
-    "Story": [
+    "name":"first Story",
+    "phase": [
         {
             "name": "test dialogue",
             "type": "Dialogue",

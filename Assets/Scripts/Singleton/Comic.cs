@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using LitJson;
 
@@ -37,5 +38,11 @@ public class Comic
         {
             this.pages.Add(item);
         }
+    }
+    public string toJson(){
+        return "";
+    }
+    public void toJson(JsonWriter writer){
+        
     }
 }

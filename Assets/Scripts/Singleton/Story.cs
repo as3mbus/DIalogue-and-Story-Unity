@@ -39,7 +39,7 @@ public class Story
         TextAsset teksJson;
         teksJson = Resources.Load("Data/" + filename) as TextAsset;
         jsonStory = JsonMapper.ToObject(teksJson.ToString());
-        foreach (JsonData cerita in jsonStory["Story"])
+        foreach (JsonData cerita in jsonStory["phase"])
         {
             if (cerita["type"].ToString() == "Dialogue")
             {
