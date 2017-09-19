@@ -9,7 +9,6 @@ using LitJson;
 
 public class StoryCreatorControl : MonoBehaviour
 {
-
     static Story targetStory;
     public GameObject phasePanel, dialogueCreator, phaseButton, newPhaseButton;
     public ScrollRect phaseScrollView;
@@ -22,8 +21,8 @@ public class StoryCreatorControl : MonoBehaviour
     {
         targetStory = new Story();
 
-        print(listComicJson());
-        writeComicJson();
+        // print(listComicJson());
+        // writeComicJson();
         loadComics();
     }
 
@@ -89,7 +88,7 @@ public class StoryCreatorControl : MonoBehaviour
     void loadComicsDesktop()
     {
         string comicPath = Application.streamingAssetsPath + "/comic.json";
-        string text = (File.ReadAllText(Application.streamingAssetsPath + "/comic.json"));
+        string text = (File.ReadAllText(comicPath));
         insertComicData(text);
     }
     void insertComicData(string Data)
