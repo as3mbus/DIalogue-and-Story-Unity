@@ -7,10 +7,12 @@ public class PhaseController : MonoBehaviour {
    public Transform kamera;
     public Text dName, dText;
     public int currentLine = 0, currentChar = 0;
+    public Sprite backgroundSprite;
     public float speed = 5f, routeRadius = 1f, typeDelay = 0.2f;
     float timeCount;
     Phase activePhase;
     private StorySceneController ssControl;
+    
 
     public void startPhase(Phase fase)
     {
@@ -48,7 +50,6 @@ public class PhaseController : MonoBehaviour {
         }
         textPerSec(typeDelay);
         camRoute();
-
     }
     public void showLine(string line)
     {

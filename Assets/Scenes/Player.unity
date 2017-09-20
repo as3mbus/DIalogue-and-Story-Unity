@@ -1605,8 +1605,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf0b6cb3d14a3b54094d6676bb6e1902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueCanvas: {fileID: 891813624}
-  comicCanvas: {fileID: 1645652684}
   phaseCanvas: {fileID: 1918936630}
   currentPhase: 0
   filename: Story2
@@ -1628,7 +1626,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1918936631
 MonoBehaviour:
   m_ObjectHideFlags: 0

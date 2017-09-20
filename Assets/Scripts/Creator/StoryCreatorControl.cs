@@ -131,7 +131,7 @@ public class StoryCreatorControl : MonoBehaviour
         GameObject button = phaseScrollView.content.GetChild(index).gameObject;
 
         button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = fase.name;
-        button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "D";
+        button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "";
         button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.toString();
         button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.messages.Count.ToString() + " Line";
 
