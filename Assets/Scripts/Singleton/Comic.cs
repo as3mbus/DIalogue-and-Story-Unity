@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using UnityEngine;
 using LitJson;
 
@@ -13,13 +14,14 @@ public class Comic
     }
     public List<Sprite> pages = new List<Sprite>();
     public string source;
-    public Comic(string name, string comicDir)
+    public Comic(string name, string comicDirName)
     {
         this.name=name;
         Debug.Log(this.name);
-        this.source = comicDir.ToString();
-        foreach (var item in Resources.LoadAll<Sprite>("Comic/" + comicDir.ToString()))
+        this.source = comicDirName.ToString();
+        foreach (var item in Resources.LoadAll<Sprite>("Comic/" + comicDirName.ToString()))
         {
+            Debug.Log(item.name);
             this.pages.Add(item);
         }
     }
@@ -44,5 +46,42 @@ public class Comic
     }
     public void toJson(JsonWriter writer){
         
+    }
+    public static string listComicsJson()
+    {
+        var comicPath = Application.streamingAssetsPath + "/Comic/";
+        var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
+        StringBuilder sb = new StringBuilder();
+        JsonWriter writer = new JsonWriter(sb);
+        writer.PrettyPrint = true;
+        writer.IndentValue = 4;
+
+        writer.WriteObjectStart();
+        writer.WritePropertyName("comic");
+        writer.WriteArrayStart();
+        foreach (DirectoryInfo dir in comicDirectories)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName("name");
+            writer.Write(dir.Name);
+            writer.WritePropertyName("content");
+            writer.WriteArrayStart();
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                if (file.Extension == ".png")
+                    writer.Write(Path.GetFileNameWithoutExtension(file.Name));
+            }
+            writer.WriteArrayEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+        writer.WriteObjectEnd();
+        return sb.ToString();
+    }
+    public static void writeComicsJson()
+    {
+        var sr = File.CreateText(Application.streamingAssetsPath + "/comic.json");
+        sr.Write(listComicsJson());
+        sr.Close();
     }
 }

@@ -9,10 +9,11 @@ using LitJson;
 
 public class StoryCreatorControl : MonoBehaviour
 {
-    static Story targetStory;
+    Story targetStory;
     public GameObject phasePanel, dialogueCreator, phaseButton, newPhaseButton;
     public ScrollRect phaseScrollView;
     public DialogueCreatorControl dialogControl;
+    public PhaseCreator phaseCreator;
     public InputField storyNameField;
     public Dropdown comicDropdown;
 
@@ -31,10 +32,9 @@ public class StoryCreatorControl : MonoBehaviour
     {
 
     }
-    public void newPhase()
+    public void newPhases()
     {
         typeWindowActive(true);
-
     }
     public void newDialogue()
     {
@@ -47,6 +47,13 @@ public class StoryCreatorControl : MonoBehaviour
     {
         targetStory.phases.Add(new Comic(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
         typeWindowActive(false);
+        newContentButton();
+    }
+    public void newPhase()
+    {
+        targetStory.phases.Add(new Phase(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
+        typeWindowActive(false);
+        print(targetStory.toJson());
         newContentButton();
     }
     public void cancelPhase()
@@ -103,43 +110,7 @@ public class StoryCreatorControl : MonoBehaviour
         // var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
         // foreach (DirectoryInfo dir in comicDirectories) comicDropdown.options.Add(new Dropdown.OptionData(dir.Name));
     }
-    public static string listComicJson()
-    {
-        var comicPath = Application.streamingAssetsPath + "/Comic/";
-        var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
-        StringBuilder sb = new StringBuilder();
-        JsonWriter writer = new JsonWriter(sb);
-        writer.PrettyPrint = true;
-        writer.IndentValue = 4;
 
-        writer.WriteObjectStart();
-        writer.WritePropertyName("comic");
-        writer.WriteArrayStart();
-        foreach (DirectoryInfo dir in comicDirectories)
-        {
-            writer.WriteObjectStart();
-            writer.WritePropertyName("name");
-            writer.Write(dir.Name);
-            writer.WritePropertyName("content");
-            writer.WriteArrayStart();
-            foreach (FileInfo file in dir.GetFiles())
-            {
-                if (file.Extension == ".png")
-                    writer.Write(Path.GetFileNameWithoutExtension(file.Name));
-            }
-            writer.WriteArrayEnd();
-            writer.WriteObjectEnd();
-        }
-        writer.WriteArrayEnd();
-        writer.WriteObjectEnd();
-        return sb.ToString();
-    }
-    public static void writeComicJson()
-    {
-        var sr = File.CreateText(Application.streamingAssetsPath + "/comic.json");
-        sr.Write(listComicJson());
-        sr.Close();
-    }
     void contentResize()
     {
         Vector2 contentSize = phaseScrollView.content.sizeDelta;
@@ -163,7 +134,7 @@ public class StoryCreatorControl : MonoBehaviour
     void contentButtonUpdate(GameObject button)
     {
         int index = button.transform.GetSiblingIndex() - 1;
-        if (targetStory.phases[index].GetType().Equals(new Dialogue().GetType()))
+        if (targetStory.phases[index].GetType()==typeof(Dialogue))
         {
             Dialogue dialog = (Dialogue)targetStory.phases[index];
             button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = dialog.name;
@@ -171,13 +142,20 @@ public class StoryCreatorControl : MonoBehaviour
             button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = dialog.comic.toString();
             button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = dialog.messages.Count.ToString() + " Line";
         }
-        else
+        else if(targetStory.phases[index].GetType()==typeof(Comic))
         {
             Comic komik = (Comic)targetStory.phases[index];
             button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = komik.name;
             button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "C";
             button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = komik.toString();
             button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = "";
+        }
+        else{
+            Phase fase = (Phase)targetStory.phases[index];
+            button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = fase.name;
+            button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "";
+            button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.toString();
+            button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.messages.Count.ToString() + " Line";
         }
     }
     public void contentDialogueButtonUpdate(Dialogue dialog)
@@ -191,14 +169,29 @@ public class StoryCreatorControl : MonoBehaviour
         button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = dialog.messages.Count.ToString() + " Line";
 
     }
+    public void contentPhaseButtonUpdate(Phase fase)
+    {
+        int index = targetStory.phases.IndexOf(fase) + 1;
+        GameObject button = phaseScrollView.content.GetChild(index).gameObject;
+
+        button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = fase.name;
+        button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "D";
+        button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.toString();
+        button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.messages.Count.ToString() + " Line";
+
+    }
     public void editPhase()
     {
         int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex() - 1;
         if (targetStory.phases[phaseIndex].GetType().Equals(new Dialogue().GetType()))
         {
             Dialogue dialog = (Dialogue)targetStory.phases[phaseIndex];
-
             editDialogue(dialog);
+        }
+        if (targetStory.phases[phaseIndex].GetType() == typeof(Phase))
+        {
+            Phase fase = (Phase)targetStory.phases[phaseIndex];
+            editPhase(fase);
         }
     }
     public void deletePhase()
@@ -216,7 +209,7 @@ public class StoryCreatorControl : MonoBehaviour
             newButton.GetComponent<RectTransform>().localPosition = newpos;
 
         }
-        
+
         targetStory.phases.RemoveAt(phaseIndex);
         contentResize();
 
@@ -225,6 +218,12 @@ public class StoryCreatorControl : MonoBehaviour
     {
         dialogControl.loadDialogue(dialog);
         dialogControl.gameObject.SetActive(true);
+        gameObject.SetActive(false);
+    }
+    public void editPhase(Phase fase)
+    {
+        phaseCreator.loadPhase(fase);
+        phaseCreator.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class StorySceneController : MonoBehaviour
 {
     Story cerita;
-    public GameObject dialogueCanvas, comicCanvas;
+    public GameObject dialogueCanvas, comicCanvas, phaseCanvas;
     public int currentPhase;
     public string filename;
     private DialogueController dControl;
@@ -15,9 +15,9 @@ public class StorySceneController : MonoBehaviour
     {
         currentPhase = 0;
         cerita = new Story(filename);
-        loadPhase(0);
+        loadPhase(currentPhase);
     }
-    void loadPhase(int number)
+    void loadPhaseOld(int number)
     {
         if (cerita.phases[number].GetType().ToString() == "Dialogue")
         {
@@ -32,7 +32,15 @@ public class StorySceneController : MonoBehaviour
             comicCanvas.GetComponent<ComicController>().startComic(komik);
         }
     }
-    
+    void loadPhase(int number)
+    {
+
+        phaseCanvas.SetActive(true);
+        Phase fase = (Phase)cerita.phases[number];
+        phaseCanvas.GetComponent<PhaseController>().startPhase(fase);
+
+    }
+
     public void nextPhase()
     {
         currentPhase++;

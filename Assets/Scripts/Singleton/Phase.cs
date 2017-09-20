@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using LitJson;
-public class Dialogue
+public class Phase
 {
     public string name;
     public Comic comic;
@@ -12,17 +12,18 @@ public class Dialogue
     public List<float> zooms = new List<float>();
     public List<string> characters = new List<string>();
     public List<string> messages = new List<string>();
-    public Dialogue()
+    public List<string> animations = new List<string>();
+    public Phase()
     {
-        this.name="";
-        this.comic=new Comic("sample comic");
+        this.name = "";
+        this.comic = new Comic("sample comic");
     }
-    public Dialogue(string name, string comicDir)
+    public Phase(string name, string comicDir)
     {
-        this.name=name;
-        this.comic=new Comic(comicDir);
+        this.name = name;
+        this.comic = new Comic(comicDir);
     }
-    public Dialogue(JsonData chara, JsonData msg)
+    public Phase(JsonData chara, JsonData msg)
     {
         for (int i = 0; i < chara.Count; i++)
         {
@@ -31,7 +32,7 @@ public class Dialogue
         }
     }
 
-    public Dialogue(JsonData dialogueData)
+    public Phase(JsonData dialogueData)
     {
         try
         {
@@ -82,8 +83,6 @@ public class Dialogue
         writer.WriteObjectStart();
         writer.WritePropertyName("name");
         writer.Write(this.name);
-        writer.WritePropertyName("type");
-        writer.Write("Dialogue");
         writer.WritePropertyName("comic");
         writer.Write(this.comic.toString());
         writer.WritePropertyName("page");
@@ -128,6 +127,13 @@ public class Dialogue
             writer.Write(item);
         }
         writer.WriteArrayEnd();
+        writer.WritePropertyName("animation");
+        writer.WriteArrayStart();
+        foreach (var item in this.animations)
+        {
+            writer.Write(item);
+        }
+        writer.WriteArrayEnd();
         //writer.Write(string.Join("", new List<int>(array).ConvertAll(i => i.ToString()).ToArray()));
         // writer.WriteArrayEnd();
 
@@ -136,38 +142,41 @@ public class Dialogue
 
     public void newLine()
     {
-        this.characters.Add("");
-        this.messages.Add("");
         this.pages.Add(0);
         this.zooms.Add(5f);
         this.paths.Add(new Vector3());
+        this.characters.Add("");
+        this.messages.Add("");
+        this.animations.Add("");
     }
 
     public void deleteLine(int index)
     {
-        this.characters.RemoveAt(index);
-        this.messages.RemoveAt(index);
         this.pages.RemoveAt(index);
         this.zooms.RemoveAt(index);
         this.paths.RemoveAt(index);
+        this.characters.RemoveAt(index);
+        this.messages.RemoveAt(index);
+        this.animations.RemoveAt(index);
     }
 
     public void UpdateLine(string character, string message, int pageNo, float zoom, Vector3 path, int index)
     {
-        this.characters[index] = character;
-        this.messages[index] = message;
         this.pages[index] = pageNo;
         this.zooms[index] = zoom;
         this.paths[index] = path;
+        this.characters[index] = character;
+        this.messages[index] = message;
         Debug.Log(this.toJson());
     }
 
     public void insertLine(int index)
     {
-        this.characters.Insert(index, "");
-        this.messages.Insert(index, "");
         this.pages.Insert(index, 0);
         this.zooms.Insert(index, 5f);
-        this.paths.Insert(index, new Vector3());
+        this.paths.Insert(index, new Vector3(0,0,-10));
+        this.characters.Insert(index, "");
+        this.messages.Insert(index, "");
+        this.animations.Insert(index, "");
     }
 }

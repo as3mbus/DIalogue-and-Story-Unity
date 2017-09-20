@@ -62,7 +62,6 @@ public class ComicController : MonoBehaviour
         Page[!pageLR ? 1 : 0].GetComponent<Animation>().Play("FadeOut");
         Page[pageLR ? 1 : 0].GetComponent<Animation>().Play("FadeIn");
         pageLR = !pageLR;
-
     }
     void closeComic(){
         gameObject.SetActive(false);

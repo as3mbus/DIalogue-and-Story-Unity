@@ -1,9 +1,8 @@
 {
-    "name":"first Story",
+    "name":"second Story",
     "phase": [
         {
             "name": "test dialogue",
-            "type": "Dialogue",
             "comic": "sample comic",
             "page": [
                 1,
@@ -28,27 +27,38 @@
             "message": [
                 "hai coy",
                 "hai juga"
+            ],
+            "animation":[
+                "anim 1",
+                "anim 2"
             ]
         },
         {
-            "name": "motion pic 1",
-            "type": "MotionPic",
+            "name": "test dialogue",
             "comic": "sample comic",
             "page": [
                 1,
                 0
             ],
             "x": [
-                1.2,
+                -1.2,
                 3.3
             ],
             "y": [
-                1.2,
-                3.3
+                5.9,
+                -5.7
             ],
             "zoom": [
                 1.2,
                 3.3
+            ],
+            "character": [
+                "jiang lo",
+                "Jalo"
+            ],
+            "message": [
+                "py coy",
+                "lha py chong"
             ],
             "animation":[
                 "anim 1",

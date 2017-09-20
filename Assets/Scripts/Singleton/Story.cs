@@ -5,7 +5,7 @@ using UnityEngine;
 using LitJson;
 
 public class Story
-{  
+{
     public string name;
     public ArrayList phases = new ArrayList();
     public Story()
@@ -18,6 +18,17 @@ public class Story
         JsonWriter writer = new JsonWriter(sb);
         writer.PrettyPrint = true;
         writer.IndentValue = 4;
+
+        toJson(writer);
+        return sb.ToString();
+    }
+    public void toJson(JsonWriter writer){
+        writer.WriteObjectStart();
+        writer.WritePropertyName("name");
+        writer.Write(this.name);
+        writer.WritePropertyName("phase");
+        writer.WriteArrayStart();
+
         foreach (var phase in phases)
         {
             if (phase.GetType() == typeof(Dialogue))
@@ -25,15 +36,20 @@ public class Story
                 Dialogue dialog = (Dialogue)phase;
                 dialog.toJson(writer);
             }
-            else
+            else if (phase.GetType() == typeof(Comic))
             {
                 Comic komik = (Comic)phase;
                 komik.toJson(writer);
             }
+            else{
+                Phase fase = (Phase)phase;
+                fase.toJson(writer);
+            }
         }
-        return "";
+        writer.WriteArrayEnd();
+        writer.WriteObjectEnd();
     }
-    public Story(string filename)
+    public Story StoryOld(string filename)
     {
         JsonData jsonStory;
         TextAsset teksJson;
@@ -46,11 +62,25 @@ public class Story
                 Dialogue dialog = new Dialogue(cerita);
                 this.phases.Add(dialog);
             }
-            else if (cerita["type"].ToString() == "Comic")
+            else if (cerita["type"].ToString() == "MotionPic")
             {
-                Comic komik = new Comic(cerita["content"]);
-                this.phases.Add(komik);
+                MotionPic MoPic = new MotionPic(cerita);
+                this.phases.Add(MoPic);
             }
+        }
+        return this;
+    }
+
+    public Story(string filename)
+    {
+        JsonData jsonStory;
+        TextAsset teksJson;
+        teksJson = Resources.Load("Data/" + filename) as TextAsset;
+        jsonStory = JsonMapper.ToObject(teksJson.ToString());
+        foreach (JsonData cerita in jsonStory["phase"])
+        {
+            Phase fase = new Phase(cerita);
+            this.phases.Add(fase);
         }
     }
 
