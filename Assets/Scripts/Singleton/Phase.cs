@@ -32,35 +32,35 @@ public class Phase
         }
     }
 
-    public Phase(JsonData dialogueData)
+    public Phase(JsonData phaseData)
     {
         try
         {
-            this.name = dialogueData["name"].ToString();
-            this.comic = new Comic(dialogueData["comic"]);
-            for (int i = 0; i < dialogueData["message"].Count; i++)
+            this.name = phaseData["name"].ToString();
+            this.comic = new Comic(phaseData["comic"]);
+            for (int i = 0; i < phaseData["message"].Count; i++)
             {
 
-                this.pages.Add((int)dialogueData["page"][i]);
+                this.pages.Add((int)phaseData["page"][i]);
                 this.paths.Add(
                     new Vector3(
-                        float.Parse(dialogueData["x"][i].ToString()),
-                        float.Parse(dialogueData["y"][i].ToString()),
+                        float.Parse(phaseData["x"][i].ToString()),
+                        float.Parse(phaseData["y"][i].ToString()),
                         -10f
                     )
                 );
                 Debug.Log("Testing " + paths[i].ToString());
-                this.zooms.Add(float.Parse(dialogueData["zoom"][i].ToString()));
-                this.characters.Add(dialogueData["character"][i].ToString());
-                this.messages.Add(dialogueData["message"][i].ToString());
+                this.zooms.Add(float.Parse(phaseData["zoom"][i].ToString()));
+                this.characters.Add(phaseData["character"][i].ToString());
+                this.messages.Add(phaseData["message"][i].ToString());
             }
         }
         catch (System.Exception)
         {
-            for (int i = 0; i < dialogueData["message"].Count; i++)
+            for (int i = 0; i < phaseData["message"].Count; i++)
             {
-                this.characters.Add(dialogueData["character"][i].ToString());
-                this.messages.Add(dialogueData["message"][i].ToString());
+                this.characters.Add(phaseData["character"][i].ToString());
+                this.messages.Add(phaseData["message"][i].ToString());
             }
             throw;
         }

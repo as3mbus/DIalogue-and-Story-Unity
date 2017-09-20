@@ -14,13 +14,10 @@ public class PhaseController : MonoBehaviour {
 
     public void startPhase(Phase fase)
     {
-        // JsonDialogue tes = new JsonDialogue(dialog);
-        // tes.writeJson();
-
         this.activePhase = fase;
         Debug.Log(fase.toJson());
         currentLine = 0;
-        readDialogue(currentLine);
+        readLine(currentLine);
     }
     // Update is called once per frame
     void Start()
@@ -37,7 +34,7 @@ public class PhaseController : MonoBehaviour {
                 if (currentLine < activePhase.messages.Count - 1)
                 {
                     currentLine++;
-                    readDialogue(currentLine);
+                    readLine(currentLine);
                 }
                 else
                 {
@@ -46,19 +43,19 @@ public class PhaseController : MonoBehaviour {
             }
             else
             {
-                showDialogue(activePhase.messages[currentLine]);
+                showLine(activePhase.messages[currentLine]);
             }
         }
         textPerSec(typeDelay);
         camRoute();
 
     }
-    public void showDialogue(string dialogue)
+    public void showLine(string line)
     {
-        dText.text = dialogue;
-        currentChar = dialogue.Length;
+        dText.text = line;
+        currentChar = line.Length;
     }
-    public void readDialogue(int line)
+    public void readLine(int line)
     {
         currentChar = 0;
         dName.text = activePhase.characters[line];
@@ -85,7 +82,7 @@ public class PhaseController : MonoBehaviour {
             kamera.position = Vector3.MoveTowards(kamera.position, activePhase.paths[currentLine], Time.deltaTime * speed);
         if (zoomDistance!=0)
             kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(kamera.GetComponent<Camera>().orthographicSize, activePhase.zooms[currentLine], Time.deltaTime * speed);
-        // if (Input.GetButtonDown("Fire1") && currentLine < activeDialogue.paths.Count)
+        // if (Input.GetButtonDown("Fire1") && currentLine < activePhase.paths.Count)
         // {
         //     currentLine++;
         // }
