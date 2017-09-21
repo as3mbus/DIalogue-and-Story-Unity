@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 2502112392
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: Comics
+      Dependencies: {}

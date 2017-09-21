@@ -25,13 +25,8 @@ public class Comic
             this.pages.Add(item);
         }
     }
-    public Comic(JsonData directory)
+    public Comic(JsonData directory): this(directory.ToString())
     {
-        this.source = directory.ToString();
-        foreach (var item in Resources.LoadAll<Sprite>("Comic/" + directory.ToString()))
-        {
-            this.pages.Add(item);
-        }
     }
     public Comic(string resDir)
     {

@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 4221994409
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c81f7ab266263f39d7fa23215485dffa
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 21f0dc8ebad690f009368069428e0a1a
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Comic/sample comic/Page 2.png
+- Assets/Comic/comic 2/chara 1.png
+- Assets/Comic/sample comic/Page 3.png
+- Assets/Comic/sample comic/chara 2.png
+- Assets/Comic/sample comic/Page 1.png
+- Assets/Comic/comic 1/chara 2.png
+- Assets/Comic/sample comic/Page 0.png
+- Assets/Comic/sample comic/chara 1.png
+Dependencies: []
