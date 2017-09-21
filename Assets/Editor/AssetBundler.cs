@@ -1,14 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.IO;
 using UnityEditor;
 
-public class AssetBundler: EditorWindow
+public class AssetBundler
 {
     [MenuItem("Assets/Build AssetBundles")]
-    static void BuildAllAssetBundle()
+    static void BuildAllAssetBundles()
     {
-        BuildPipeline.BuildAssetBundles("Assets/AssetsBundles",BuildAssetBundleOptions.None,BuildTarget.Android);
-		AssetDatabase.Refresh();
+        string assetBundleDirectory = "Assets/AssetBundles";
+        if (!Directory.Exists(assetBundleDirectory))
+        {
+            Directory.CreateDirectory(assetBundleDirectory);
+        }
+        BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None, BuildTarget.Android);
     }
 }
