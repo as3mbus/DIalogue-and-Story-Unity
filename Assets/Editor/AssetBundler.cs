@@ -11,6 +11,6 @@ public class AssetBundler
         {
             Directory.CreateDirectory(assetBundleDirectory);
         }
-        BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None, BuildTarget.Android);
+        BuildPipeline.BuildAssetBundles(assetBundleDirectory, BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
     }
 }

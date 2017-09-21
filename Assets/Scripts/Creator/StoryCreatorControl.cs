@@ -20,8 +20,8 @@ public class StoryCreatorControl : MonoBehaviour
     void Start()
     {
         targetStory = new Story();
-        // print(Comic.listComicsJson());
-        // Comic.writeComicsJson();
+        print(Comic.listComicsJson());
+        Comic.writeComicsJson();
         loadComics();
     }
 
@@ -69,7 +69,8 @@ public class StoryCreatorControl : MonoBehaviour
     }
     void loadComicsAndroid()
     {
-        string comicPath = Application.streamingAssetsPath + "/comic.json";
+
+        string comicPath = Application.streamingAssetsPath + "/comics.json";
         WWW data = new WWW(comicPath);
         while (!data.isDone) { }
 
@@ -79,7 +80,7 @@ public class StoryCreatorControl : MonoBehaviour
     }
     void loadComicsDesktop()
     {
-        string comicPath = Application.streamingAssetsPath + "/comic.json";
+        string comicPath = Application.streamingAssetsPath + "/comics.json";
         string text = (File.ReadAllText(comicPath));
         insertComicData(text);
     }

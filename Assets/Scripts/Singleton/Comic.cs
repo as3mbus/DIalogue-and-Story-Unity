@@ -44,7 +44,7 @@ public class Comic
     }
     public static string listComicsJson()
     {
-        var comicPath = Application.streamingAssetsPath + "/Comic/";
+        var comicPath = Path.Combine(Application.dataPath, "Comic");
         var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
         StringBuilder sb = new StringBuilder();
         JsonWriter writer = new JsonWriter(sb);
@@ -75,7 +75,7 @@ public class Comic
     }
     public static void writeComicsJson()
     {
-        var sr = File.CreateText(Application.streamingAssetsPath + "/comic.json");
+        var sr = File.CreateText(Path.Combine(Application.dataPath, "Comic/comics.json"));
         sr.Write(listComicsJson());
         sr.Close();
     }
