@@ -20,9 +20,10 @@ public class StoryCreatorControl : MonoBehaviour
     void Start()
     {
         targetStory = new Story();
-        print(Comic.listComicsJson());
-        Comic.writeComicsJson();
-        loadComics();
+        // print(Comic.listComicsJson());
+        // Comic.writeComicsJson();
+        // loadComics();
+        loadComicsBundle();
     }
 
     // Update is called once per frame
@@ -67,9 +68,26 @@ public class StoryCreatorControl : MonoBehaviour
             loadComicsDesktop();
         }
     }
+    void loadComicsBundles()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            loadComicsAndroid();
+        }
+        else
+        {
+            loadComicsDesktop();
+        }
+    }
+    void loadComicsBundle(){
+        string comicPath = Path.Combine(Application.streamingAssetsPath, "Comics") ;
+        AssetBundle comicBundle = AssetBundle.LoadFromFile(comicPath);
+        TextAsset comicjson = comicBundle.LoadAsset<TextAsset>("assets/comic/comics.json");
+        insertComicData(comicjson.text);
+        comicBundle.Unload(true);
+    }
     void loadComicsAndroid()
     {
-
         string comicPath = Application.streamingAssetsPath + "/comics.json";
         WWW data = new WWW(comicPath);
         while (!data.isDone) { }
