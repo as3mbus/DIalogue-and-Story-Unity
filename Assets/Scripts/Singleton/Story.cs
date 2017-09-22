@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using UnityEngine;
 using LitJson;
 
@@ -41,15 +42,18 @@ public class Story
 
     public Story(string filename)
     {
-        JsonData jsonStory;
-        TextAsset teksJson;
-        teksJson = Resources.Load("Data/" + filename) as TextAsset;
-        jsonStory = JsonMapper.ToObject(teksJson.ToString());
-        foreach (JsonData cerita in jsonStory["phase"])
+        this.name = Path.GetFileNameWithoutExtension(filename);
+        TextAsset teksJson = Resources.Load("Data/" + filename) as TextAsset;
+        JsonData jsonStory = JsonMapper.ToObject(teksJson.ToString());
+        loadJsonStory(jsonStory);
+    }
+    void loadJsonStory(JsonData storyJson)
+    {
+        this.name = storyJson["name"].ToString();
+        foreach (JsonData cerita in storyJson["phase"])
         {
             Phase fase = new Phase(cerita);
             this.phases.Add(fase);
         }
     }
-
 }

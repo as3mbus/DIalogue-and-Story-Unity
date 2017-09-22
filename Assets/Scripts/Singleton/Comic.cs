@@ -25,6 +25,19 @@ public class Comic
             this.pages.Add(item);
         }
     }
+    public Comic(string name, string comicDirName, AssetBundle asetbundle)
+    {
+        this.name=name;
+        Debug.Log(this.name);
+        this.source = comicDirName.ToString();
+        foreach (string asetname in asetbundle.GetAllAssetNames())
+        {
+            if (asetname.Contains(comicDirName))
+            {
+               this.pages.Add(asetbundle.LoadAsset<Sprite>(asetname));
+            }
+        }
+    }
     public Comic(JsonData directory): this(directory.ToString())
     {
     }
