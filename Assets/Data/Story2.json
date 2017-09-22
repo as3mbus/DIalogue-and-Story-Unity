@@ -1,5 +1,5 @@
 {
-    "name":"second Story",
+    "name": "second Story",
     "phase": [
         {
             "name": "test dialogue",
@@ -20,6 +20,9 @@
                 1.2,
                 3.3
             ],
+            "baloonx": [1.5,2.2],
+            "baloony": [3.5,-1.3],
+            "baloonsize": [1,2.1],
             "character": [
                 "luo jiang",
                 "luoluo"
@@ -28,7 +31,7 @@
                 "hai coy",
                 "hai juga"
             ],
-            "animation":[
+            "animation": [
                 "anim 1",
                 "anim 2"
             ]
@@ -60,7 +63,7 @@
                 "py coy",
                 "lha py chong"
             ],
-            "animation":[
+            "animation": [
                 "anim 1",
                 "anim 2"
             ]

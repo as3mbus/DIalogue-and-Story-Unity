@@ -40,11 +40,19 @@ public class Story
         writer.WriteObjectEnd();
     }
 
-    public Story(string filename)
+    public Story(string filePath)
     {
-        this.name = Path.GetFileNameWithoutExtension(filename);
-        TextAsset teksJson = Resources.Load("Data/" + filename) as TextAsset;
-        JsonData jsonStory = JsonMapper.ToObject(teksJson.ToString());
+        this.name = Path.GetFileNameWithoutExtension(filePath);
+        JsonData jsonStory = JsonMapper.ToObject(File.ReadAllText(filePath));
+        loadJsonStory(jsonStory);
+    }
+    public Story (TextAsset storyJson){
+        loadTextAsset(storyJson);
+    }
+    public void loadTextAsset(TextAsset storyJson)
+    {
+        this.name=storyJson.name;
+        JsonData jsonStory = JsonMapper.ToObject(storyJson.ToString());
         loadJsonStory(jsonStory);
     }
     void loadJsonStory(JsonData storyJson)

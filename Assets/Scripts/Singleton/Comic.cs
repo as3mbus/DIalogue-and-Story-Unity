@@ -92,4 +92,58 @@ public class Comic
         sr.Write(listComicsJson());
         sr.Close();
     }
+    public static string[] getComicDataList()
+    {
+        
+        JsonData jsonComic;
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            jsonComic = loadComicsDataAndroid();
+        }
+        else
+        {
+            jsonComic = loadComicsDataDesktop();
+        }
+        string[] comicList = new string[jsonComic["comic"].Count];
+        for (int i = 0; i < jsonComic["comic"].Count; i++)
+        {
+            comicList[i] =  jsonComic["comic"][i]["name"].ToString();
+        }
+        return comicList;
+    }
+    void loadComicsBundles()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            loadComicsDataAndroid();
+        }
+        else
+        {
+            loadComicsDataDesktop();
+        }
+        
+    }
+    static JsonData loadComicsBundle(){
+        string comicPath = Path.Combine(Application.streamingAssetsPath, "Comics") ;
+        AssetBundle comicBundle = AssetBundle.LoadFromFile(comicPath);
+        TextAsset comicjson = comicBundle.LoadAsset<TextAsset>("assets/comic/comics.json");
+        JsonData jsonComic = JsonMapper.ToObject(comicjson.text);
+        return jsonComic;
+    }
+    static JsonData loadComicsDataAndroid()
+    {
+        string comicPath = Application.streamingAssetsPath + "/comics.json";
+        WWW data = new WWW(comicPath);
+        while (!data.isDone) { }
+        string text = data.text;
+        JsonData jsonComic = JsonMapper.ToObject(text);
+        return jsonComic;
+    }
+    static JsonData loadComicsDataDesktop()
+    {
+        string comicPath = Application.streamingAssetsPath + "/comics.json";
+        string text = (File.ReadAllText(comicPath));
+        JsonData jsonComic = JsonMapper.ToObject(text);
+        return jsonComic;
+    }
 }

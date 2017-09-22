@@ -7,7 +7,7 @@ public class StorySceneController : MonoBehaviour
     Story cerita;
     public GameObject phaseCanvas;
     public int currentPhase;
-    public string filename;
+    public TextAsset filename;
     // Use this for initialization
     void Start()
     {

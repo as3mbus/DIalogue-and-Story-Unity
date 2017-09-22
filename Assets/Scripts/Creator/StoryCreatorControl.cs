@@ -22,7 +22,7 @@ public class StoryCreatorControl : MonoBehaviour
         // print(Comic.listComicsJson());
         // Comic.writeComicsJson();
         // loadComics();
-        loadComicsBundle();
+        insertComicData(Comic.getComicDataList());
     }
 
     // Update is called once per frame
@@ -55,59 +55,17 @@ public class StoryCreatorControl : MonoBehaviour
             button.interactable = !mode;
         }
     }
-
-    void loadComics()
-    {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            loadComicsAndroid();
-        }
-        else
-        {
-            loadComicsDesktop();
-        }
-    }
-    void loadComicsBundles()
-    {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            loadComicsAndroid();
-        }
-        else
-        {
-            loadComicsDesktop();
-        }
-    }
     void loadComicsBundle(){
         string comicPath = Path.Combine(Application.streamingAssetsPath, "Comics") ;
         AssetBundle comicBundle = AssetBundle.LoadFromFile(comicPath);
         TextAsset comicjson = comicBundle.LoadAsset<TextAsset>("assets/comic/comics.json");
-        insertComicData(comicjson.text);
         comicBundle.Unload(true);
     }
-    void loadComicsAndroid()
+    void insertComicData(string [] ComicList)
     {
-        string comicPath = Application.streamingAssetsPath + "/comics.json";
-        WWW data = new WWW(comicPath);
-        while (!data.isDone) { }
-
-        string text = data.text;
-        storyNameField.text = (text);
-        insertComicData(text);
-    }
-    void loadComicsDesktop()
-    {
-        string comicPath = Application.streamingAssetsPath + "/comics.json";
-        string text = (File.ReadAllText(comicPath));
-        insertComicData(text);
-    }
-    void insertComicData(string Data)
-    {
-        JsonData jsonComic;
-        jsonComic = JsonMapper.ToObject(Data);
-        foreach (JsonData comic in jsonComic["comic"])
+        foreach (string comic in ComicList)
         {
-            comicDropdown.options.Add(new Dropdown.OptionData(comic["name"].ToString()));
+            comicDropdown.options.Add(new Dropdown.OptionData(comic));
         }
         // var comicPath = "jar:file://" + Application.dataPath + "!/assets/Comic/";
         // var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();

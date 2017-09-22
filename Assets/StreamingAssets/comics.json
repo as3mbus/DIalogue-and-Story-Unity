@@ -1,0 +1,28 @@
+
+{
+    "comic" : [
+        {
+            "name" : "comic 1",
+            "content" : [
+                "chara 2"
+            ]
+        },
+        {
+            "name" : "comic 2",
+            "content" : [
+                "chara 1"
+            ]
+        },
+        {
+            "name" : "sample comic",
+            "content" : [
+                "Page 0",
+                "Page 1",
+                "Page 2",
+                "Page 3",
+                "chara 1",
+                "chara 2"
+            ]
+        }
+    ]
+}
