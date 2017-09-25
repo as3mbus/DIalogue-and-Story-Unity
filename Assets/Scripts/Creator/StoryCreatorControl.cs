@@ -4,7 +4,8 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using LitJson;
+using UnityEngine.SceneManagement;
+using as3mbus.Story;
 
 public class StoryCreatorControl : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class StoryCreatorControl : MonoBehaviour
         // print(Comic.listComicsJson());
         // Comic.writeComicsJson();
         // loadComics();
-        insertComicData(Comic.getComicDataList());
+        insertComicData(ComicManager.getComicsListBundle());
     }
 
     // Update is called once per frame
@@ -55,13 +56,7 @@ public class StoryCreatorControl : MonoBehaviour
             button.interactable = !mode;
         }
     }
-    void loadComicsBundle(){
-        string comicPath = Path.Combine(Application.streamingAssetsPath, "Comics") ;
-        AssetBundle comicBundle = AssetBundle.LoadFromFile(comicPath);
-        TextAsset comicjson = comicBundle.LoadAsset<TextAsset>("assets/comic/comics.json");
-        comicBundle.Unload(true);
-    }
-    void insertComicData(string [] ComicList)
+    void insertComicData(string[] ComicList)
     {
         foreach (string comic in ComicList)
         {
@@ -144,5 +139,8 @@ public class StoryCreatorControl : MonoBehaviour
         phaseCreator.gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
-
+    public void playScene()
+    {
+        SceneManager.LoadScene("Player");
+    }
 }
