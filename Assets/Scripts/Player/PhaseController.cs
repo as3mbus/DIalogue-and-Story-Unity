@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using as3mbus.Story;
 
 public class PhaseController : MonoBehaviour
 {
+    
     public Transform kameraRoute, kamera;
     public Text dName, dText;
     public int currentLine = 0, currentChar = 0;
@@ -50,6 +52,7 @@ public class PhaseController : MonoBehaviour
                 showLine(activePhase.messages[currentLine]);
             }
         }
+        spriteFade();
         textPerSec(typeDelay);
         camRoute();
         shakeCamera(5f,0.1f);
@@ -77,22 +80,23 @@ public class PhaseController : MonoBehaviour
             timeCount = 0;
         }
     }
-
+    void spriteFade()
+    {
+        backgroundSprite.color = Color.Lerp(backgroundSprite.color, new Color(1, 1, 1, 1), Time.deltaTime * speed);
+    }
     void shakeCamera(float frequency, float magnitude)
     {
         Vector2 shakeVector;
         float seed = Time.time * frequency;
-        print(Time.time+" * "+ frequency+" = "+seed);
-        print("Perlin = " +Mathf.PerlinNoise(seed, 0f));
-        shakeVector.x = Mathf.PerlinNoise(seed, 0f)-0.5f;
-        shakeVector.y = Mathf.PerlinNoise(0f, seed)-0.5f;
+        print(Time.time + " * " + frequency + " = " + seed);
+        print("Perlin = " + Mathf.PerlinNoise(seed, 0f));
+        shakeVector.x = Mathf.PerlinNoise(seed, 0f) - 0.5f;
+        shakeVector.y = Mathf.PerlinNoise(0f, seed) - 0.5f;
         shakeVector = shakeVector * magnitude;
         kamera.localPosition = shakeVector;
 
     }
-    void spriteFade(){
-        backgroundSprite.GetComponent<Animation>().Play();
-    }
+
     public void camRoute()
     {
         float distance = Vector3.Distance(activePhase.paths[currentLine], kameraRoute.position);
