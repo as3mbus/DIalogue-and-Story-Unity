@@ -29,7 +29,7 @@
             ],
             "message": [
                 "hai coy",
-                "hai juga"
+                ""
             ],
             "fademode": [
                 "none",
@@ -55,6 +55,9 @@
                 1.2,
                 3.3
             ],
+            "baloonx": [1.5,2.2],
+            "baloony": [3.5,-1.3],
+            "baloonsize": [1,2.1],
             "character": [
                 "jiang lo",
                 "Jalo"

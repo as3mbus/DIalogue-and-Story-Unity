@@ -6,9 +6,9 @@ using as3mbus.Story;
 
 public class PhaseController : MonoBehaviour
 {
-
-    public Transform kameraRoute, kamera;
+    public Transform kameraRoute, kamera, baloonPos, baloonsizer;
     public Text dName, dText;
+    public GameObject dPanel;
     int currentLine = 0, currentChar = 0;
     public SpriteRenderer pageL, pageR;
     public float speed = 5f, routeRadius = 1f, typeDelay = 0.2f;
@@ -43,12 +43,10 @@ public class PhaseController : MonoBehaviour
             times = duration;
             spriteFade(activePhase.fademode[currentLine]);
             camRoute();
-
             if (currentChar >= activePhase.messages[currentLine].Length)
             {
                 if (currentLine < activePhase.messages.Count - 1)
                 {
-
                     currentLine++;
                     readLine(currentLine);
                 }
@@ -66,13 +64,17 @@ public class PhaseController : MonoBehaviour
         textPerSec(typeDelay);
         if (activePhase.fademode[currentLine] != fadeMode.color)
             camRoute();
-        shakeCamera(5f, 0.1f);
+        if (times < duration)
+            shakeCamera(5f, 0.1f);
+        else
+            shakeCamera(0.5f, 0.1f);
     }
     public void showLine(string line)
     {
         dText.text = line;
         currentChar = line.Length;
     }
+
     public void readLine(int line)
     {
         if (activePhase.fademode[currentLine] != fadeMode.none)
@@ -80,21 +82,25 @@ public class PhaseController : MonoBehaviour
             pageLR = !pageLR;
             activePage().color = new Color(1, 1, 1, 0);
         }
-        else
-        {
-
-        }
+        baloonPos.transform.position = activePhase.baloonpos[currentLine];
+        baloonsizer.transform.localScale = new Vector2(activePhase.baloonsize[currentLine], activePhase.baloonsize[currentLine]);
         originPosition = kameraRoute.position;
         originZoom = kamera.GetComponent<Camera>().orthographicSize;
         times = 0;
         currentChar = 0;
+        dPanel.SetActive(false);
         dName.text = activePhase.characters[line];
         dText.text = "";
+        baloonPos.GetComponent<Animation>().Play();
     }
     public void textPerSec(float delay)
     {
+        if (times < duration)
+            return;
+        dPanel.SetActive(activePhase.messages[currentLine] != "");
         if (currentChar >= activePhase.messages[currentLine].Length)
             return;
+
         timeCount += Time.deltaTime;
         if (timeCount > delay)
         {

@@ -61,6 +61,14 @@ namespace as3mbus.Story
                             -10f
                         )
                     );
+                    this.baloonpos.Add(
+                        new Vector3(
+                            float.Parse(phaseData["baloonx"][i].ToString()),
+                            float.Parse(phaseData["baloony"][i].ToString()),
+                            -1
+                        )
+                    );
+                    this.baloonsize.Add(float.Parse(phaseData["baloonsize"][i].ToString()));
                     Debug.Log("Testing " + paths[i].ToString());
                     this.zooms.Add(float.Parse(phaseData["zoom"][i].ToString()));
                     this.characters.Add(phaseData["character"][i].ToString());
