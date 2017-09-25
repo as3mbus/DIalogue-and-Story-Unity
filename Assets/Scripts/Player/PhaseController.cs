@@ -40,10 +40,15 @@ public class PhaseController : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
+            times = duration;
+            spriteFade(activePhase.fademode[currentLine]);
+            camRoute();
+
             if (currentChar >= activePhase.messages[currentLine].Length)
             {
                 if (currentLine < activePhase.messages.Count - 1)
                 {
+
                     currentLine++;
                     readLine(currentLine);
                 }
@@ -57,7 +62,7 @@ public class PhaseController : MonoBehaviour
                 showLine(activePhase.messages[currentLine]);
             }
         }
-        spriteFade(fadeMode.transition);
+        spriteFade(activePhase.fademode[currentLine]);
         textPerSec(typeDelay);
         camRoute();
         shakeCamera(5f, 0.1f);
@@ -69,9 +74,13 @@ public class PhaseController : MonoBehaviour
     }
     public void readLine(int line)
     {
-        originPosition=kameraRoute.position;
-        originZoom=kamera.GetComponent<Camera>().orthographicSize;
-        times=0;
+        if (activePhase.fademode[currentLine] == fadeMode.transition)
+            pageLR = !pageLR;
+        times = duration;
+        spriteFade(activePhase.fademode[currentLine]);
+        originPosition = kameraRoute.position;
+        originZoom = kamera.GetComponent<Camera>().orthographicSize;
+        times = 0;
         currentChar = 0;
         dName.text = activePhase.characters[line];
         dText.text = "";
@@ -94,20 +103,21 @@ public class PhaseController : MonoBehaviour
             times += Time.deltaTime;
         if (fadeM == fadeMode.color)
         {
-
+            colorFade(Color.white);
 
         }
         else if (fadeM == fadeMode.transition)
         {
 
-            activePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), times / duration);
-            inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 1), times / duration);
+            inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), times / duration);
+            activePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 1), times / duration);
+
         }
     }
     void colorFade(Color color)
     {
         kamera.GetComponent<Camera>().backgroundColor = color;
-        inactivePage().gameObject.SetActive(false);
+        inactivePage().gameObject.SetActive(times >= duration);
         if (times < duration / 2)
             activePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (times * 2) / duration);
         else
@@ -139,9 +149,9 @@ public class PhaseController : MonoBehaviour
         float distance = Vector3.Distance(activePhase.paths[currentLine], kameraRoute.position);
         float zoomDistance = Mathf.Abs(kamera.GetComponent<Camera>().orthographicSize - activePhase.zooms[currentLine]);
         if (distance != 0)
-            kameraRoute.position = Vector3.MoveTowards(originPosition, activePhase.paths[currentLine], times/duration);
+            kameraRoute.position = Vector3.MoveTowards(originPosition, activePhase.paths[currentLine], times / duration);
         if (zoomDistance != 0)
-            kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(originZoom, activePhase.zooms[currentLine], times/duration);
+            kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(originZoom, activePhase.zooms[currentLine], times / duration);
 
         // if (Input.GetButtonDown("Fire1") && currentLine < activePhase.paths.Count)
         // {
@@ -151,6 +161,9 @@ public class PhaseController : MonoBehaviour
 
     public void hidePhase()
     {
+        pageLR = true;
+        pageL.color= Color.white;
+        pageR.color=Color.white;
         gameObject.SetActive(false);
         ssControl.nextPhase();
     }

@@ -24,7 +24,7 @@ namespace as3mbus.Story
         public List<string> characters = new List<string>();
         public List<string> messages = new List<string>();
         public List<string> animations = new List<string>();
-        public List<fadeMode> transist = new List<fadeMode>();
+        public List<fadeMode> fademode = new List<fadeMode>();
         public Phase()
         {
             this.name = "";
@@ -65,6 +65,18 @@ namespace as3mbus.Story
                     this.zooms.Add(float.Parse(phaseData["zoom"][i].ToString()));
                     this.characters.Add(phaseData["character"][i].ToString());
                     this.messages.Add(phaseData["message"][i].ToString());
+                    switch (phaseData["fademode"][i].ToString())
+                    {
+                        case "trans":
+                            this.fademode.Add(fadeMode.transition);
+                            break;
+                        case "color":
+                            this.fademode.Add(fadeMode.color);
+                            break;
+                        default:
+                            this.fademode.Add(fadeMode.none);
+                            break;
+                    }
                 }
             }
             catch (System.Exception)

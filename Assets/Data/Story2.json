@@ -31,9 +31,9 @@
                 "hai coy",
                 "hai juga"
             ],
-            "animation": [
-                "anim 1",
-                "anim 2"
+            "fademode": [
+                "trans",
+                "color"
             ]
         },
         {
@@ -63,9 +63,9 @@
                 "py coy",
                 "lha py chong"
             ],
-            "animation": [
-                "anim 1",
-                "anim 2"
+            "fademode": [
+                "trans",
+                "color"
             ]
         }
     ]
