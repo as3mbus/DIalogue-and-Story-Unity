@@ -116,7 +116,10 @@ public class PhaseController : MonoBehaviour
     {
         kamera.GetComponent<Camera>().backgroundColor = color;
         if (times < duration / 2)
+        {
+            activePage().color = new Color(1, 1, 1, 0);
             inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (times * 2) / duration);
+        }
         else
             activePage().color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (times * 2 - duration) / duration);
     }
@@ -159,8 +162,8 @@ public class PhaseController : MonoBehaviour
     public void hidePhase()
     {
         pageLR = true;
-        pageL.color= Color.white;
-        pageR.color=Color.white;
+        pageL.color = Color.white;
+        pageR.color = Color.white;
         gameObject.SetActive(false);
         ssControl.nextPhase();
     }

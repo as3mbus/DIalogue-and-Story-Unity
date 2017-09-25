@@ -32,7 +32,7 @@
                 "hai juga"
             ],
             "fademode": [
-                "transition",
+                "none",
                 "color"
             ]
         },
