@@ -32,7 +32,7 @@
                 "hai juga"
             ],
             "fademode": [
-                "trans",
+                "transition",
                 "color"
             ]
         },
@@ -64,7 +64,7 @@
                 "lha py chong"
             ],
             "fademode": [
-                "trans",
+                "transition",
                 "color"
             ]
         }

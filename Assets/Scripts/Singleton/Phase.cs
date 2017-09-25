@@ -67,7 +67,7 @@ namespace as3mbus.Story
                     this.messages.Add(phaseData["message"][i].ToString());
                     switch (phaseData["fademode"][i].ToString())
                     {
-                        case "trans":
+                        case "transition":
                             this.fademode.Add(fadeMode.transition);
                             break;
                         case "color":
@@ -151,11 +151,11 @@ namespace as3mbus.Story
                 writer.Write(item);
             }
             writer.WriteArrayEnd();
-            writer.WritePropertyName("animation");
+            writer.WritePropertyName("fademode");
             writer.WriteArrayStart();
-            foreach (var item in this.animations)
+            foreach (var item in this.fademode)
             {
-                writer.Write(item);
+                writer.Write(item.ToString("g"));
             }
             writer.WriteArrayEnd();
             //writer.Write(string.Join("", new List<int>(array).ConvertAll(i => i.ToString()).ToArray()));

@@ -74,10 +74,8 @@ public class PhaseController : MonoBehaviour
     }
     public void readLine(int line)
     {
-        if (activePhase.fademode[currentLine] == fadeMode.transition)
+        if (activePhase.fademode[currentLine] != fadeMode.none)
             pageLR = !pageLR;
-        times = duration;
-        spriteFade(activePhase.fademode[currentLine]);
         originPosition = kameraRoute.position;
         originZoom = kamera.GetComponent<Camera>().orthographicSize;
         times = 0;
@@ -117,9 +115,8 @@ public class PhaseController : MonoBehaviour
     void colorFade(Color color)
     {
         kamera.GetComponent<Camera>().backgroundColor = color;
-        inactivePage().gameObject.SetActive(times >= duration);
         if (times < duration / 2)
-            activePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (times * 2) / duration);
+            inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (times * 2) / duration);
         else
             activePage().color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (times * 2 - duration) / duration);
     }
@@ -127,8 +124,8 @@ public class PhaseController : MonoBehaviour
     {
         Vector2 shakeVector;
         float seed = Time.time * frequency;
-        print(Time.time + " * " + frequency + " = " + seed);
-        print("Perlin = " + Mathf.PerlinNoise(seed, 0f));
+        // print(Time.time + " * " + frequency + " = " + seed);
+        // print("Perlin = " + Mathf.PerlinNoise(seed, 0f));
         shakeVector.x = Mathf.PerlinNoise(seed, 0f) - 0.5f;
         shakeVector.y = Mathf.PerlinNoise(0f, seed) - 0.5f;
         shakeVector = shakeVector * magnitude;
