@@ -64,7 +64,8 @@ public class PhaseController : MonoBehaviour
         }
         spriteFade(activePhase.fademode[currentLine]);
         textPerSec(typeDelay);
-        camRoute();
+        if (activePhase.fademode[currentLine] != fadeMode.color)
+            camRoute();
         shakeCamera(5f, 0.1f);
     }
     public void showLine(string line)
@@ -75,7 +76,14 @@ public class PhaseController : MonoBehaviour
     public void readLine(int line)
     {
         if (activePhase.fademode[currentLine] != fadeMode.none)
+        {
             pageLR = !pageLR;
+            activePage().color = new Color(1, 1, 1, 0);
+        }
+        else
+        {
+
+        }
         originPosition = kameraRoute.position;
         originZoom = kamera.GetComponent<Camera>().orthographicSize;
         times = 0;
@@ -100,28 +108,25 @@ public class PhaseController : MonoBehaviour
         if (times < duration)
             times += Time.deltaTime;
         if (fadeM == fadeMode.color)
-        {
             colorFade(Color.white);
-
-        }
         else if (fadeM == fadeMode.transition)
-        {
-
-            inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), times / duration);
-            activePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 1), times / duration);
-
-        }
+            transitionFade();
+    }
+    void transitionFade()
+    {
+        inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), times / duration);
+        activePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 1), times / duration);
     }
     void colorFade(Color color)
     {
         kamera.GetComponent<Camera>().backgroundColor = color;
         if (times < duration / 2)
         {
-            activePage().color = new Color(1, 1, 1, 0);
             inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (times * 2) / duration);
         }
         else
-            activePage().color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (times * 2 - duration) / duration);
+            camPos();
+        activePage().color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (times * 2 - duration) / duration);
     }
     void shakeCamera(float frequency, float magnitude)
     {
@@ -157,6 +162,10 @@ public class PhaseController : MonoBehaviour
         // {
         //     currentLine++;
         // }
+    }
+    public void camPos()
+    {
+        kameraRoute.position = activePhase.paths[currentLine];
     }
 
     public void hidePhase()

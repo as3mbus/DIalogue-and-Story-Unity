@@ -33,7 +33,7 @@
             ],
             "fademode": [
                 "none",
-                "color"
+                "transition"
             ]
         },
         {
