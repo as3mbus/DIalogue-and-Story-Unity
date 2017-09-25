@@ -6,8 +6,13 @@ using LitJson;
 
 namespace as3mbus.Story
 {
+    public enum fadeMode
+    {
+        none, color, transition
+    }
     public class Phase
     {
+
         public string name;
         public Comic comic;
         public List<int> pages = new List<int>();
@@ -19,6 +24,7 @@ namespace as3mbus.Story
         public List<string> characters = new List<string>();
         public List<string> messages = new List<string>();
         public List<string> animations = new List<string>();
+        public List<fadeMode> transist = new List<fadeMode>();
         public Phase()
         {
             this.name = "";
