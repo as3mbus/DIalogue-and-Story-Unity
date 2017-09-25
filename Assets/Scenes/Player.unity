@@ -429,12 +429,11 @@ Animation:
   m_GameObject: {fileID: 1258998120}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 09f88ef335a1e6b40be12a26ffee33bd, type: 2}
+  m_Animation: {fileID: 0}
   m_Animations:
-  - {fileID: 7400000, guid: 09f88ef335a1e6b40be12a26ffee33bd, type: 2}
-  - {fileID: 7400000, guid: d56bb81d49d5d044e9685c5556ec99c7, type: 2}
+  - {fileID: 7400000, guid: 5951aaff8ac2b4a3ab6756447e99ff3f, type: 2}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
 --- !u!1 &1387728978
@@ -787,7 +786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phaseCanvas: {fileID: 1918936630}
   currentPhase: 0
-  filename: {fileID: 4900000, guid: 725eddce2f8c64497b98eea237f29f68, type: 3}
+  storyJson: {fileID: 4900000, guid: 725eddce2f8c64497b98eea237f29f68, type: 3}
 --- !u!1 &1918936630
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,7 +823,7 @@ MonoBehaviour:
   dText: {fileID: 1584915025}
   currentLine: 0
   currentChar: 0
-  backgroundSprite: {fileID: 0}
+  backgroundSprite: {fileID: 1258998121}
   speed: 5
   routeRadius: 1
   typeDelay: 0.2
