@@ -30,10 +30,10 @@ namespace as3mbus.Story
             this.name = "";
             this.comic = new Comic("sample comic");
         }
-        public Phase(string name, string comicDir)
+        public Phase(string name, string bundleName, string comicPath)
         {
             this.name = name;
-            this.comic = new Comic(comicDir);
+            this.comic = new Comic(bundleName,comicPath);
         }
         public Phase(JsonData chara, JsonData msg)
         {

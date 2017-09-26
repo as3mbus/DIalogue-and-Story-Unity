@@ -13,7 +13,7 @@ public class StoryCreatorControl : MonoBehaviour
     public GameObject phasePanel, phaseButton, newPhaseButton;
     public ScrollRect phaseScrollView;
     public PhaseCreator phaseCreator;
-    public InputField storyNameField;
+    public InputField storyNameField, phaseNameField;
     public Dropdown comicDropdown, bundleDropdown;
 
     string[] activeComics;
@@ -41,7 +41,7 @@ public class StoryCreatorControl : MonoBehaviour
     }
     public void createPhase()
     {
-        targetStory.phases.Add(new Phase(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
+        targetStory.phases.Add(new Phase(phaseNameField.text, bundleDropdown.captionText.text,comicDropdown.captionText.text));
         typeWindowActive(false);
         print(targetStory.toJson());
         newContentButton();
