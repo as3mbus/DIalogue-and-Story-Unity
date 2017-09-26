@@ -5,8 +5,60 @@ using System.IO;
 using UnityEngine;
 using LitJson;
 
-public class ComicManager {
-	public static string listComicsJson()
+public class ComicManager
+{
+    public static string[] getComics(AssetBundle comicBundle)
+    {
+        List<string> comBunCon = new List<string>();
+        foreach (string asset in comicBundle.GetAllAssetNames())
+        {
+            if (asset.Contains(".png") && !comBunCon.Contains(Path.GetDirectoryName(asset)))
+            {
+                comBunCon.Add(Path.GetDirectoryName(asset));
+                Debug.Log(Path.GetDirectoryName(asset));
+            }
+        }
+        return comBunCon.ToArray();
+    }
+    public static void listStreamingComicsBundleJson()
+    {
+        var streamingPath = Application.streamingAssetsPath;
+        StringBuilder sb = new StringBuilder();
+        JsonWriter writer = new JsonWriter(sb);
+        writer.PrettyPrint = true;
+        writer.IndentValue = 4;
+        writer.WriteObjectStart();
+        writer.WritePropertyName("streamingcombun");
+        writer.WriteArrayStart();
+        FileInfo[] bundles = new DirectoryInfo(streamingPath).GetFiles();
+        List<string> comicBundles = new List<string>();
+        foreach (var item in bundles)
+            if (!item.Name.Contains("."))
+            {
+                comicBundles.Add(item.Name);
+                writer.Write(item.Name);
+            }
+        writer.WriteArrayEnd();
+        writer.WriteObjectEnd();
+        writeStringBuilder(sb,Path.Combine(streamingPath, "streamBundle.json"));
+    }
+    public static string[] readComicsBundleList(string filePath){
+        return parseComicBundleJson(readStreamFile(filePath));
+    }
+    public static string[] parseComicBundleJson(string jsonText){
+        JsonData jsonComBun = JsonMapper.ToObject(jsonText);
+        List<string> comBuns = new List<string>();
+        foreach (JsonData comBun in jsonComBun["streamingcombun"])
+            comBuns.Add(comBun.ToString());
+        return comBuns.ToArray();
+    }
+    public static void writeStringBuilder(StringBuilder sb, string filePath)
+    {
+        var sr = File.CreateText(filePath);
+        sr.Write(sb.ToString());
+        sr.Close();
+    }
+    public static void listStreamingComicsJson()
     {
         var comicPath = Path.Combine(Application.dataPath, "Comic");
         var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
@@ -35,70 +87,44 @@ public class ComicManager {
         }
         writer.WriteArrayEnd();
         writer.WriteObjectEnd();
-        return sb.ToString();
-    }
-    public static void writeComicsJson()
-    {
         var sr = File.CreateText(Path.Combine(Application.dataPath, "Comic/comics.json"));
-        sr.Write(listComicsJson());
+        sr.Write(sb.ToString());
         sr.Close();
     }
-    public static string[] getComicListData()
+    public static string[] getComicsListFromBundle(string bundlePath, string assetPath)
     {
-        
-        JsonData jsonComic;
-        if (Application.platform == RuntimePlatform.Android)
-            jsonComic = loadComicsDataAndroid();
-        else
-            jsonComic = loadComicsDataDesktop();
+        byte[] bundleByte = loadStreamingAssetFile(bundlePath);
+        AssetBundle comicBundle = AssetBundle.LoadFromMemory(bundleByte);
+        TextAsset comicjson = comicBundle.LoadAsset<TextAsset>(assetPath);
+        return parseComicListJson(comicjson.text);
+    }
+    public static string[] getComicsList(string pathFile){
+        return parseComicListJson(readStreamFile(pathFile));
+    }
+    public static string readStreamFile(string pathFile)
+    {
+        byte[] jsonByte = loadStreamingAssetFile(pathFile);
+        string jsonText = System.Text.Encoding.Default.GetString(jsonByte);
+        return jsonText;
+    }
+    
+    public static string[] parseComicListJson(string jsonText)
+    {
+        JsonData jsonComic = JsonMapper.ToObject(jsonText);
         string[] comicList = new string[jsonComic["comic"].Count];
         for (int i = 0; i < jsonComic["comic"].Count; i++)
-            comicList[i] =  jsonComic["comic"][i]["name"].ToString();
+            comicList[i] = jsonComic["comic"][i]["name"].ToString();
         return comicList;
     }
-    public static string[] getComicsListBundle()
+    static byte[] loadStreamingAssetFile(string filePath)
     {
-        JsonData jsonComic;
         if (Application.platform == RuntimePlatform.Android)
-            jsonComic = loadComicsBundleAndroid();
+        {
+            WWW data = new WWW(filePath);
+            while (!data.isDone) { }
+            return data.bytes;
+        }
         else
-            jsonComic = loadComicsBundleDesktop();
-        string[] comicList = new string[jsonComic["comic"].Count];
-        for (int i = 0; i < jsonComic["comic"].Count; i++)
-            comicList[i] =  jsonComic["comic"][i]["name"].ToString();
-        return comicList;
-    }
-    static JsonData loadComicsBundleDesktop(){
-        string comicPath = Path.Combine(Application.streamingAssetsPath, "Comics") ;
-        AssetBundle comicBundle = AssetBundle.LoadFromFile(comicPath);
-        TextAsset comicjson = comicBundle.LoadAsset<TextAsset>("assets/comic/comics.json");
-        JsonData jsonComic = JsonMapper.ToObject(comicjson.text);
-        return jsonComic;
-    }
-    static JsonData loadComicsBundleAndroid()
-    {
-        string comicPath = Application.streamingAssetsPath + "Comics";
-        WWW data = new WWW(comicPath);
-        while (!data.isDone) { }
-        AssetBundle comicBundle = AssetBundle.LoadFromMemory(data.bytes);
-        TextAsset comicjson = comicBundle.LoadAsset<TextAsset>("assets/comic/comics.json");
-        JsonData jsonComic = JsonMapper.ToObject(comicjson.text);
-        return jsonComic;
-    }
-    static JsonData loadComicsDataAndroid()
-    {
-        string comicPath = Application.streamingAssetsPath + "/comics.json";
-        WWW data = new WWW(comicPath);
-        while (!data.isDone) { }
-        string text = data.text;
-        JsonData jsonComic = JsonMapper.ToObject(text);
-        return jsonComic;
-    }
-    static JsonData loadComicsDataDesktop()
-    {
-        string comicPath = Application.streamingAssetsPath + "/comics.json";
-        string text = (File.ReadAllText(comicPath));
-        JsonData jsonComic = JsonMapper.ToObject(text);
-        return jsonComic;
+            return File.ReadAllBytes(filePath);
     }
 }

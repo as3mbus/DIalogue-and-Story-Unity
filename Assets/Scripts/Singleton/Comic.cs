@@ -16,29 +16,15 @@ namespace as3mbus.Story
         }
         public List<Sprite> pages = new List<Sprite>();
         public string source;
-        public Comic(string name, string comicPath)
+
+        public Comic(string bundlePath, string comicPath)
         {
-            this.name = name;
-            Debug.Log(this.name);
-            this.source = comicPath;
-            foreach (var item in Resources.LoadAll<Sprite>("Comic/" + comicPath.ToString()))
-            {
-                Debug.Log(item.name);
-                this.pages.Add(item);
-            }
-        }
-        public Comic(string name, string comicPath, AssetBundle asetbundle)
-        {
-            this.name = name;
-            Debug.Log(this.name);
+            this.name = Path.GetFileNameWithoutExtension(comicPath);
             this.source = comicPath.ToString();
-            foreach (string asetname in asetbundle.GetAllAssetNames())
-            {
+            AssetBundle comicBundle = AssetBundle.LoadFromFile(comicPath);
+            foreach (string asetname in comicBundle.GetAllAssetNames())
                 if (asetname.Contains(comicPath))
-                {
-                    this.pages.Add(asetbundle.LoadAsset<Sprite>(asetname));
-                }
-            }
+                    this.pages.Add(comicBundle.LoadAsset<Sprite>(asetname));
         }
         public Comic(JsonData directory) : this(directory.ToString())
         {

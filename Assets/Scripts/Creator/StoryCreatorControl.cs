@@ -23,7 +23,7 @@ public class StoryCreatorControl : MonoBehaviour
         // print(Comic.listComicsJson());
         // Comic.writeComicsJson();
         // loadComics();
-        insertComicData(ComicManager.getComicsListBundle());
+        insertComicData(ComicManager.readComicsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundle.json")));
     }
 
     // Update is called once per frame
@@ -56,11 +56,11 @@ public class StoryCreatorControl : MonoBehaviour
             button.interactable = !mode;
         }
     }
-    void insertComicData(string[] ComicList)
+    void insertDropdownOptions( Dropdown DD, string[] optionsArray)
     {
-        foreach (string comic in ComicList)
+        foreach (string comic in optionsArray)
         {
-            comicDropdown.options.Add(new Dropdown.OptionData(comic));
+            DD.options.Add(new Dropdown.OptionData(comic));
         }
         // var comicPath = "jar:file://" + Application.dataPath + "!/assets/Comic/";
         // var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
