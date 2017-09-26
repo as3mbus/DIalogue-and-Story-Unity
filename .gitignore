@@ -41,3 +41,5 @@ IsoDecoration/
 # =SELFMADE= #
 # ========== #
 Build/
+Assets/StreamingAssets
+Assets/AssetBundles
