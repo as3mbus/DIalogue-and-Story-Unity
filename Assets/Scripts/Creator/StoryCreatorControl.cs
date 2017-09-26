@@ -14,7 +14,9 @@ public class StoryCreatorControl : MonoBehaviour
     public ScrollRect phaseScrollView;
     public PhaseCreator phaseCreator;
     public InputField storyNameField;
-    public Dropdown comicDropdown;
+    public Dropdown comicDropdown, bundleDropdown;
+
+    string[] activeComics;
 
     // Use this for initialization
     void Start()
@@ -23,7 +25,9 @@ public class StoryCreatorControl : MonoBehaviour
         // print(Comic.listComicsJson());
         // Comic.writeComicsJson();
         // loadComics();
-        insertComicData(ComicManager.readComicsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundle.json")));
+        ComicManager.listStreamingComicsBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        ComicManager.readComicsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        addDropdownOptions(bundleDropdown, ComicManager.streamBundleList.ToArray());
     }
 
     // Update is called once per frame
@@ -35,7 +39,7 @@ public class StoryCreatorControl : MonoBehaviour
     {
         typeWindowActive(true);
     }
-    public void newPhase()
+    public void createPhase()
     {
         targetStory.phases.Add(new Phase(phasePanel.GetComponentInChildren<InputField>().text, comicDropdown.GetComponentInChildren<Dropdown>().captionText.text));
         typeWindowActive(false);
@@ -56,11 +60,11 @@ public class StoryCreatorControl : MonoBehaviour
             button.interactable = !mode;
         }
     }
-    void insertDropdownOptions( Dropdown DD, string[] optionsArray)
+    void addDropdownOptions(Dropdown DD, string[] optionsArray)
     {
         foreach (string comic in optionsArray)
         {
-            DD.options.Add(new Dropdown.OptionData(comic));
+            DD.options.Add(new Dropdown.OptionData(Path.GetFileName(comic)));
         }
         // var comicPath = "jar:file://" + Application.dataPath + "!/assets/Comic/";
         // var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
@@ -143,4 +147,16 @@ public class StoryCreatorControl : MonoBehaviour
     {
         SceneManager.LoadScene("Player");
     }
+    public void bundleChange()
+    {
+        comicDropdown.options.Clear();
+        if (ComicManager.streamContent(bundleDropdown.captionText.text))
+            activeComics = ComicManager.getComics(ComicManager.readStreamBundles(Path.Combine(Application.streamingAssetsPath, bundleDropdown.captionText.text)));
+        else
+            activeComics = ComicManager.getComics(ComicManager.readStreamBundles(Path.Combine(Application.persistentDataPath, bundleDropdown.captionText.text)));
+        addDropdownOptions(comicDropdown, activeComics);
+        comicDropdown.value=0;
+        comicDropdown.captionText.text=comicDropdown.options[0].text;
+    }
+    
 }

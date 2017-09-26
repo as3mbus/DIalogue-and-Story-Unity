@@ -5,8 +5,9 @@ using System.IO;
 using UnityEngine;
 using LitJson;
 
-public class ComicManager
+public static class ComicManager
 {
+    public static List<string> streamBundleList;
     public static string[] getComics(AssetBundle comicBundle)
     {
         List<string> comBunCon = new List<string>();
@@ -18,9 +19,10 @@ public class ComicManager
                 Debug.Log(Path.GetDirectoryName(asset));
             }
         }
+        comicBundle.Unload(false);
         return comBunCon.ToArray();
     }
-    public static void listStreamingComicsBundleJson()
+    public static void listStreamingComicsBundleJson(string filePath)
     {
         var streamingPath = Application.streamingAssetsPath;
         StringBuilder sb = new StringBuilder();
@@ -40,25 +42,22 @@ public class ComicManager
             }
         writer.WriteArrayEnd();
         writer.WriteObjectEnd();
-        writeStringBuilder(sb,Path.Combine(streamingPath, "streamBundle.json"));
+        writeStringBuilder(sb, filePath);
     }
-    public static string[] readComicsBundleList(string filePath){
-        return parseComicBundleJson(readStreamFile(filePath));
+    public static string[] readComicsBundleList(string filePath)
+    {
+        streamBundleList = new List<string>(parseComicBundleJson(readStreamTextFile(filePath)));
+        return streamBundleList.ToArray();
     }
-    public static string[] parseComicBundleJson(string jsonText){
+    public static string[] parseComicBundleJson(string jsonText)
+    {
         JsonData jsonComBun = JsonMapper.ToObject(jsonText);
         List<string> comBuns = new List<string>();
         foreach (JsonData comBun in jsonComBun["streamingcombun"])
             comBuns.Add(comBun.ToString());
         return comBuns.ToArray();
     }
-    public static void writeStringBuilder(StringBuilder sb, string filePath)
-    {
-        var sr = File.CreateText(filePath);
-        sr.Write(sb.ToString());
-        sr.Close();
-    }
-    public static void listStreamingComicsJson()
+    public static void listStreamingComicsJson(string filePath)
     {
         var comicPath = Path.Combine(Application.dataPath, "Comic");
         var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
@@ -87,27 +86,31 @@ public class ComicManager
         }
         writer.WriteArrayEnd();
         writer.WriteObjectEnd();
-        var sr = File.CreateText(Path.Combine(Application.dataPath, "Comic/comics.json"));
-        sr.Write(sb.ToString());
-        sr.Close();
+        writeStringBuilder(sb, filePath);
     }
+
     public static string[] getComicsListFromBundle(string bundlePath, string assetPath)
     {
-        byte[] bundleByte = loadStreamingAssetFile(bundlePath);
-        AssetBundle comicBundle = AssetBundle.LoadFromMemory(bundleByte);
+        AssetBundle comicBundle = readStreamBundles(bundlePath);
         TextAsset comicjson = comicBundle.LoadAsset<TextAsset>(assetPath);
+        comicBundle.Unload(false);
         return parseComicListJson(comicjson.text);
     }
-    public static string[] getComicsList(string pathFile){
-        return parseComicListJson(readStreamFile(pathFile));
+    public static AssetBundle readStreamBundles(string bundlePath){
+        byte[] bundleByte = loadStreamingAssetFile(bundlePath);
+        return AssetBundle.LoadFromMemory(bundleByte);
     }
-    public static string readStreamFile(string pathFile)
+    public static string[] getComicsList(string pathFile)
+    {
+        return parseComicListJson(readStreamTextFile(pathFile));
+    }
+    public static string readStreamTextFile(string pathFile)
     {
         byte[] jsonByte = loadStreamingAssetFile(pathFile);
         string jsonText = System.Text.Encoding.Default.GetString(jsonByte);
         return jsonText;
     }
-    
+
     public static string[] parseComicListJson(string jsonText)
     {
         JsonData jsonComic = JsonMapper.ToObject(jsonText);
@@ -126,5 +129,20 @@ public class ComicManager
         }
         else
             return File.ReadAllBytes(filePath);
+    }
+    public static void writeStringBuilder(StringBuilder sb, string filePath)
+    {
+        var sr = File.CreateText(filePath);
+        sr.Write(sb.ToString());
+        sr.Close();
+    }
+    public static bool streamContent(string bundleName){
+        return streamBundleList.Contains(bundleName);
+    }
+    public static string bundlePath(string bundleName){
+        if(streamContent(bundleName))
+            return Path.Combine(Application.streamingAssetsPath, bundleName);
+        else
+            return Path.Combine(Application.persistentDataPath, bundleName);
     }
 }

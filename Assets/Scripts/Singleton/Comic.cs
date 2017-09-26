@@ -17,11 +17,11 @@ namespace as3mbus.Story
         public List<Sprite> pages = new List<Sprite>();
         public string source;
 
-        public Comic(string bundlePath, string comicPath)
+        public Comic(string bundleName, string comicPath)
         {
-            this.name = Path.GetFileNameWithoutExtension(comicPath);
-            this.source = comicPath.ToString();
-            AssetBundle comicBundle = AssetBundle.LoadFromFile(comicPath);
+            this.name = Path.GetFileName(comicPath);
+            this.source = bundleName.ToString();
+            AssetBundle comicBundle = ComicManager.readStreamBundles(ComicManager.bundlePath(bundleName));
             foreach (string asetname in comicBundle.GetAllAssetNames())
                 if (asetname.Contains(comicPath))
                     this.pages.Add(comicBundle.LoadAsset<Sprite>(asetname));
