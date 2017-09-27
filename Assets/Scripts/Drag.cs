@@ -2,21 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Drag : MonoBehaviour {
-	public MouseCamControlPan cams;
-	void OnMouseDrag ()
-	{
-		cams.enabled=false;
-		Vector3 mousePos = new Vector3(Input.mousePosition.x,Input.mousePosition.y,-1);
-		Vector3 ObjPos = Camera.main.ScreenToWorldPoint(mousePos);
-		transform.position = ObjPos;
+public class Drag : MonoBehaviour
+{
+    bool dragged = false;
+    public MouseCamControlPan cams;
+    void OnMouseDrag()
+    {
+        dragged = true;
+        cams.enabled = false;
+        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 9);
+        Vector3 ObjPos = Camera.main.ScreenToWorldPoint(mousePos);
+        transform.position = ObjPos;
+    }
+    void OnMouseUp()
+    {
+		dragged=false;
+        cams.enabled = true;
+    }
+    void OnMouseOver()
+    {
+        cams.enabled = false;
+        float zoom = -Input.GetAxis("Mouse ScrollWheel");
+        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+            transform.localScale = transform.localScale + new Vector3(zoom, zoom);
+    }
+    void OnMouseExit(){
+        if (!dragged)
+            cams.enabled = true;
 	}
-	void OnMouseUp(){
-		cams.enabled=true;
-	}
-	void OnMouseEnter(){
-		
-	}
-	// Use this for initialization
-	
+
+    // Use this for initialization
+
 }

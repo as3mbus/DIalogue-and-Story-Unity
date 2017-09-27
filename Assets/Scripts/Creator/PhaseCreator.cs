@@ -18,6 +18,7 @@ public class PhaseCreator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        targetPhase=new Phase();
     }
 
     // Update is called once per frame
@@ -104,6 +105,11 @@ public class PhaseCreator : MonoBehaviour
     {
         TextBaloon.SetActive(true);
         cam.GetComponent<MouseCamControlPan>().enabled = true;
+    }
+    void OnDisable()
+    {
+        TextBaloon.SetActive(false);
+        cam.GetComponent<MouseCamControlPan>().enabled = false;
     }
     public void resetCam()
     {
