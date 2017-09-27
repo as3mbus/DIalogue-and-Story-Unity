@@ -22,6 +22,7 @@ public class PhaseController : MonoBehaviour
     float originZoom;
     bool movingCamera;
     public bool pageLR = true;
+    public float shake = 0.2f;
 
     public void startPhase(Phase fase)
     {
@@ -64,10 +65,7 @@ public class PhaseController : MonoBehaviour
         textPerSec(typeDelay);
         if (activePhase.fademode[currentLine] != fadeMode.color)
             camRoute();
-        if (times < duration)
-            shakeCamera(5f, 0.1f);
-        else
-            shakeCamera(0.5f, 0.1f);
+        shakeCamera(10f, shake);
     }
     public void showLine(string line)
     {

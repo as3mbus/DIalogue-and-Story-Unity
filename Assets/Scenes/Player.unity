@@ -794,6 +794,7 @@ MonoBehaviour:
   duration: 2
   times: 0
   pageLR: 1
+  shake: 0.2
 --- !u!114 &1918936632
 MonoBehaviour:
   m_ObjectHideFlags: 0

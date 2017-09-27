@@ -176,7 +176,7 @@ namespace as3mbus.Story
         {
             this.pages.Add(0);
             this.zooms.Add(5f);
-            this.paths.Add(new Vector3());
+            this.paths.Add(new Vector3(0, 0, -10));
             this.characters.Add("");
             this.messages.Add("");
             this.animations.Add("");

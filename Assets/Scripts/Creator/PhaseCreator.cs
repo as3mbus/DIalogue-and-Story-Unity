@@ -13,6 +13,7 @@ public class PhaseCreator : MonoBehaviour
     public Text statusText;
     public Phase targetPhase;
     public SpriteRenderer backgroundSprite;
+    public GameObject TextBaloon;
     public int currentLine = 0;
     // Use this for initialization
     void Start()
@@ -41,11 +42,18 @@ public class PhaseCreator : MonoBehaviour
         if (targetPhase.messages.Count <= 0)
             lineDDown.captionText.text = "";
     }
+    public void addLine()
+    {
+        if (lineDDown.value >= targetPhase.messages.Count - 1)
+            newLine();
+        else
+            insertLine();
+    }
     public void insertLine()
     {
-        if (targetPhase.messages.Count <= 0)
+        if (targetPhase.messages.Count == 0)
             lineDDown.captionText.text = "Line 1";
-        targetPhase.insertLine(lineDDown.value);
+        targetPhase.insertLine(lineDDown.value+1);
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
         lineDDown.value++;
     }
@@ -91,6 +99,10 @@ public class PhaseCreator : MonoBehaviour
         pageDDown.value = 0;
         pageDDown.captionText.text = pageDDown.options[0].text;
         loadLine(0);
+    }
+    void OnEnable()
+    {
+        TextBaloon.SetActive(true);
         cam.GetComponent<MouseCamControlPan>().enabled = true;
     }
     public void resetCam()

@@ -1411,7 +1411,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1448860104}
-        m_MethodName: insertLine
+        m_MethodName: addLine
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1608,7 +1608,7 @@ GameObject:
   - component: {fileID: 356708861}
   - component: {fileID: 356708860}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: pageSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6481,61 +6481,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1385190478}
---- !u!1 &1422462840
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1422462841}
-  - component: {fileID: 1422462842}
-  - component: {fileID: 1422462843}
-  m_Layer: 0
-  m_Name: BaloonLocation
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1422462841
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1422462840}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2017419707}
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1422462842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1422462840}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a0c830c07f184e368579d87af738f17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cams: {fileID: 654416709}
---- !u!65 &1422462843
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1422462840}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.61, y: 2.41, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1437751665
 GameObject:
   m_ObjectHideFlags: 0
@@ -6719,6 +6664,7 @@ MonoBehaviour:
   storyController: {fileID: 2118616193}
   statusText: {fileID: 1489159280}
   backgroundSprite: {fileID: 356708860}
+  TextBaloon: {fileID: 1448860099}
   currentLine: 0
 --- !u!1 &1449638715
 GameObject:
@@ -8869,13 +8815,15 @@ GameObject:
   m_Component:
   - component: {fileID: 2017419707}
   - component: {fileID: 2017419708}
+  - component: {fileID: 2017419710}
+  - component: {fileID: 2017419709}
   m_Layer: 0
   m_Name: Baloon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2017419707
 Transform:
   m_ObjectHideFlags: 0
@@ -8883,11 +8831,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2017419706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1422462841}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2017419708
 SpriteRenderer:
@@ -8931,6 +8879,30 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!65 &2017419709
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2017419706}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.62, y: 2.4, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2017419710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2017419706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a0c830c07f184e368579d87af738f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cams: {fileID: 654416709}
 --- !u!1 &2019243906
 GameObject:
   m_ObjectHideFlags: 0
