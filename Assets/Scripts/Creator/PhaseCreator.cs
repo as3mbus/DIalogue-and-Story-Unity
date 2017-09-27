@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using as3mbus.Story;
 
-public class PhaseCreator : MonoBehaviour {
+public class PhaseCreator : MonoBehaviour
+{
     public Camera cam;
     public InputField messageField;
     public Dropdown characterDDown, pageDDown, lineDDown;
     public StoryCreatorControl storyController;
     public Text statusText;
     public Phase targetPhase;
+    public SpriteRenderer backgroundSprite;
     public int currentLine = 0;
     // Use this for initialization
     void Start()
@@ -51,13 +53,13 @@ public class PhaseCreator : MonoBehaviour {
     {
         if (targetPhase.messages.Count <= 1)
             return;
-        targetPhase.UpdateLine(characterDDown.captionText.text, messageField.text, int.Parse(pageDDown.captionText.text), cam.orthographicSize, cam.transform.position, currentLine);
+        targetPhase.UpdateLine(characterDDown.captionText.text, messageField.text, pageDDown.value, cam.orthographicSize, cam.transform.position, currentLine);
         currentLine = lineDDown.value;
         loadLine(currentLine);
     }
     public void savePhase()
     {
-        lineDDown.value=-1;
+        lineDDown.value = -1;
         resetInterface();
         storyController.gameObject.SetActive(true);
         storyController.contentPhaseButtonUpdate(targetPhase);
@@ -69,7 +71,7 @@ public class PhaseCreator : MonoBehaviour {
         {
             characterDDown.value = characterDDown.options.IndexOf(characterDDown.options.Find(x => x.text == targetPhase.characters[index]));
             messageField.text = targetPhase.messages[index];
-            pageDDown.value = pageDDown.options.IndexOf(pageDDown.options.Find(x => x.text == targetPhase.pages[index].ToString()));
+            pageDDown.value = targetPhase.pages[index];
             cam.transform.position = targetPhase.paths[index];
             cam.orthographicSize = targetPhase.zooms[index];
             lineDDown.captionText.text = "Line " + (index + 1);
@@ -85,6 +87,9 @@ public class PhaseCreator : MonoBehaviour {
         targetPhase = fase;
         for (int i = 0; i < fase.messages.Count; i++)
             lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
+        addDropdownOption(pageDDown, fase.comic.pagename.ToArray());
+        pageDDown.value = 0;
+        pageDDown.captionText.text = pageDDown.options[0].text;
         loadLine(0);
         cam.GetComponent<MouseCamControlPan>().enabled = true;
     }
@@ -94,8 +99,22 @@ public class PhaseCreator : MonoBehaviour {
         cam.orthographicSize = 5;
         cam.GetComponent<MouseCamControlPan>().enabled = false;
     }
+    public void addDropdownOption(Dropdown dropdown, string[] options)
+    {
+        foreach (string option in options)
+        {
+            dropdown.options.Add(new Dropdown.OptionData(option));
+        }
+    }
+    public void pageChange()
+    {
+        backgroundSprite.sprite = targetPhase.comic.pages[pageDDown.value];
+    }
     void resetInterface()
     {
+        pageDDown.ClearOptions();
+        pageDDown.value = 0;
+        lineDDown.captionText.text = "";
         messageField.text = "";
         lineDDown.ClearOptions();
         lineDDown.value = 0;
