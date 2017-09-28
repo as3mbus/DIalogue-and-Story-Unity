@@ -1,3 +1,3 @@
-[submodule "Assets/Extern/cui_color_picker"]
+[submodule "cui_color_picker"]
 	path = Assets/Extern/cui_color_picker
 	url = https://github.com/as3mbus/cui_color_picker
