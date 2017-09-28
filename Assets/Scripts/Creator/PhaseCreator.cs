@@ -11,7 +11,6 @@ public class PhaseCreator : MonoBehaviour
     public Dropdown characterDDown, pageDDown, lineDDown;
     public StoryCreatorControl storyController;
     public Toggle baloonToggle;
-    public Text statusText;
     public Phase targetPhase;
     public SpriteRenderer backgroundSprite;
     public GameObject TextBaloon;
@@ -25,7 +24,6 @@ public class PhaseCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        statusText.text = "View\n\nX " + cam.transform.position.x.ToString("0.00") + "\n\nY " + cam.transform.position.y.ToString("0.00") + "\n\nZ " + cam.orthographicSize.ToString("0.00");
     }
 
     public void newLine()
