@@ -3147,7 +3147,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 528902682}
-  - component: {fileID: 528902683}
   m_Layer: 5
   m_Name: Shake Panel
   m_TagString: Untagged
@@ -3175,18 +3174,6 @@ RectTransform:
   m_AnchoredPosition: {x: 30, y: -150}
   m_SizeDelta: {x: 350, y: 100}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &528902683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 528902681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81e17c5a665d648d598574d6dcfa8606, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cams: {fileID: 654416709}
 --- !u!1 &546952137
 GameObject:
   m_ObjectHideFlags: 0
@@ -8305,6 +8292,7 @@ MonoBehaviour:
   baloonToggle: {fileID: 930123316}
   colorToggle: {fileID: 1060336344}
   pickerToggle: {fileID: 1984647131}
+  fadeToggle: {fileID: 1990355146}
   shakeSlider: {fileID: 129276402}
   shakeText: {fileID: 996429227}
   backgroundSprite: {fileID: 356708860}
@@ -10826,7 +10814,7 @@ GameObject:
   - component: {fileID: 1990355145}
   - component: {fileID: 1990355146}
   m_Layer: 5
-  m_Name: Transistion Group
+  m_Name: Fade Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
