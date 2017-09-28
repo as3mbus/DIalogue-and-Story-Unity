@@ -23,7 +23,7 @@ public class PhaseCreator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        picker.Color = Color.black;
+        picker.Color = Color.yellow;
     }
     void Update()
     {
@@ -74,7 +74,6 @@ public class PhaseCreator : MonoBehaviour
     {
         if (targetPhase.messages.Count <= 1)
             return;
-        print("pre add " +currentLine);
         targetPhase.UpdateLine(
             characterDDown.captionText.text,
             messageField.text, pageDDown.value,
@@ -86,9 +85,7 @@ public class PhaseCreator : MonoBehaviour
             Phase.parseFadeMode(fadeToggle.ActiveToggles().FirstOrDefault().GetComponentInChildren<Text>().text),
             colorToggle.isOn ? picker.Color : Color.black,
             currentLine);
-
         currentLine = lineDDown.value;
-        print(currentLine);
         loadLine(currentLine);
     }
     public void savePhase()
@@ -108,6 +105,21 @@ public class PhaseCreator : MonoBehaviour
             cam.transform.position = targetPhase.paths[index];
             cam.orthographicSize = targetPhase.zooms[index];
             lineDDown.captionText.text = "Line " + (index + 1);
+            if (Mathf.Abs(targetPhase.baloonpos[index].x)
+            + Mathf.Abs(targetPhase.baloonpos[index].y) != 0)
+            {
+                baloonToggle.isOn = true;
+                TextBaloon.transform.localPosition = targetPhase.baloonpos[index];
+                TextBaloon.transform.localScale = new Vector2(targetPhase.baloonsize[index], targetPhase.baloonsize[index]);
+            }
+            shakeSlider.value = targetPhase.shake[index];
+            foreach (Toggle togle in fadeToggle.GetComponentsInChildren<Toggle>())
+            {
+                if (togle.GetComponentInChildren<Text>().text.ToLower() == targetPhase.fademode[index].ToString("g").ToLower())
+                    togle.isOn = true;
+            }
+
+
         }
         else
         {
