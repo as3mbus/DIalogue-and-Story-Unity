@@ -6,7 +6,7 @@ public class MouseCamControlPan : MonoBehaviour
 {
     public float camSensitivity = 1f, zoomSensitivity = 1f ;
 
-    private float mouseX, mouseY,zoom = 5;
+    public float mouseX, mouseY,zoom = 5;
 
     // Use this for initialization
     void Start()
@@ -35,6 +35,7 @@ public class MouseCamControlPan : MonoBehaviour
     void Update()
     {
 		zoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+        zoom = zoom<0.1f? 0.1f : zoom;
         if (Input.GetButton("Fire1"))
         {
             mouseRead();

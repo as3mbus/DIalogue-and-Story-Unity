@@ -10,6 +10,7 @@ public class PhaseCreator : MonoBehaviour
     public InputField messageField;
     public Dropdown characterDDown, pageDDown, lineDDown;
     public StoryCreatorControl storyController;
+    public Toggle baloonToggle;
     public Text statusText;
     public Phase targetPhase;
     public SpriteRenderer backgroundSprite;
@@ -18,7 +19,7 @@ public class PhaseCreator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        targetPhase=new Phase();
+        targetPhase = new Phase();
     }
 
     // Update is called once per frame
@@ -54,7 +55,7 @@ public class PhaseCreator : MonoBehaviour
     {
         if (targetPhase.messages.Count == 0)
             lineDDown.captionText.text = "Line 1";
-        targetPhase.insertLine(lineDDown.value+1);
+        targetPhase.insertLine(lineDDown.value + 1);
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
         lineDDown.value++;
     }
@@ -69,7 +70,6 @@ public class PhaseCreator : MonoBehaviour
     public void savePhase()
     {
         lineDDown.value = -1;
-        resetInterface();
         storyController.gameObject.SetActive(true);
         storyController.contentPhaseButtonUpdate(targetPhase);
         this.gameObject.SetActive(false);
@@ -101,21 +101,24 @@ public class PhaseCreator : MonoBehaviour
         pageDDown.captionText.text = pageDDown.options[0].text;
         loadLine(0);
     }
+    void setBaloonCamControl(bool active)
+    {
+        TextBaloon.SetActive(active);
+        cam.GetComponent<MouseCamControlPan>().enabled = active;
+    }
     void OnEnable()
     {
-        TextBaloon.SetActive(true);
-        cam.GetComponent<MouseCamControlPan>().enabled = true;
+        setBaloonCamControl(true);
     }
     void OnDisable()
     {
-        TextBaloon.SetActive(false);
-        cam.GetComponent<MouseCamControlPan>().enabled = false;
+        resetInterface();
+        setBaloonCamControl(false);
     }
     public void resetCam()
     {
         cam.transform.position = new Vector3(0, 0, -10);
         cam.orthographicSize = 5;
-        cam.GetComponent<MouseCamControlPan>().enabled = false;
     }
     public void addDropdownOption(Dropdown dropdown, string[] options)
     {
@@ -128,6 +131,7 @@ public class PhaseCreator : MonoBehaviour
     {
         backgroundSprite.sprite = targetPhase.comic.pages[pageDDown.value];
     }
+
     void resetInterface()
     {
         pageDDown.ClearOptions();
@@ -138,5 +142,11 @@ public class PhaseCreator : MonoBehaviour
         lineDDown.value = 0;
         lineDDown.captionText.text = "";
         resetCam();
+    }
+    public void toggleBaloon()
+    {
+        TextBaloon.transform.position = new Vector3(0,0,-1);
+        TextBaloon.transform.localScale = Vector3.one;
+        TextBaloon.SetActive(baloonToggle.isOn);
     }
 }
