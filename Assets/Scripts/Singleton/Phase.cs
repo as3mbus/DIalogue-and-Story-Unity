@@ -10,8 +10,16 @@ namespace as3mbus.Story
     {
         none, color, transition
     }
+
     public class Phase
     {
+        public static fadeMode parseFadeMode(string fM)
+        {
+            return
+                fM.ToLower() == "transition" ? fadeMode.transition
+                : fM.ToLower() == "color" ? fadeMode.color :
+                fadeMode.none;
+        }
 
         public string name;
         public Comic comic;
@@ -125,6 +133,20 @@ namespace as3mbus.Story
                 writer.Write(item);
             }
             writer.WriteArrayEnd();
+            writer.WritePropertyName("character");
+            writer.WriteArrayStart();
+            foreach (var item in this.characters)
+            {
+                writer.Write(item);
+            }
+            writer.WriteArrayEnd();
+            writer.WritePropertyName("message");
+            writer.WriteArrayStart();
+            foreach (var item in this.messages)
+            {
+                writer.Write(item);
+            }
+            writer.WriteArrayEnd();
             writer.WritePropertyName("camx");
             writer.WriteArrayStart();
             foreach (var item in this.paths)
@@ -146,16 +168,30 @@ namespace as3mbus.Story
                 writer.Write(item);
             }
             writer.WriteArrayEnd();
-            writer.WritePropertyName("character");
+            writer.WritePropertyName("shake");
             writer.WriteArrayStart();
-            foreach (var item in this.characters)
+            foreach (var item in this.shake)
             {
                 writer.Write(item);
             }
             writer.WriteArrayEnd();
-            writer.WritePropertyName("message");
+            writer.WritePropertyName("baloonx");
             writer.WriteArrayStart();
-            foreach (var item in this.messages)
+            foreach (var item in this.baloonpos)
+            {
+                writer.Write(item.x);
+            }
+            writer.WriteArrayEnd();
+            writer.WritePropertyName("baloony");
+            writer.WriteArrayStart();
+            foreach (var item in this.baloonpos)
+            {
+                writer.Write(item.y);
+            }
+            writer.WriteArrayEnd();
+            writer.WritePropertyName("baloonsize");
+            writer.WriteArrayStart();
+            foreach (var item in this.baloonsize)
             {
                 writer.Write(item);
             }
@@ -178,19 +214,28 @@ namespace as3mbus.Story
             this.pages.Add(0);
             this.characters.Add("");
             this.messages.Add("");
-            this.zooms.Add(5f);
             this.paths.Add(new Vector3(0, 0, -10));
+            this.zooms.Add(5f);
+            this.shake.Add(0);
+            this.baloonpos.Add(new Vector3(0,0, 8));
+            this.baloonsize.Add(1);
             this.fademode.Add(fadeMode.none);
+            this.bgcolor.Add(Color.black);
         }
 
         public void deleteLine(int index)
         {
+            
             this.pages.RemoveAt(index);
             this.characters.RemoveAt(index);
             this.messages.RemoveAt(index);
-            this.zooms.RemoveAt(index);
             this.paths.RemoveAt(index);
+            this.zooms.RemoveAt(index);
+            this.shake.RemoveAt(index);
+            this.baloonpos.RemoveAt(index);
+            this.baloonsize.RemoveAt(index);
             this.fademode.RemoveAt(index);
+            this.bgcolor.RemoveAt(index);
         }
 
         public void UpdateLine(string character, string message, int pageNo, float zoom, Vector3 path, int index)
@@ -205,11 +250,11 @@ namespace as3mbus.Story
         public void UpdateLine(
             string character,
             string message,
-            int pageNo, 
-            float zoom, 
-            Vector3 path, 
-            float shake, 
-            Vector3 balooncor, 
+            int pageNo,
+            float zoom,
+            Vector3 path,
+            float shake,
+            Vector3 balooncor,
             float baloonsize,
             fadeMode fadeMode,
             Color bakgron,
@@ -221,17 +266,25 @@ namespace as3mbus.Story
             this.zooms[index] = zoom;
             this.paths[index] = path;
             this.shake[index] = shake;
+            this.baloonpos[index] = balooncor;
+            this.baloonsize[index] = baloonsize;
+            this.fademode[index] = fadeMode;
+            this.bgcolor[index] = bakgron;
             Debug.Log(this.toJson());
         }
 
         public void insertLine(int index)
         {
             this.pages.Insert(index, 0);
-            this.zooms.Insert(index, 5f);
-            this.paths.Insert(index, new Vector3(0, 0, -10));
             this.characters.Insert(index, "");
             this.messages.Insert(index, "");
-            this.fademode.Insert(index, fadeMode.none);
+            this.paths.Insert(index, new Vector3(0, 0, -10));
+            this.zooms.Insert(index, 5f);
+            this.shake.Insert(index, 0);
+            this.baloonpos.Insert(index, new Vector3(0,0, 8));
+            this.baloonsize.Insert(index,1);
+            this.fademode.Insert(index,fadeMode.none);
+            this.bgcolor.Insert(index, Color.black);
         }
     }
 }
