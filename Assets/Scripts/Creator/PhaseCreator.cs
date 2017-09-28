@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using as3mbus.Story;
@@ -10,22 +11,27 @@ public class PhaseCreator : MonoBehaviour
     public InputField messageField;
     public Dropdown characterDDown, pageDDown, lineDDown;
     public StoryCreatorControl storyController;
-    public Toggle baloonToggle;
+    public Toggle baloonToggle, colorToggle, pickerToggle;
+    public ToggleGroup fadeToggle;
     public Phase targetPhase;
+    public Slider shakeSlider;
+    public Text shakeText;
     public SpriteRenderer backgroundSprite;
-    public GameObject TextBaloon;
+    public GameObject TextBaloon, pickerPanel;
     public int currentLine = 0;
     // Use this for initialization
     void Start()
     {
         targetPhase = new Phase();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void colorToggled()
     {
+        pickerToggle.gameObject.SetActive(colorToggle.isOn);
     }
-
+    public void pickerToggled()
+    {
+        pickerPanel.SetActive(pickerToggle.isOn);
+    }
     public void newLine()
     {
         targetPhase.newLine();
@@ -99,19 +105,17 @@ public class PhaseCreator : MonoBehaviour
         pageDDown.captionText.text = pageDDown.options[0].text;
         loadLine(0);
     }
-    void setBaloonCamControl(bool active)
-    {
-        TextBaloon.SetActive(active);
-        cam.GetComponent<MouseCamControlPan>().enabled = active;
-    }
     void OnEnable()
     {
-        setBaloonCamControl(true);
+        activeCamDrag(true);
     }
     void OnDisable()
     {
         resetInterface();
-        setBaloonCamControl(false);
+        activeCamDrag(false);
+    }
+    public void activeCamDrag(bool active){
+        cam.GetComponent<MouseCamControlPan>().enabled = active;
     }
     public void resetCam()
     {
@@ -124,6 +128,9 @@ public class PhaseCreator : MonoBehaviour
         {
             dropdown.options.Add(new Dropdown.OptionData(option));
         }
+    }
+    public void changeShake(){
+        shakeText.text = "Shake : "+shakeSlider.value;
     }
     public void pageChange()
     {
@@ -143,8 +150,10 @@ public class PhaseCreator : MonoBehaviour
     }
     public void toggleBaloon()
     {
-        TextBaloon.transform.position = new Vector3(0,0,-1);
+        TextBaloon.transform.localPosition = new Vector3(0,0,8);
         TextBaloon.transform.localScale = Vector3.one;
         TextBaloon.SetActive(baloonToggle.isOn);
     }
+            // Debug.Log(fadeToggle.ActiveToggles().FirstOrDefault().GetComponentInChildren<Text>().text);
+
 }
