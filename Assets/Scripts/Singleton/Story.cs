@@ -90,7 +90,8 @@ namespace as3mbus.Story
             this.name = storyJson["name"].ToString();
             foreach (JsonData cerita in storyJson["phase"])
             {
-                Phase fase = new Phase(cerita);
+                Phase fase =  new Phase();;
+                fase = fase.parseJson(cerita);
                 this.phases.Add(fase);
             }
         }

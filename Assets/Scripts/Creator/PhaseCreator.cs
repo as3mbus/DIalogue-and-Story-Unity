@@ -18,14 +18,21 @@ public class PhaseCreator : MonoBehaviour
     public Text shakeText;
     public SpriteRenderer backgroundSprite;
     public GameObject TextBaloon, pickerPanel;
+    public CUIColorPicker picker;
     public int currentLine = 0;
     // Use this for initialization
     void Start()
     {
         targetPhase = new Phase();
+        picker.Color=Color.black;
+    }
+    void Update(){
+        cam.backgroundColor = picker.Color;
+        pickerToggle.graphic.color=picker.Color;
     }
     public void colorToggled()
     {
+        pickerPanel.SetActive(colorToggle.isOn&& pickerToggle.isOn);
         pickerToggle.gameObject.SetActive(colorToggle.isOn);
     }
     public void pickerToggled()

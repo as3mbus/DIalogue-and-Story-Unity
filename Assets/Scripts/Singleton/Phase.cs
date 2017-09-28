@@ -16,24 +16,23 @@ namespace as3mbus.Story
         public string name;
         public Comic comic;
         public List<int> pages = new List<int>();
+        public List<string> characters = new List<string>();
+        public List<string> messages = new List<string>();
         public List<Vector3> paths = new List<Vector3>();
         public List<float> zooms = new List<float>();
         public List<float> shake = new List<float>();
         public List<Vector3> baloonpos = new List<Vector3>();
         public List<float> baloonsize = new List<float>();
-        public List<string> characters = new List<string>();
-        public List<string> messages = new List<string>();
-        public List<string> animations = new List<string>();
         public List<fadeMode> fademode = new List<fadeMode>();
+        public List<Color> bgcolor = new List<Color>();
         public Phase()
         {
-            this.name = "";
-            this.comic = new Comic("sample comic");
+
         }
         public Phase(string name, string bundleName, string comicPath)
         {
             this.name = name;
-            this.comic = new Comic(bundleName,comicPath);
+            this.comic = new Comic(bundleName, comicPath);
         }
         public Phase(JsonData chara, JsonData msg)
         {
@@ -44,45 +43,46 @@ namespace as3mbus.Story
             }
         }
 
-        public Phase(JsonData phaseData)
+        public Phase parseJson(JsonData phaseData)
         {
+            Phase fase = new Phase();
             try
             {
-                this.name = phaseData["name"].ToString();
-                this.comic = new Comic(phaseData["comic"]);
+                fase.name = phaseData["name"].ToString();
+                fase.comic = new Comic(phaseData["comic"]);
                 for (int i = 0; i < phaseData["message"].Count; i++)
                 {
 
-                    this.pages.Add((int)phaseData["page"][i]);
-                    this.paths.Add(
+                    fase.pages.Add((int)phaseData["page"][i]);
+                    fase.paths.Add(
                         new Vector3(
                             float.Parse(phaseData["camx"][i].ToString()),
                             float.Parse(phaseData["camy"][i].ToString()),
                             -10f
                         )
                     );
-                    this.baloonpos.Add(
+                    fase.baloonpos.Add(
                         new Vector3(
                             float.Parse(phaseData["baloonx"][i].ToString()),
                             float.Parse(phaseData["baloony"][i].ToString()),
                             -1
                         )
                     );
-                    this.baloonsize.Add(float.Parse(phaseData["baloonsize"][i].ToString()));
+                    fase.baloonsize.Add(float.Parse(phaseData["baloonsize"][i].ToString()));
                     Debug.Log("Testing " + paths[i].ToString());
-                    this.zooms.Add(float.Parse(phaseData["zoom"][i].ToString()));
-                    this.characters.Add(phaseData["character"][i].ToString());
-                    this.messages.Add(phaseData["message"][i].ToString());
+                    fase.zooms.Add(float.Parse(phaseData["zoom"][i].ToString()));
+                    fase.characters.Add(phaseData["character"][i].ToString());
+                    fase.messages.Add(phaseData["message"][i].ToString());
                     switch (phaseData["fademode"][i].ToString())
                     {
                         case "transition":
-                            this.fademode.Add(fadeMode.transition);
+                            fase.fademode.Add(fadeMode.transition);
                             break;
                         case "color":
-                            this.fademode.Add(fadeMode.color);
+                            fase.fademode.Add(fadeMode.color);
                             break;
                         default:
-                            this.fademode.Add(fadeMode.none);
+                            fase.fademode.Add(fadeMode.none);
                             break;
                     }
                 }
@@ -91,11 +91,12 @@ namespace as3mbus.Story
             {
                 for (int i = 0; i < phaseData["message"].Count; i++)
                 {
-                    this.characters.Add(phaseData["character"][i].ToString());
-                    this.messages.Add(phaseData["message"][i].ToString());
+                    fase.characters.Add(phaseData["character"][i].ToString());
+                    fase.messages.Add(phaseData["message"][i].ToString());
                 }
                 throw;
             }
+            return fase;
 
         }
 
@@ -175,21 +176,21 @@ namespace as3mbus.Story
         public void newLine()
         {
             this.pages.Add(0);
-            this.zooms.Add(5f);
-            this.paths.Add(new Vector3(0, 0, -10));
             this.characters.Add("");
             this.messages.Add("");
-            this.animations.Add("");
+            this.zooms.Add(5f);
+            this.paths.Add(new Vector3(0, 0, -10));
+            this.fademode.Add(fadeMode.none);
         }
 
         public void deleteLine(int index)
         {
             this.pages.RemoveAt(index);
-            this.zooms.RemoveAt(index);
-            this.paths.RemoveAt(index);
             this.characters.RemoveAt(index);
             this.messages.RemoveAt(index);
-            this.animations.RemoveAt(index);
+            this.zooms.RemoveAt(index);
+            this.paths.RemoveAt(index);
+            this.fademode.RemoveAt(index);
         }
 
         public void UpdateLine(string character, string message, int pageNo, float zoom, Vector3 path, int index)
@@ -201,6 +202,27 @@ namespace as3mbus.Story
             this.messages[index] = message;
             Debug.Log(this.toJson());
         }
+        public void UpdateLine(
+            string character,
+            string message,
+            int pageNo, 
+            float zoom, 
+            Vector3 path, 
+            float shake, 
+            Vector3 balooncor, 
+            float baloonsize,
+            fadeMode fadeMode,
+            Color bakgron,
+            int index)
+        {
+            this.pages[index] = pageNo;
+            this.characters[index] = character;
+            this.messages[index] = message;
+            this.zooms[index] = zoom;
+            this.paths[index] = path;
+            this.shake[index] = shake;
+            Debug.Log(this.toJson());
+        }
 
         public void insertLine(int index)
         {
@@ -209,7 +231,7 @@ namespace as3mbus.Story
             this.paths.Insert(index, new Vector3(0, 0, -10));
             this.characters.Insert(index, "");
             this.messages.Insert(index, "");
-            this.animations.Insert(index, "");
+            this.fademode.Insert(index, fadeMode.none);
         }
     }
 }
