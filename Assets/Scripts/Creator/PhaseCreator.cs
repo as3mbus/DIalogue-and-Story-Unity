@@ -37,18 +37,21 @@ public class PhaseCreator : MonoBehaviour
     {
 
     }
-    public void colorToggled()
-    {
-        pickerPanel.SetActive(colorToggle.isOn && !pickerToggle.isOn);
-        pickerToggle.gameObject.SetActive(colorToggle.isOn);
-    }
-    public void pickerToggled()
-    {
-        pickerPanel.SetActive(!pickerToggle.isOn);
-    }
+
+    /* =============== */
+    /* =Main Function= */
+    /* =============== */
     public void newLine()
     {
         targetPhase.newLine();
+        lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
+        lineDDown.value++;
+    }
+    public void insertLine()
+    {
+        if (targetPhase.messages.Count == 0)
+            lineDDown.captionText.text = "Line 1";
+        targetPhase.insertLine(lineDDown.value + 1);
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
         lineDDown.value++;
     }
@@ -69,14 +72,6 @@ public class PhaseCreator : MonoBehaviour
         else
             insertLine();
     }
-    public void insertLine()
-    {
-        if (targetPhase.messages.Count == 0)
-            lineDDown.captionText.text = "Line 1";
-        targetPhase.insertLine(lineDDown.value + 1);
-        lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
-        lineDDown.value++;
-    }
     public void changeLine()
     {
         if (targetPhase.messages.Count <= 1)
@@ -87,7 +82,7 @@ public class PhaseCreator : MonoBehaviour
     }
     public void saveLine()
     {
-        if(targetPhase.messages.Count==0) return;
+        if (targetPhase.messages.Count == 0) return;
         targetPhase.UpdateLine(
             characterDDown.captionText.text,
             messageField.text, pageDDown.value,
@@ -105,7 +100,7 @@ public class PhaseCreator : MonoBehaviour
         saveLine();
         lineDDown.value = 0;
         storyController.gameObject.SetActive(true);
-        storyController.contentPhaseButtonUpdate(targetPhase);
+        storyController.contentButtonUpdate(targetPhase);
         this.gameObject.SetActive(false);
     }
     public void loadLine(int index)
@@ -140,6 +135,7 @@ public class PhaseCreator : MonoBehaviour
             lineDDown.value = -1;
             lineDDown.captionText.text = "";
         }
+
     }
     public void loadPhase(Phase fase)
     {
@@ -147,36 +143,43 @@ public class PhaseCreator : MonoBehaviour
         for (int i = 0; i < fase.messages.Count; i++)
             lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
         addDropdownOption(pageDDown, fase.comic.pagename.ToArray());
-       
+
         pageDDown.value = 0;
         pageDDown.captionText.text = pageDDown.options[0].text;
         loadLine(0);
     }
+    /* ====END OF===== */
+    /* =Main Function= */
+    /* =============== */
+
+    /* =============== */
+    /* =LOOK AND FEEL= */
+    /* =============== */
+
+    public void colorToggled()
+    {
+        pickerPanel.SetActive(colorToggle.isOn && !pickerToggle.isOn);
+        pickerToggle.gameObject.SetActive(colorToggle.isOn);
+    }
+    public void pickerToggled()
+    {
+        pickerPanel.SetActive(!pickerToggle.isOn);
+    }
     void OnEnable()
     {
-        activeCamDrag(true);
+        cam.GetComponent<MouseCamControlPan>().enabled = true;
     }
     void OnDisable()
     {
         resetInterface();
-        activeCamDrag(false);
-    }
-    public void activeCamDrag(bool active)
-    {
-        cam.GetComponent<MouseCamControlPan>().enabled = active;
+        cam.GetComponent<MouseCamControlPan>().enabled = false;
     }
     public void resetCam()
     {
         cam.transform.position = new Vector3(0, 0, -10);
         cam.orthographicSize = 5;
     }
-    public void addDropdownOption(Dropdown dropdown, string[] options)
-    {
-        foreach (string option in options)
-        {
-            dropdown.options.Add(new Dropdown.OptionData(option));
-        }
-    }
+
     public void changeShake()
     {
         shakeText.text = shakeSlider.value.ToString();
@@ -197,12 +200,31 @@ public class PhaseCreator : MonoBehaviour
         lineDDown.captionText.text = "";
         resetCam();
     }
+
     public void toggleBaloon()
     {
         TextBaloon.transform.localPosition = new Vector3(0, 0, 8);
         TextBaloon.transform.localScale = Vector3.one;
         TextBaloon.SetActive(baloonToggle.isOn);
     }
-    // Debug.Log(fadeToggle.ActiveToggles().FirstOrDefault().GetComponentInChildren<Text>().text);
+
+    /* ====END OF===== */
+    /* =LOOK AND FEEL= */
+    /* =============== */
+
+    /* =============== */
+    /* ==STATIC-ABLE== */
+    /* =============== */
+
+
+    public void addDropdownOption(Dropdown dropdown, string[] options)
+    {
+        foreach (string option in options)
+            dropdown.options.Add(new Dropdown.OptionData(option));
+    }
+
+    /* ====END OF===== */
+    /* ==STATIC-ABLE== */
+    /* =============== */
 
 }

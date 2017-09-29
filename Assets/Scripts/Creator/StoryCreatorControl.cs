@@ -19,6 +19,7 @@ public class StoryCreatorControl : MonoBehaviour
     string[] activeComics;
 
     // Use this for initialization
+
     void Start()
     {
         targetStory = new Story();
@@ -32,18 +33,17 @@ public class StoryCreatorControl : MonoBehaviour
         bundleDropdown.captionText.text = bundleDropdown.options[0].text;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    /* ====END OF===== */
+    /* =MAIN FUNCTION= */
+    /* =============== */
 
-    }
     public void newPhases()
     {
         typeWindowActive(true);
     }
     public void createPhase()
     {
-        targetStory.phases.Add(new Phase(phaseNameField.text, bundleDropdown.captionText.text,comicDropdown.captionText.text));
+        targetStory.phases.Add(new Phase(phaseNameField.text, bundleDropdown.captionText.text, comicDropdown.captionText.text));
         typeWindowActive(false);
         print(targetStory.toJson());
         newContentButton();
@@ -52,66 +52,24 @@ public class StoryCreatorControl : MonoBehaviour
     {
         typeWindowActive(false);
     }
-    void typeWindowActive(bool mode)
-    {
-        phasePanel.SetActive(mode);
-        var storyButtons = GetComponentsInChildren<Button>();
-        GetComponentInChildren<InputField>().interactable = !mode;
-        foreach (var button in storyButtons)
-        {
-            button.interactable = !mode;
-        }
-    }
-    void addDropdownOptions(Dropdown DD, string[] optionsArray)
-    {
-        foreach (string comic in optionsArray)
-        {
-            DD.options.Add(new Dropdown.OptionData(Path.GetFileName(comic)));
-        }
-        // var comicPath = "jar:file://" + Application.dataPath + "!/assets/Comic/";
-        // var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
-        // foreach (DirectoryInfo dir in comicDirectories) comicDropdown.options.Add(new Dropdown.OptionData(dir.Name));
-    }
-
-    void contentResize()
-    {
-        Vector2 contentSize = phaseScrollView.content.sizeDelta;
-        contentSize.y = 250 * (targetStory.phases.Count + 1) + 50;
-        phaseScrollView.content.sizeDelta = contentSize;
-    }
-    void newContentButton()
-    {
-        GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.content);
-        Vector3 newpos = newButton.GetComponent<RectTransform>().localPosition;
-        newpos.y -= 250 * (targetStory.phases.Count - 1);
-        newButton.GetComponent<RectTransform>().localPosition = newpos;
-        newButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => editPhase());
-        newButton.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => deletePhase());
-
-        contentButtonUpdate(newButton);
-        newpos.y -= 250;
-        newPhaseButton.GetComponent<RectTransform>().localPosition = newpos;
-        contentResize();
-    }
-    void contentButtonUpdate(GameObject button)
+    public void contentButtonUpdate(GameObject button)
     {
         int index = button.transform.GetSiblingIndex() - 1;
         Phase fase = (Phase)targetStory.phases[index];
-        button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = fase.name;
-        button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "";
-        button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.toString();
-        button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.messages.Count.ToString() + " Line";
+        contentButtonUpdate(fase, button);
     }
-    public void contentPhaseButtonUpdate(Phase fase)
+    public void contentButtonUpdate(Phase fase)
     {
         int index = targetStory.phases.IndexOf(fase) + 1;
         GameObject button = phaseScrollView.content.GetChild(index).gameObject;
-
+        contentButtonUpdate(fase, button);
+    }
+    public void contentButtonUpdate(Phase fase, GameObject button)
+    {
         button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = fase.name;
         button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "";
         button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.toString();
         button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.messages.Count.ToString() + " Line";
-
     }
     public void editPhase()
     {
@@ -152,6 +110,14 @@ public class StoryCreatorControl : MonoBehaviour
         StoryManager.stringOrPath = targetStory.toJson();
         SceneManager.LoadScene("Player");
     }
+
+    /* ====END OF===== */
+    /* =Main Function= */
+    /* =============== */
+
+    /* =============== */
+    /* =LOOK AND FEEL= */
+    /* =============== */
     public void bundleChange()
     {
         comicDropdown.options.Clear();
@@ -160,8 +126,62 @@ public class StoryCreatorControl : MonoBehaviour
         else
             activeComics = ComicManager.getComics(ComicManager.readStreamBundles(Path.Combine(Application.persistentDataPath, bundleDropdown.captionText.text)));
         addDropdownOptions(comicDropdown, activeComics);
-        comicDropdown.value=0;
-        comicDropdown.captionText.text=comicDropdown.options[0].text;
+        comicDropdown.value = 0;
+        comicDropdown.captionText.text = comicDropdown.options[0].text;
     }
-    
+
+    void typeWindowActive(bool mode)
+    {
+        phasePanel.SetActive(mode);
+        var storyButtons = GetComponentsInChildren<Button>();
+        GetComponentInChildren<InputField>().interactable = !mode;
+        foreach (var button in storyButtons)
+        {
+            button.interactable = !mode;
+        }
+    }
+
+    void contentResize()
+    {
+        Vector2 contentSize = phaseScrollView.content.sizeDelta;
+        contentSize.y = 250 * (targetStory.phases.Count + 1) + 50;
+        phaseScrollView.content.sizeDelta = contentSize;
+    }
+    void newContentButton()
+    {
+        GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.content);
+        Vector3 newpos = newButton.GetComponent<RectTransform>().localPosition;
+        newpos.y -= 250 * (targetStory.phases.Count - 1);
+        newButton.GetComponent<RectTransform>().localPosition = newpos;
+        newButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => editPhase());
+        newButton.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => deletePhase());
+
+        contentButtonUpdate(newButton);
+        newpos.y -= 250;
+        newPhaseButton.GetComponent<RectTransform>().localPosition = newpos;
+        contentResize();
+    }
+    /* =====EMD OF==== */
+    /* =LOOK AND FEEL= */
+    /* =============== */
+
+    /* =============== */
+    /* ==STATIC-ABLE== */
+    /* =============== */
+
+    void addDropdownOptions(Dropdown DD, string[] optionsArray)
+    {
+        foreach (string comic in optionsArray)
+        {
+            DD.options.Add(new Dropdown.OptionData(Path.GetFileName(comic)));
+        }
+        // var comicPath = "jar:file://" + Application.dataPath + "!/assets/Comic/";
+        // var comicDirectories = new DirectoryInfo(comicPath).GetDirectories();
+        // foreach (DirectoryInfo dir in comicDirectories) comicDropdown.options.Add(new Dropdown.OptionData(dir.Name));
+    }
+    /* ====END OF===== */
+    /* ==STATIC-ABLE== */
+    /* =============== */
+
+
 }
