@@ -39,7 +39,7 @@ public class PhaseController : MonoBehaviour
 
     void Update()
     {
-        if(currentLine>=activePhase.messages.Count) return;
+        if (currentLine >= activePhase.messages.Count) return;
         if (Input.GetButtonDown("Fire1"))
         {
             times = duration;
@@ -67,40 +67,50 @@ public class PhaseController : MonoBehaviour
         if (activePhase.fademode[currentLine] != fadeMode.color)
             camRoute();
         shakeCamera(activePhase.shake[currentLine], shake);
+        showBaloon();
     }
     public void showLine(string line)
     {
         dText.text = line;
         currentChar = line.Length;
     }
+    public void showBaloon()
+    {
+        if (times >= duration&&!baloonPos.gameObject.activeSelf)
+        {
+            baloonPos.gameObject.SetActive(true);
+            baloonPos.GetComponent<Animation>().Play();
+        }
+    }
 
     public void readLine(int line)
     {
-        if(line>=activePhase.messages.Count) return;
-        if (activePhase.fademode[currentLine] != fadeMode.none)
+        if (line >= activePhase.messages.Count) return;
+        if (activePhase.fademode[line] != fadeMode.none)
         {
             pageLR = !pageLR;
             activePage().color = new Color(1, 1, 1, 0);
         }
-        baloonsizer.transform.localScale = new Vector2(activePhase.baloonsize[currentLine], activePhase.baloonsize[currentLine]);
+        baloonsizer.transform.localScale = new Vector2(activePhase.baloonsize[line], activePhase.baloonsize[line]);
         originPosition = kameraRoute.position;
         originZoom = kamera.GetComponent<Camera>().orthographicSize;
         times = 0;
+        duration = activePhase.duration[line];
         currentChar = 0;
         dPanel.SetActive(false);
         dName.text = activePhase.characters[line];
         dText.text = "";
         if (
-            Mathf.Abs(activePhase.baloonpos[currentLine].x)
-             + Mathf.Abs(activePhase.baloonpos[currentLine].y)
+            Mathf.Abs(activePhase.baloonpos[line].x)
+             + Mathf.Abs(activePhase.baloonpos[line].y)
              != 0)
         {
             baloonPos.gameObject.SetActive(true);
-            baloonPos.position = activePhase.baloonpos[currentLine];
-            baloonPos.GetComponent<Animation>().Play();
+            baloonPos.localPosition = activePhase.baloonpos[line];
+            baloonPos.gameObject.SetActive(false);
         }
-        else 
-                    baloonPos.gameObject.SetActive(false);
+        else
+            baloonPos.gameObject.SetActive(false);
 
     }
     public void textPerSec(float delay)

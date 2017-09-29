@@ -14,18 +14,19 @@ public class StorySceneController : MonoBehaviour
     {
         // try
         // {
-            cerita = new Story(StoryManager.storyType);
+        cerita = new Story(StoryManager.storyType);
         // }
         // catch (System.Exception)
         // {
         //     cerita = new Story(storyJson);
         // }
         currentPhase = 0;
-        nextPhase();
+        loadPhase(0);
     }
     void loadPhase(int number)
     {
-
+        if (number >= cerita.phases.Count)
+            return;
         phaseCanvas.SetActive(true);
         Phase fase = (Phase)cerita.phases[number];
         phaseCanvas.GetComponent<PhaseController>().startPhase(fase);
@@ -34,10 +35,8 @@ public class StorySceneController : MonoBehaviour
 
     public void nextPhase()
     {
-        if(currentPhase >= cerita.phases.Count) return;
+        if (currentPhase >= cerita.phases.Count) return;
         currentPhase++;
-        print(currentPhase);
-        print(cerita.phases.Count);
         if (currentPhase < cerita.phases.Count)
         {
             loadPhase(currentPhase);

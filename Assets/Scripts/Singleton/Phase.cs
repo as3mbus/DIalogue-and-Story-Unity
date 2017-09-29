@@ -76,7 +76,7 @@ namespace as3mbus.Story
                         new Vector3(
                             float.Parse(phaseData["baloonx"][i].ToString()),
                             float.Parse(phaseData["baloony"][i].ToString()),
-                            -1
+                            9
                         )
                     );
                     fase.baloonsize.Add(float.Parse(phaseData["baloonsize"][i].ToString()));
@@ -306,6 +306,7 @@ namespace as3mbus.Story
         {
             UpdateLine(character, message, pageNo, zoom, path, shake, balooncor, baloonsize, fadeMode, bakgron, index);
             this.duration[index]=duration;
+            Debug.Log(this.toJson());
         }
 
         public void insertLine(int index)

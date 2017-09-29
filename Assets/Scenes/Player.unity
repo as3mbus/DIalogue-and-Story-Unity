@@ -220,6 +220,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 850720746}
   - {fileID: 1475028123}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -261,13 +262,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 850720744}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1998638771}
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 139268620}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1223046496
 GameObject:
@@ -555,7 +556,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 139268620}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1584915024
 GameObject:
@@ -791,7 +792,7 @@ MonoBehaviour:
   speed: 5
   routeRadius: 1
   typeDelay: 0.2
-  duration: 2
+  duration: 10
   times: 0
   pageLR: 1
   shake: 0.2
