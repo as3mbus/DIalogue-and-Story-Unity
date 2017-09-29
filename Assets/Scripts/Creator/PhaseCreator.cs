@@ -179,7 +179,7 @@ public class PhaseCreator : MonoBehaviour
     }
     public void changeShake()
     {
-        shakeText.text = "Shake : " + shakeSlider.value;
+        shakeText.text = shakeSlider.value.ToString();
     }
     public void changePage()
     {
