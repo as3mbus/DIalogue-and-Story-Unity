@@ -33,6 +33,7 @@ namespace as3mbus.Story
         public List<float> baloonsize = new List<float>();
         public List<fadeMode> fademode = new List<fadeMode>();
         public List<Color> bgcolor = new List<Color>();
+        public List<float> duration = new List<float>();
         public Phase()
         {
 
@@ -95,6 +96,8 @@ namespace as3mbus.Story
                             break;
                     }
                     fase.bgcolor.Add(parseColorFromString(phaseData["background"][i].ToString()));
+                    fase.duration.Add(float.Parse(phaseData["duration"][i].ToString()));
+
                 }
             }
             catch (System.Exception)
@@ -212,6 +215,14 @@ namespace as3mbus.Story
                 writer.Write(ColorUtility.ToHtmlStringRGB(item));
             }
             writer.WriteArrayEnd();
+            writer.WritePropertyName("duration");
+            writer.WriteArrayStart();
+            foreach (var item in this.duration)
+            {
+                writer.Write(item);
+            }
+            writer.WriteArrayEnd();
+
             //writer.Write(string.Join("", new List<int>(array).ConvertAll(i => i.ToString()).ToArray()));
             // writer.WriteArrayEnd();
 
@@ -226,15 +237,16 @@ namespace as3mbus.Story
             this.paths.Add(new Vector3(0, 0, -10));
             this.zooms.Add(5f);
             this.shake.Add(0);
-            this.baloonpos.Add(new Vector3(0,0, 8));
+            this.baloonpos.Add(new Vector3(0, 0, 8));
             this.baloonsize.Add(1);
             this.fademode.Add(fadeMode.none);
             this.bgcolor.Add(Color.black);
+            this.duration.Add(1);
         }
 
         public void deleteLine(int index)
         {
-            
+
             this.pages.RemoveAt(index);
             this.characters.RemoveAt(index);
             this.messages.RemoveAt(index);
@@ -245,15 +257,16 @@ namespace as3mbus.Story
             this.baloonsize.RemoveAt(index);
             this.fademode.RemoveAt(index);
             this.bgcolor.RemoveAt(index);
+            this.duration.RemoveAt(index);
         }
 
         public void UpdateLine(string character, string message, int pageNo, float zoom, Vector3 path, int index)
         {
             this.pages[index] = pageNo;
-            this.zooms[index] = zoom;
-            this.paths[index] = path;
             this.characters[index] = character;
             this.messages[index] = message;
+            this.zooms[index] = zoom;
+            this.paths[index] = path;
             // Debug.Log(this.toJson());
         }
         public void UpdateLine(
@@ -269,17 +282,30 @@ namespace as3mbus.Story
             Color bakgron,
             int index)
         {
-            this.pages[index] = pageNo;
-            this.characters[index] = character;
-            this.messages[index] = message;
-            this.zooms[index] = zoom;
-            this.paths[index] = path;
+            UpdateLine(character, message, pageNo, zoom, path, index);
             this.shake[index] = shake;
             this.baloonpos[index] = balooncor;
             this.baloonsize[index] = baloonsize;
             this.fademode[index] = fadeMode;
             this.bgcolor[index] = bakgron;
             // Debug.Log(this.toJson());
+        }
+        public void UpdateLine(
+            string character,
+            string message,
+            int pageNo,
+            float zoom,
+            Vector3 path,
+            float shake,
+            Vector3 balooncor,
+            float baloonsize,
+            fadeMode fadeMode,
+            Color bakgron,
+            float duration,
+            int index)
+        {
+            UpdateLine(character, message, pageNo, zoom, path, shake, balooncor, baloonsize, fadeMode, bakgron, index);
+            this.duration[index]=duration;
         }
 
         public void insertLine(int index)
@@ -290,14 +316,16 @@ namespace as3mbus.Story
             this.paths.Insert(index, new Vector3(0, 0, -10));
             this.zooms.Insert(index, 5f);
             this.shake.Insert(index, 0);
-            this.baloonpos.Insert(index, new Vector3(0,0, 8));
-            this.baloonsize.Insert(index,1);
-            this.fademode.Insert(index,fadeMode.none);
+            this.baloonpos.Insert(index, new Vector3(0, 0, 8));
+            this.baloonsize.Insert(index, 1);
+            this.fademode.Insert(index, fadeMode.none);
             this.bgcolor.Insert(index, Color.black);
+            this.duration.Insert(index, 1);
         }
-        public static Color parseColorFromString(string s){
+        public static Color parseColorFromString(string s)
+        {
             Color c;
-            ColorUtility.TryParseHtmlString(s,out c);
+            ColorUtility.TryParseHtmlString(s, out c);
             return c;
         }
     }

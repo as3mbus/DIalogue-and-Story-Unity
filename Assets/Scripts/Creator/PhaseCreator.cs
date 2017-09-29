@@ -15,8 +15,8 @@ public class PhaseCreator : MonoBehaviour
     public Toggle baloonToggle, colorToggle, pickerToggle;
     public ToggleGroup fadeToggle;
     public Phase targetPhase;
-    public Slider shakeSlider;
-    public Text shakeText;
+    public Slider shakeSlider, durationSlider;
+    public Text shakeText,durationText;
     public SpriteRenderer backgroundSprite;
     public GameObject TextBaloon, pickerPanel;
     public CUIColorPicker picker;
@@ -93,6 +93,7 @@ public class PhaseCreator : MonoBehaviour
             baloonToggle.IsActive() ? TextBaloon.transform.localScale.x : 0,
             Phase.parseFadeMode(fadeToggle.ActiveToggles().FirstOrDefault().GetComponentInChildren<Text>().text),
             colorToggle.isOn ? picker.Color : Color.black,
+            durationSlider.value,
             currentLine);
     }
     public void savePhase()
@@ -127,6 +128,7 @@ public class PhaseCreator : MonoBehaviour
                 if (togle.GetComponentInChildren<Text>().text.ToLower() == targetPhase.fademode[index].ToString("g").ToLower())
                     togle.isOn = true;
             picker.Color = targetPhase.bgcolor[index];
+            durationSlider.value = targetPhase.duration[index];
 
 
         }
@@ -183,6 +185,10 @@ public class PhaseCreator : MonoBehaviour
     public void changeShake()
     {
         shakeText.text = shakeSlider.value.ToString();
+    }
+    public void changeDuration()
+    {
+        durationText.text = "Duration : " +durationSlider.value.ToString();
     }
     public void changePage()
     {
