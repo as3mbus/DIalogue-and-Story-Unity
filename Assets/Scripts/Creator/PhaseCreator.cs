@@ -81,6 +81,12 @@ public class PhaseCreator : MonoBehaviour
     {
         if (targetPhase.messages.Count <= 1)
             return;
+        saveLine();
+        currentLine = lineDDown.value;
+        loadLine(currentLine);
+    }
+    public void saveLine()
+    {
         targetPhase.UpdateLine(
             characterDDown.captionText.text,
             messageField.text, pageDDown.value,
@@ -92,12 +98,11 @@ public class PhaseCreator : MonoBehaviour
             Phase.parseFadeMode(fadeToggle.ActiveToggles().FirstOrDefault().GetComponentInChildren<Text>().text),
             colorToggle.isOn ? picker.Color : Color.black,
             currentLine);
-        currentLine = lineDDown.value;
-        loadLine(currentLine);
     }
     public void savePhase()
     {
-        lineDDown.value = -1;
+        saveLine();
+        lineDDown.value = 0;
         storyController.gameObject.SetActive(true);
         storyController.contentPhaseButtonUpdate(targetPhase);
         this.gameObject.SetActive(false);
@@ -106,6 +111,7 @@ public class PhaseCreator : MonoBehaviour
     {
         if (targetPhase.messages.Count > 0)
         {
+            lineDDown.captionText.text = lineDDown.options[index].text;
             characterDDown.value = characterDDown.options.IndexOf(characterDDown.options.Find(x => x.text == targetPhase.characters[index]));
             messageField.text = targetPhase.messages[index];
             pageDDown.value = targetPhase.pages[index];
@@ -119,6 +125,7 @@ public class PhaseCreator : MonoBehaviour
                 TextBaloon.transform.localPosition = targetPhase.baloonpos[index];
                 TextBaloon.transform.localScale = new Vector2(targetPhase.baloonsize[index], targetPhase.baloonsize[index]);
             }
+            else baloonToggle.isOn = false;
             shakeSlider.value = targetPhase.shake[index];
             foreach (Toggle togle in fadeToggle.GetComponentsInChildren<Toggle>())
                 if (togle.GetComponentInChildren<Text>().text.ToLower() == targetPhase.fademode[index].ToString("g").ToLower())
@@ -139,6 +146,7 @@ public class PhaseCreator : MonoBehaviour
         for (int i = 0; i < fase.messages.Count; i++)
             lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
         addDropdownOption(pageDDown, fase.comic.pagename.ToArray());
+       
         pageDDown.value = 0;
         pageDDown.captionText.text = pageDDown.options[0].text;
         loadLine(0);
