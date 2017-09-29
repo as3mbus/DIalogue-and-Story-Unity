@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -23,12 +24,18 @@ public class PhaseCreator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        picker.Color = Color.yellow;
+
+        picker.SetOnValueChangeCallback((color) =>
+            {
+                cam.backgroundColor = color;
+                pickerToggle.graphic.color = color;
+            });
+        picker.Color = Color.black;
+
     }
     void Update()
     {
-        cam.backgroundColor = picker.Color;
-        pickerToggle.graphic.color = picker.Color;
+
     }
     public void colorToggled()
     {
@@ -104,7 +111,7 @@ public class PhaseCreator : MonoBehaviour
             pageDDown.value = targetPhase.pages[index];
             cam.transform.position = targetPhase.paths[index];
             cam.orthographicSize = targetPhase.zooms[index];
-            lineDDown.captionText.text = "Line " + (index + 1);
+            shakeSlider.value = targetPhase.shake[index];
             if (Mathf.Abs(targetPhase.baloonpos[index].x)
             + Mathf.Abs(targetPhase.baloonpos[index].y) != 0)
             {
@@ -114,10 +121,9 @@ public class PhaseCreator : MonoBehaviour
             }
             shakeSlider.value = targetPhase.shake[index];
             foreach (Toggle togle in fadeToggle.GetComponentsInChildren<Toggle>())
-            {
                 if (togle.GetComponentInChildren<Text>().text.ToLower() == targetPhase.fademode[index].ToString("g").ToLower())
                     togle.isOn = true;
-            }
+            picker.Color = targetPhase.bgcolor[index];
 
 
         }

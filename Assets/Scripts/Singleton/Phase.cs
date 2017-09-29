@@ -93,6 +93,7 @@ namespace as3mbus.Story
                             fase.fademode.Add(fadeMode.none);
                             break;
                     }
+                    fase.bgcolor.Add(parseColorFromString(phaseData["background"][i].ToString()));
                 }
             }
             catch (System.Exception)
@@ -203,6 +204,13 @@ namespace as3mbus.Story
                 writer.Write(item.ToString("g"));
             }
             writer.WriteArrayEnd();
+            writer.WritePropertyName("background");
+            writer.WriteArrayStart();
+            foreach (var item in this.bgcolor)
+            {
+                writer.Write(ColorUtility.ToHtmlStringRGB(item));
+            }
+            writer.WriteArrayEnd();
             //writer.Write(string.Join("", new List<int>(array).ConvertAll(i => i.ToString()).ToArray()));
             // writer.WriteArrayEnd();
 
@@ -285,6 +293,11 @@ namespace as3mbus.Story
             this.baloonsize.Insert(index,1);
             this.fademode.Insert(index,fadeMode.none);
             this.bgcolor.Insert(index, Color.black);
+        }
+        public static Color parseColorFromString(string s){
+            Color c;
+            ColorUtility.TryParseHtmlString(s,out c);
+            return c;
         }
     }
 }
