@@ -87,6 +87,7 @@ public class PhaseCreator : MonoBehaviour
     }
     public void saveLine()
     {
+        if(targetPhase.messages.Count==0) return;
         targetPhase.UpdateLine(
             characterDDown.captionText.text,
             messageField.text, pageDDown.value,

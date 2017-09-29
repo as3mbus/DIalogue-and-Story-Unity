@@ -28,6 +28,10 @@
                 1.2,
                 3.3
             ],
+            "shake": [
+                1,
+                5
+            ],
             "baloonx": [
                 1.5,
                 2.2
@@ -43,6 +47,10 @@
             "fademode": [
                 "none",
                 "transition"
+            ],
+            "background": [
+                "3CD2AF",
+                "333333"
             ]
         },
         {
@@ -63,6 +71,10 @@
             "zoom": [
                 1.2,
                 3.3
+            ],
+            "shake": [
+                1,
+                5
             ],
             "baloonx": [
                 1.5,
@@ -87,6 +99,10 @@
             "fademode": [
                 "transition",
                 "color"
+            ],
+            "background": [
+                "3CD2AF",
+                "333333"
             ]
         }
     ]

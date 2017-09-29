@@ -28,6 +28,8 @@ public class StoryCreatorControl : MonoBehaviour
         ComicManager.listStreamingComicsBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         ComicManager.readComicsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         addDropdownOptions(bundleDropdown, ComicManager.streamBundleList.ToArray());
+        bundleDropdown.value = 0;
+        bundleDropdown.captionText.text = bundleDropdown.options[0].text;
     }
 
     // Update is called once per frame
@@ -145,6 +147,9 @@ public class StoryCreatorControl : MonoBehaviour
     }
     public void playScene()
     {
+        targetStory.name = storyNameField.text;
+        StoryManager.storyType = storyDataType.String;
+        StoryManager.stringOrPath = targetStory.toJson();
         SceneManager.LoadScene("Player");
     }
     public void bundleChange()
