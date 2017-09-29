@@ -33,7 +33,11 @@ namespace as3mbus.Story
                 case storyDataType.TextAsset:
                     loadJsonStory(StoryManager.textAsset);
                     break;
+                case storyDataType.Story:
+                    loadJsonStory(StoryManager.stori);
+                    break;                
                 default:
+                    Debug.Log("Story not Found!");
                     break;
             }
         }
@@ -55,10 +59,9 @@ namespace as3mbus.Story
             writer.WritePropertyName("phase");
             writer.WriteArrayStart();
 
-            foreach (var phase in phases)
+            foreach (Phase phase in phases)
             {
-                Phase fase = (Phase)phase;
-                fase.toJson(writer);
+                phase.toJson(writer);
             }
             writer.WriteArrayEnd();
             writer.WriteObjectEnd();
@@ -84,6 +87,9 @@ namespace as3mbus.Story
         {
             JsonData jsonStory = JsonMapper.ToObject(storyJsonString);
             loadJsonStory(jsonStory);
+        }
+        void loadJsonStory(Story story){
+            loadJsonStory(story.toJson());
         }
         void loadJsonStory(JsonData storyJson)
         {

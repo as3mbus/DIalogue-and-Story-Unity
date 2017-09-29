@@ -7,7 +7,7 @@ namespace as3mbus.Story
 {
 	public enum storyDataType
         {
-            String, JsonData, TextAsset, BundlePath, DataPath
+            String, JsonData, TextAsset, BundlePath, DataPath, Story
         }
     public static class StoryManager
     {
@@ -17,6 +17,7 @@ namespace as3mbus.Story
         public static JsonData json;
         public static string stringOrPath;
         public static TextAsset textAsset;
+        public static Story stori;
     }
 }
 

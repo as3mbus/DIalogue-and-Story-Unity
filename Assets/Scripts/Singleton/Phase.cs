@@ -69,6 +69,8 @@ namespace as3mbus.Story
                             -10f
                         )
                     );
+                    fase.zooms.Add(float.Parse(phaseData["zoom"][i].ToString()));
+                    fase.shake.Add(float.Parse(phaseData["shake"][i].ToString()));
                     fase.baloonpos.Add(
                         new Vector3(
                             float.Parse(phaseData["baloonx"][i].ToString()),
@@ -77,8 +79,7 @@ namespace as3mbus.Story
                         )
                     );
                     fase.baloonsize.Add(float.Parse(phaseData["baloonsize"][i].ToString()));
-                    Debug.Log("Testing " + paths[i].ToString());
-                    fase.zooms.Add(float.Parse(phaseData["zoom"][i].ToString()));
+                    // Debug.Log("Testing " + paths[i].ToString());
                     fase.characters.Add(phaseData["character"][i].ToString());
                     fase.messages.Add(phaseData["message"][i].ToString());
                     switch (phaseData["fademode"][i].ToString())
@@ -253,7 +254,7 @@ namespace as3mbus.Story
             this.paths[index] = path;
             this.characters[index] = character;
             this.messages[index] = message;
-            Debug.Log(this.toJson());
+            // Debug.Log(this.toJson());
         }
         public void UpdateLine(
             string character,
@@ -278,7 +279,7 @@ namespace as3mbus.Story
             this.baloonsize[index] = baloonsize;
             this.fademode[index] = fadeMode;
             this.bgcolor[index] = bakgron;
-            Debug.Log(this.toJson());
+            // Debug.Log(this.toJson());
         }
 
         public void insertLine(int index)

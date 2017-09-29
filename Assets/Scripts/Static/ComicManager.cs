@@ -16,7 +16,7 @@ public static class ComicManager
             if (asset.Contains(".png") && !comBunCon.Contains(Path.GetDirectoryName(asset)))
             {
                 comBunCon.Add(Path.GetDirectoryName(asset));
-                Debug.Log(Path.GetDirectoryName(asset));
+                // Debug.Log(Path.GetDirectoryName(asset));
             }
         }
         comicBundle.Unload(false);

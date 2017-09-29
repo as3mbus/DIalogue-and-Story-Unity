@@ -27,7 +27,7 @@ public class PhaseController : MonoBehaviour
     public void startPhase(Phase fase)
     {
         this.activePhase = fase;
-        Debug.Log(fase.toJson());
+        // Debug.Log(fase.toJson());
         currentLine = 0;
         readLine(currentLine);
     }
@@ -39,6 +39,7 @@ public class PhaseController : MonoBehaviour
 
     void Update()
     {
+        if(currentLine>=activePhase.messages.Count) return;
         if (Input.GetButtonDown("Fire1"))
         {
             times = duration;
@@ -65,7 +66,7 @@ public class PhaseController : MonoBehaviour
         textPerSec(typeDelay);
         if (activePhase.fademode[currentLine] != fadeMode.color)
             camRoute();
-        shakeCamera(10f, shake);
+        shakeCamera(activePhase.shake[currentLine], shake);
     }
     public void showLine(string line)
     {
@@ -75,12 +76,12 @@ public class PhaseController : MonoBehaviour
 
     public void readLine(int line)
     {
+        if(line>=activePhase.messages.Count) return;
         if (activePhase.fademode[currentLine] != fadeMode.none)
         {
             pageLR = !pageLR;
             activePage().color = new Color(1, 1, 1, 0);
         }
-        baloonPos.transform.position = activePhase.baloonpos[currentLine];
         baloonsizer.transform.localScale = new Vector2(activePhase.baloonsize[currentLine], activePhase.baloonsize[currentLine]);
         originPosition = kameraRoute.position;
         originZoom = kamera.GetComponent<Camera>().orthographicSize;
@@ -89,7 +90,18 @@ public class PhaseController : MonoBehaviour
         dPanel.SetActive(false);
         dName.text = activePhase.characters[line];
         dText.text = "";
-        baloonPos.GetComponent<Animation>().Play();
+        if (
+            Mathf.Abs(activePhase.baloonpos[currentLine].x)
+             + Mathf.Abs(activePhase.baloonpos[currentLine].y)
+             != 0)
+        {
+            baloonPos.gameObject.SetActive(true);
+            baloonPos.position = activePhase.baloonpos[currentLine];
+            baloonPos.GetComponent<Animation>().Play();
+        }
+        else 
+                    baloonPos.gameObject.SetActive(false);
+
     }
     public void textPerSec(float delay)
     {

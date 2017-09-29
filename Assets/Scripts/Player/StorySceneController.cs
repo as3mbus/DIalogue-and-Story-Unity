@@ -12,9 +12,16 @@ public class StorySceneController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // try
+        // {
+            cerita = new Story(StoryManager.storyType);
+        // }
+        // catch (System.Exception)
+        // {
+        //     cerita = new Story(storyJson);
+        // }
         currentPhase = 0;
-        cerita = new Story(storyJson);
-        loadPhase(currentPhase);
+        nextPhase();
     }
     void loadPhase(int number)
     {
@@ -27,7 +34,10 @@ public class StorySceneController : MonoBehaviour
 
     public void nextPhase()
     {
+        if(currentPhase >= cerita.phases.Count) return;
         currentPhase++;
+        print(currentPhase);
+        print(cerita.phases.Count);
         if (currentPhase < cerita.phases.Count)
         {
             loadPhase(currentPhase);
