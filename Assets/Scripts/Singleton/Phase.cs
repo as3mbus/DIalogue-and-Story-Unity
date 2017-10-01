@@ -306,7 +306,6 @@ namespace as3mbus.Story
         {
             UpdateLine(character, message, pageNo, zoom, path, shake, balooncor, baloonsize, fadeMode, bakgron, index);
             this.duration[index]=duration;
-            Debug.Log(this.toJson());
         }
 
         public void insertLine(int index)
