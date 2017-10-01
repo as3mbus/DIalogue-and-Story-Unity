@@ -40,4 +40,4 @@ sysinfo.txt
 Build/
 Assets/StreamingAssets
 Assets/AssetBundles
-Assets/Extern
+Assets/Extern/*.meta
