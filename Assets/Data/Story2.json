@@ -51,10 +51,14 @@
             "background": [
                 "3CD2AF",
                 "333333"
+            ],
+            "duration":[
+                1,
+                1.5
             ]
         },
         {
-            "name": "test dialogue",
+            "name": "test dialogue 2",
             "comic": "sample comic",
             "page": [
                 1,
@@ -103,6 +107,10 @@
             "background": [
                 "3CD2AF",
                 "333333"
+            ],
+            "duration":[
+                1,
+                1.5
             ]
         }
     ]

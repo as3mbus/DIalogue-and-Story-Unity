@@ -29,7 +29,7 @@ namespace as3mbus.Story
                     this.pages.Add(comicBundle.LoadAsset<Sprite>(asetname));
                     this.pagename.Add(Path.GetFileNameWithoutExtension(asetname));
                 }
-
+            comicBundle.Unload(false);
         }
         public Comic(JsonData directory) : this(directory.ToString())
         {
