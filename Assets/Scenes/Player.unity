@@ -744,12 +744,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1851657670}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf0b6cb3d14a3b54094d6676bb6e1902, type: 3}
+  m_Script: {fileID: 11500000, guid: f0e4e9feddea546b2b02eca5a7450e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   phaseCanvas: {fileID: 1918936630}
   currentPhase: 0
-  storyJson: {fileID: 4900000, guid: 725eddce2f8c64497b98eea237f29f68, type: 3}
+  storyJson: {fileID: 0}
+  nextScene: Creator
 --- !u!1 &1918936630
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,6 +36,9 @@ namespace as3mbus.Story
                 case storyDataType.Story:
                     loadJsonStory(StoryManager.stori);
                     break;                
+                case storyDataType.New:
+                    
+                    break;                
                 default:
                     Debug.Log("Story not Found!");
                     break;

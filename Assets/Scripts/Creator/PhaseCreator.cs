@@ -11,7 +11,7 @@ public class PhaseCreator : MonoBehaviour
     public Camera cam;
     public InputField messageField;
     public Dropdown characterDDown, pageDDown, lineDDown;
-    public StoryCreatorControl storyController;
+    public StoryCreator storyController;
     public Toggle baloonToggle, colorToggle, pickerToggle;
     public ToggleGroup fadeToggle;
     public Phase targetPhase;

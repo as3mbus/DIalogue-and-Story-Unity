@@ -17,7 +17,7 @@ public class PhaseController : MonoBehaviour
     public float times;
     float timeCount;
     Phase activePhase;
-    private StorySceneController ssControl;
+    private StoryController ssControl;
     Vector3 originPosition;
     float originZoom;
     bool movingCamera;
@@ -34,7 +34,7 @@ public class PhaseController : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
-        ssControl = FindObjectOfType<StorySceneController>();
+        ssControl = FindObjectOfType<StoryController>();
     }
 
     void Update()
@@ -90,6 +90,7 @@ public class PhaseController : MonoBehaviour
         {
             pageLR = !pageLR;
             activePage().color = new Color(1, 1, 1, 0);
+            activePage().sprite = activePhase.comic.pages[activePhase.pages[currentLine]];
         }
         baloonsizer.transform.localScale = new Vector2(activePhase.baloonsize[line], activePhase.baloonsize[line]);
         originPosition = kameraRoute.position;

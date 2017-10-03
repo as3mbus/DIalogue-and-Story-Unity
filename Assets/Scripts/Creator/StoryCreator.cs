@@ -8,9 +8,19 @@ using UnityEngine.SceneManagement;
 using as3mbus.Story;
 using GracesGames;
 
-public class StoryCreatorControl : MonoBehaviour
+public class StoryCreator : MonoBehaviour
 {
-    Story targetStory;
+    public Story targetStory
+    {
+        get { return _targetStory; }
+        set
+        {
+            resetPhase();
+            _targetStory = value;
+            loadStory();
+        }
+    }
+    Story _targetStory;
     public GameObject phasePanel, phaseButton, newPhaseButton;
     public ScrollRect phaseScrollView;
     public PhaseCreator phaseCreator;
@@ -23,7 +33,8 @@ public class StoryCreatorControl : MonoBehaviour
 
     void Start()
     {
-        targetStory = new Story();
+        _targetStory = new Story(StoryManager.storyType);
+        loadStory();
         // print(Comic.listComicsJson());
         // Comic.writeComicsJson();
         // loadComics();
@@ -35,17 +46,14 @@ public class StoryCreatorControl : MonoBehaviour
         bundleDropdown.captionText.text = bundleDropdown.options[0].text;
     }
 
-    /* ====END OF===== */
-    /* =MAIN FUNCTION= */
-    /* =============== */
-
+    #region main function
     public void newPhases()
     {
         typeWindowActive(true);
     }
     public void createPhase()
     {
-        targetStory.phases.Add(new Phase(phaseNameField.text, bundleDropdown.captionText.text, comicDropdown.captionText.text));
+        _targetStory.phases.Add(new Phase(phaseNameField.text, bundleDropdown.captionText.text, comicDropdown.captionText.text));
         typeWindowActive(false);
         newContentButton();
     }
@@ -58,12 +66,12 @@ public class StoryCreatorControl : MonoBehaviour
         int index = button.transform.GetSiblingIndex();
         print(phaseScrollView.content.transform.childCount);
 
-        Phase fase = (Phase)targetStory.phases[index];
+        Phase fase = (Phase)_targetStory.phases[index];
         contentButtonUpdate(fase, button);
     }
     public void contentButtonUpdate(Phase fase)
     {
-        int index = targetStory.phases.IndexOf(fase);
+        int index = _targetStory.phases.IndexOf(fase);
         GameObject button = phaseScrollView.content.GetChild(index).gameObject;
         contentButtonUpdate(fase, button);
     }
@@ -77,7 +85,7 @@ public class StoryCreatorControl : MonoBehaviour
     public void editPhase()
     {
         int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex();
-        Phase fase = (Phase)targetStory.phases[phaseIndex];
+        Phase fase = (Phase)_targetStory.phases[phaseIndex];
         editPhase(fase);
     }
     public void deletePhase()
@@ -96,7 +104,7 @@ public class StoryCreatorControl : MonoBehaviour
 
         }
 
-        targetStory.phases.RemoveAt(phaseIndex);
+        _targetStory.phases.RemoveAt(phaseIndex);
         // contentResize();
 
     }
@@ -108,17 +116,17 @@ public class StoryCreatorControl : MonoBehaviour
     }
     public void playScene()
     {
-        targetStory.name = storyNameField.text;
+        _targetStory.name = storyNameField.text;
         StoryManager.storyType = storyDataType.String;
-        StoryManager.stringOrPath = targetStory.toJson();
+        StoryManager.stringOrPath = _targetStory.toJson();
         SceneManager.LoadScene("Player");
     }
 
     void saveStory(string path)
     {
-        targetStory.name = storyNameField.text;
+        _targetStory.name = storyNameField.text;
         var sr = File.CreateText(path);
-        sr.Write(targetStory.toJson());
+        sr.Write(_targetStory.toJson());
         sr.Close();
     }
     public void OpenFileBrowser(bool save)
@@ -136,28 +144,25 @@ public class StoryCreatorControl : MonoBehaviour
         if (fileBrowserMode == FileBrowserMode.Save)
             fileBrowserScript.SaveFilePanel(this, "saveStory", storyNameField.text, "json");
         else
-            fileBrowserScript.OpenFilePanel(this, "loadStory", "json");
+            fileBrowserScript.OpenFilePanel(this, "readStory", "json");
     }
-    public void loadStory(string path)
+    void readStory(string path)
     {
-        resetPhase();
         targetStory = new Story(path);
-        print(targetStory.toJson());
-        storyNameField.text = targetStory.name;
-        foreach (var item in targetStory.phases)
+    }
+    void loadStory()
+    {
+        storyNameField.text = _targetStory.name;
+        foreach (var item in _targetStory.phases)
         {
             newContentButton();
         }
-
     }
 
-    /* ====END OF===== */
-    /* =Main Function= */
-    /* =============== */
+    #endregion
 
-    /* =============== */
-    /* =LOOK AND FEEL= */
-    /* =============== */
+    #region Look and Feel
+
     public void bundleChange()
     {
         comicDropdown.options.Clear();
@@ -202,13 +207,10 @@ public class StoryCreatorControl : MonoBehaviour
         {
             if (!child.name.Contains("Add")) DestroyImmediate(child);
         });
-        targetStory.phases.Clear();
+        _targetStory.phases.Clear();
         resetAddPhaseButton();
     }
-    /* =====EMD OF==== */
-    /* =LOOK AND FEEL= */
-    /* =============== */
-
+    #endregion
     /* =============== */
     /* ==STATIC-ABLE== */
     /* =============== */

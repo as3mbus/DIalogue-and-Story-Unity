@@ -1,14 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using as3mbus.Story;
 
-public class StorySceneController : MonoBehaviour
+public class StoryController : MonoBehaviour
 {
     Story cerita;
     public GameObject phaseCanvas;
     public int currentPhase;
     public TextAsset storyJson;
+    public string nextScene;
     // Use this for initialization
     void Start()
     {
@@ -20,8 +22,8 @@ public class StorySceneController : MonoBehaviour
         // {
         //     cerita = new Story(storyJson);
         // }
-        currentPhase = 0;
-        loadPhase(0);
+        currentPhase = -1;
+        nextPhase();
     }
     void loadPhase(int number)
     {
@@ -35,11 +37,12 @@ public class StorySceneController : MonoBehaviour
 
     public void nextPhase()
     {
-        if (currentPhase >= cerita.phases.Count) return;
         currentPhase++;
         if (currentPhase < cerita.phases.Count)
-        {
+
             loadPhase(currentPhase);
-        }
+
+        else SceneManager.LoadScene(nextScene);
+
     }
 }
