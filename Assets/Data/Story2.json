@@ -3,7 +3,8 @@
     "phase": [
         {
             "name": "test dialogue",
-            "comic": "sample comic",
+            "comicname": "sample comic",
+            "comicsource": "comic 2",
             "page": [
                 1,
                 0
@@ -45,12 +46,12 @@
                 2.1
             ],
             "fademode": [
-                "none",
+                "color",
                 "transition"
             ],
             "background": [
-                "3CD2AF",
-                "333333"
+                "#3CD2AF",
+                "#333333"
             ],
             "duration":[
                 1,
@@ -59,7 +60,8 @@
         },
         {
             "name": "test dialogue 2",
-            "comic": "sample comic",
+            "comicname": "sample comic",
+            "comicsource": "comic 2",
             "page": [
                 1,
                 0
@@ -105,8 +107,8 @@
                 "color"
             ],
             "background": [
-                "3CD2AF",
-                "333333"
+                "#3CD2AF",
+                "#333333"
             ],
             "duration":[
                 1,

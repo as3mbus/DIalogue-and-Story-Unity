@@ -102,8 +102,8 @@ public class StoryCreatorControl : MonoBehaviour
     }
     public void editPhase(Phase fase)
     {
-        phaseCreator.loadPhase(fase);
         phaseCreator.gameObject.SetActive(true);
+        phaseCreator.loadPhase(fase);
         gameObject.SetActive(false);
     }
     public void playScene()

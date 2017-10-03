@@ -58,7 +58,7 @@ namespace as3mbus.Story
             try
             {
                 fase.name = phaseData["name"].ToString();
-                fase.comic = new Comic(phaseData["comic"]);
+                fase.comic = new Comic(phaseData["comicsource"].ToString(),phaseData["comicname"].ToString());
                 for (int i = 0; i < phaseData["message"].Count; i++)
                 {
 
@@ -95,6 +95,7 @@ namespace as3mbus.Story
                             fase.fademode.Add(fadeMode.none);
                             break;
                     }
+                    Debug.Log(phaseData["background"][i].ToString());
                     fase.bgcolor.Add(parseColorFromString(phaseData["background"][i].ToString()));
                     fase.duration.Add(float.Parse(phaseData["duration"][i].ToString()));
 
@@ -129,8 +130,10 @@ namespace as3mbus.Story
             writer.WriteObjectStart();
             writer.WritePropertyName("name");
             writer.Write(this.name);
-            writer.WritePropertyName("comic");
-            writer.Write(this.comic.toString());
+            writer.WritePropertyName("comicname");
+            writer.Write(this.comic.name);
+            writer.WritePropertyName("comicsource");
+            writer.Write(this.comic.source);
             writer.WritePropertyName("page");
             writer.WriteArrayStart();
             foreach (var item in this.pages)
@@ -212,7 +215,7 @@ namespace as3mbus.Story
             writer.WriteArrayStart();
             foreach (var item in this.bgcolor)
             {
-                writer.Write(ColorUtility.ToHtmlStringRGB(item));
+                writer.Write("#"+ColorUtility.ToHtmlStringRGB(item));
             }
             writer.WriteArrayEnd();
             writer.WritePropertyName("duration");
@@ -260,7 +263,13 @@ namespace as3mbus.Story
             this.duration.RemoveAt(index);
         }
 
-        public void UpdateLine(string character, string message, int pageNo, float zoom, Vector3 path, int index)
+        public void UpdateLine(
+            string character,
+             string message,
+              int pageNo,
+               float zoom,
+                Vector3 path,
+                 int index)
         {
             this.pages[index] = pageNo;
             this.characters[index] = character;
@@ -305,7 +314,7 @@ namespace as3mbus.Story
             int index)
         {
             UpdateLine(character, message, pageNo, zoom, path, shake, balooncor, baloonsize, fadeMode, bakgron, index);
-            this.duration[index]=duration;
+            this.duration[index] = duration;
         }
 
         public void insertLine(int index)

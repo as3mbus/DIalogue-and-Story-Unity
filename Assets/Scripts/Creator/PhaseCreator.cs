@@ -27,11 +27,14 @@ public class PhaseCreator : MonoBehaviour
 
         picker.SetOnValueChangeCallback((color) =>
             {
-                cam.backgroundColor = color;
-                pickerToggle.graphic.color = color;
+                changeBGColor(color);
             });
-        picker.Color = Color.black;
 
+    }
+    public void changeBGColor(Color color)
+    {
+        cam.backgroundColor = color;
+        pickerToggle.graphic.color = color;
     }
     void Update()
     {
@@ -40,126 +43,129 @@ public class PhaseCreator : MonoBehaviour
 
     #region main-function
 
-        public void newLine()
+    public void newLine()
+    {
+        targetPhase.newLine();
+        lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
+        lineDDown.value++;
+    }
+    public void insertLine()
+    {
+        if (targetPhase.messages.Count == 0)
+            lineDDown.captionText.text = "Line 1";
+        targetPhase.insertLine(lineDDown.value + 1);
+        lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
+        lineDDown.value++;
+    }
+    public void deleteLine()
+    {
+        if (targetPhase.messages.Count == 0)
+            return;
+        lineDDown.value--;
+        targetPhase.deleteLine(lineDDown.value);
+        lineDDown.options.RemoveAt(targetPhase.messages.Count);
+        if (targetPhase.messages.Count <= 0)
+            lineDDown.captionText.text = "";
+    }
+    public void addLine()
+    {
+        if (lineDDown.value >= targetPhase.messages.Count - 1)
+            newLine();
+        else
+            insertLine();
+    }
+    public void changeLine()
+    {
+        if (targetPhase.messages.Count <= 1)
+            return;
+        saveLine();
+        currentLine = lineDDown.value;
+        loadLine(currentLine);
+    }
+    public void saveLine()
+    {
+        if (targetPhase.messages.Count == 0) return;
+        targetPhase.UpdateLine(
+            characterDDown.captionText.text,
+            messageField.text, pageDDown.value,
+            cam.orthographicSize,
+            cam.transform.position,
+            shakeSlider.value,
+            baloonToggle.isOn ? TextBaloon.transform.localPosition : Vector3.zero,
+            baloonToggle.isOn ? TextBaloon.transform.localScale.x : 0,
+            Phase.parseFadeMode(fadeToggle.ActiveToggles().FirstOrDefault().GetComponentInChildren<Text>().text),
+            colorToggle.isOn ? picker.Color : Color.black,
+            durationSlider.value,
+            currentLine);
+    }
+    public void savePhase()
+    {
+        saveLine();
+        lineDDown.value = 0;
+        storyController.gameObject.SetActive(true);
+        storyController.contentButtonUpdate(targetPhase);
+        this.gameObject.SetActive(false);
+    }
+    public void loadLine(int index)
+    {
+        if (targetPhase.messages.Count > 0)
         {
-            targetPhase.newLine();
-            lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
-            lineDDown.value++;
-        }
-        public void insertLine()
-        {
-            if (targetPhase.messages.Count == 0)
-                lineDDown.captionText.text = "Line 1";
-            targetPhase.insertLine(lineDDown.value + 1);
-            lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
-            lineDDown.value++;
-        }
-        public void deleteLine()
-        {
-            if (targetPhase.messages.Count == 0)
-                return;
-            lineDDown.value--;
-            targetPhase.deleteLine(lineDDown.value);
-            lineDDown.options.RemoveAt(targetPhase.messages.Count);
-            if (targetPhase.messages.Count <= 0)
-                lineDDown.captionText.text = "";
-        }
-        public void addLine()
-        {
-            if (lineDDown.value >= targetPhase.messages.Count - 1)
-                newLine();
-            else
-                insertLine();
-        }
-        public void changeLine()
-        {
-            if (targetPhase.messages.Count <= 1)
-                return;
-            saveLine();
-            currentLine = lineDDown.value;
-            loadLine(currentLine);
-        }
-        public void saveLine()
-        {
-            if (targetPhase.messages.Count == 0) return;
-            targetPhase.UpdateLine(
-                characterDDown.captionText.text,
-                messageField.text, pageDDown.value,
-                cam.orthographicSize,
-                cam.transform.position,
-                shakeSlider.value,
-                baloonToggle.isOn ? TextBaloon.transform.localPosition : Vector3.zero,
-                baloonToggle.isOn ? TextBaloon.transform.localScale.x : 0,
-                Phase.parseFadeMode(fadeToggle.ActiveToggles().FirstOrDefault().GetComponentInChildren<Text>().text),
-                colorToggle.isOn ? picker.Color : Color.black,
-                durationSlider.value,
-                currentLine);
-        }
-        public void savePhase()
-        {
-            saveLine();
-            lineDDown.value = 0;
-            storyController.gameObject.SetActive(true);
-            storyController.contentButtonUpdate(targetPhase);
-            this.gameObject.SetActive(false);
-        }
-        public void loadLine(int index)
-        {
-            if (targetPhase.messages.Count > 0)
+
+
+            lineDDown.captionText.text = lineDDown.options[index].text;
+            characterDDown.value = characterDDown.options.IndexOf(characterDDown.options.Find(x => x.text == targetPhase.characters[index]));
+            messageField.text = targetPhase.messages[index];
+            pageDDown.value = targetPhase.pages[index];
+            cam.transform.position = targetPhase.paths[index];
+            cam.orthographicSize = targetPhase.zooms[index];
+            shakeSlider.value = targetPhase.shake[index];
+            if (Mathf.Abs(targetPhase.baloonpos[index].x)
+            + Mathf.Abs(targetPhase.baloonpos[index].y) != 0)
             {
-                lineDDown.captionText.text = lineDDown.options[index].text;
-                characterDDown.value = characterDDown.options.IndexOf(characterDDown.options.Find(x => x.text == targetPhase.characters[index]));
-                messageField.text = targetPhase.messages[index];
-                pageDDown.value = targetPhase.pages[index];
-                cam.transform.position = targetPhase.paths[index];
-                cam.orthographicSize = targetPhase.zooms[index];
-                shakeSlider.value = targetPhase.shake[index];
-                if (Mathf.Abs(targetPhase.baloonpos[index].x)
-                + Mathf.Abs(targetPhase.baloonpos[index].y) != 0)
-                {
-                    baloonToggle.isOn = true;
-                    TextBaloon.transform.localPosition = targetPhase.baloonpos[index];
-                    TextBaloon.transform.localScale = new Vector2(targetPhase.baloonsize[index], targetPhase.baloonsize[index]);
-                }
-                else baloonToggle.isOn = false;
-                shakeSlider.value = targetPhase.shake[index];
-                foreach (Toggle togle in fadeToggle.GetComponentsInChildren<Toggle>())
-                    if (togle.GetComponentInChildren<Text>().text.ToLower() == targetPhase.fademode[index].ToString("g").ToLower())
-                        togle.isOn = true;
-                picker.Color = targetPhase.bgcolor[index];
-                durationSlider.value = targetPhase.duration[index];
-
-
+                baloonToggle.isOn = true;
+                TextBaloon.transform.localPosition = targetPhase.baloonpos[index];
+                TextBaloon.transform.localScale = new Vector2(targetPhase.baloonsize[index], targetPhase.baloonsize[index]);
             }
-            else
-            {
-                lineDDown.value = -1;
-                lineDDown.captionText.text = "";
-            }
+            else baloonToggle.isOn = false;
+            shakeSlider.value = targetPhase.shake[index];
+            print("color change called");
+            changeBGColor(targetPhase.bgcolor[index]);
+            picker.Color = (targetPhase.bgcolor[index]);
+
+            foreach (Toggle togle in fadeToggle.GetComponentsInChildren<Toggle>())
+                if (togle.GetComponentInChildren<Text>().text.ToLower() == targetPhase.fademode[index].ToString("g").ToLower())
+                    togle.isOn = true;
+                else
+                    togle.isOn = false;
+            durationSlider.value = targetPhase.duration[index];
+
 
         }
-        public void loadPhase(Phase fase)
+        else
         {
-            targetPhase = fase;
-            for (int i = 0; i < fase.messages.Count; i++)
-                lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
-            addDropdownOption(pageDDown, fase.comic.pagename.ToArray());
-
-            pageDDown.value = 0;
-            pageDDown.captionText.text = pageDDown.options[0].text;
-            loadLine(0);
+            lineDDown.value = -1;
+            lineDDown.captionText.text = "";
         }
+
+    }
+    public void loadPhase(Phase fase)
+    {
+        targetPhase = fase;
+        for (int i = 0; i < fase.messages.Count; i++)
+            lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
+        addDropdownOption(pageDDown, fase.comic.pagename.ToArray());
+
+        pageDDown.value = 0;
+        pageDDown.captionText.text = pageDDown.options[0].text;
+        loadLine(0);
+    }
     #endregion
 
     /* =============== */
     /* =LOOK AND FEEL= */
     /* =============== */
 
-    public void colorToggled()
-    {
-        pickerPanel.SetActive(colorToggle.isOn && !pickerToggle.isOn);
-        pickerToggle.gameObject.SetActive(colorToggle.isOn);
-    }
+
     public void pickerToggled()
     {
         pickerPanel.SetActive(!pickerToggle.isOn);

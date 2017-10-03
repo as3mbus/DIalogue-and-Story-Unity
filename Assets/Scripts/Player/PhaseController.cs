@@ -145,7 +145,7 @@ public class PhaseController : MonoBehaviour
     }
     void colorFade(Color color)
     {
-        kamera.GetComponent<Camera>().backgroundColor = color;
+        kamera.GetComponent<Camera>().backgroundColor = activePhase.bgcolor[currentLine];
         if (times < duration / 2)
         {
             inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (times * 2) / duration);
