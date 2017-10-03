@@ -200,7 +200,7 @@ public class StoryCreatorControl : MonoBehaviour
         foreach (Transform child in phaseScrollView.content.transform) children.Add(child.gameObject);
         children.ForEach(child =>
         {
-            if (!child.name.Contains("Add")) Destroy(child);
+            if (!child.name.Contains("Add")) DestroyImmediate(child);
         });
         targetStory.phases.Clear();
         resetAddPhaseButton();
