@@ -76,7 +76,7 @@ public class PhaseController : MonoBehaviour
     }
     public void showBaloon()
     {
-        if (times >= duration&&!baloonPos.gameObject.activeSelf)
+        if (times >= duration && !baloonPos.gameObject.activeSelf)
         {
             baloonPos.gameObject.SetActive(true);
             baloonPos.GetComponent<Animation>().Play();
@@ -101,6 +101,8 @@ public class PhaseController : MonoBehaviour
         dPanel.SetActive(false);
         dName.text = activePhase.characters[line];
         dText.text = "";
+        kamera.GetComponent<Camera>().backgroundColor = activePhase.bgcolor[line];
+
         if (
             Mathf.Abs(activePhase.baloonpos[line].x)
              + Mathf.Abs(activePhase.baloonpos[line].y)
@@ -135,7 +137,7 @@ public class PhaseController : MonoBehaviour
         if (times < duration)
             times += Time.deltaTime;
         if (fadeM == fadeMode.color)
-            colorFade(Color.white);
+            colorFade();
         else if (fadeM == fadeMode.transition)
             transitionFade();
     }
@@ -144,16 +146,17 @@ public class PhaseController : MonoBehaviour
         inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), times / duration);
         activePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 1), times / duration);
     }
-    void colorFade(Color color)
+    void colorFade()
     {
-        kamera.GetComponent<Camera>().backgroundColor = activePhase.bgcolor[currentLine];
         if (times < duration / 2)
         {
             inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (times * 2) / duration);
         }
         else
+        {
             camPos();
-        activePage().color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (times * 2 - duration) / duration);
+            activePage().color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (times * 2 - duration) / duration);
+        }
     }
     void shakeCamera(float frequency, float magnitude)
     {

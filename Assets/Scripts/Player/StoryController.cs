@@ -17,6 +17,7 @@ public class StoryController : MonoBehaviour
         // try
         // {
         cerita = new Story(StoryManager.storyType);
+        nextScene = StoryManager.nextScene;
         // }
         // catch (System.Exception)
         // {

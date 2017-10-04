@@ -117,8 +117,9 @@ public class StoryCreator : MonoBehaviour
     public void playScene()
     {
         _targetStory.name = storyNameField.text;
-        StoryManager.storyType = storyDataType.String;
-        StoryManager.stringOrPath = _targetStory.toJson();
+        StoryManager.storyType = storyDataType.Story;
+        StoryManager.stori = _targetStory;
+        StoryManager.nextScene = "Creator";
         SceneManager.LoadScene("Player");
     }
 
