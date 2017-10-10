@@ -24,6 +24,7 @@ public class PhaseController : MonoBehaviour
     public bool pageLR = true;
     public float shake = 0.2f;
 
+    //Start phase by setting active phae and load phase 
     public void startPhase(Phase fase)
     {
         this.activePhase = fase;

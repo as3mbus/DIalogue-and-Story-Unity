@@ -15,16 +15,13 @@ public class MouseCamControlPan : MonoBehaviour
     }
     void mouseRead()
     {
-
         //get mouse movement
         mouseX -= Input.GetAxis("Mouse X") * camSensitivity;
         mouseY -= Input.GetAxis("Mouse Y") * camSensitivity;
-
-
         //limit lookup and lookdown
         mouseY = Mathf.Clamp(mouseY, -60f, 60f);
-
     }
+    //moving cam based on mouse position
     void camPanning()
     {
         //rotating center point
@@ -34,12 +31,14 @@ public class MouseCamControlPan : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //read scroll wheel to set orthoraphic size (2D Camera)
 		zoom -= Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity;
+        //limit zoom value to not below 0
         zoom = zoom<0.1f? 0.1f : zoom;
+
         if (Input.GetButton("Fire1"))
         {
             mouseRead();
-
             camPanning();
             mouseX = 0;
             mouseY = 0;

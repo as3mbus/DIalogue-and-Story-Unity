@@ -10,6 +10,7 @@ using GracesGames;
 
 public class StoryCreator : MonoBehaviour
 {
+    //getter and setter for target story 
     public Story targetStory
     {
         get { return _targetStory; }
@@ -30,37 +31,50 @@ public class StoryCreator : MonoBehaviour
     string[] activeComics;
 
     // Use this for initialization
-
     void Start()
     {
+        //create/load new/existing story based on static class story manager 
         _targetStory = new Story(StoryManager.storyType);
         loadStory();
         // print(Comic.listComicsJson());
         // Comic.writeComicsJson();
         // loadComics();
         resetAddPhaseButton();
+        //list and write streaming asset bundle data 
         ComicManager.listStreamingComicsBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        //read streaming asset bundle data 
         ComicManager.readComicsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        //add options of bundle in streaming assets 
         addDropdownOptions(bundleDropdown, ComicManager.streamBundleList.ToArray());
+        //set to load 1st available bundle 
         bundleDropdown.value = 0;
         bundleDropdown.captionText.text = bundleDropdown.options[0].text;
     }
 
     #region main function
+
+    //handle new phase button 
+    //disable any interactive on story creator interface 
     public void newPhases()
     {
         typeWindowActive(true);
     }
+
+    //handle create phase button inside phase panel
+    // adding new phase button and enable story creator interface 
     public void createPhase()
     {
         _targetStory.phases.Add(new Phase(phaseNameField.text, bundleDropdown.captionText.text, comicDropdown.captionText.text));
         typeWindowActive(false);
         newContentButton();
     }
+    //handle cancel button inside phase panel
+    //enable sstory creator interface
     public void cancelPhase()
     {
         typeWindowActive(false);
     }
+    //update content button value (gameobject) 
     public void contentButtonUpdate(GameObject button)
     {
         int index = button.transform.GetSiblingIndex();
@@ -69,12 +83,14 @@ public class StoryCreator : MonoBehaviour
         Phase fase = (Phase)_targetStory.phases[index];
         contentButtonUpdate(fase, button);
     }
+    //update content button value of a phase 
     public void contentButtonUpdate(Phase fase)
     {
         int index = _targetStory.phases.IndexOf(fase);
         GameObject button = phaseScrollView.content.GetChild(index).gameObject;
         contentButtonUpdate(fase, button);
     }
+    //update content button value based on a phase 
     public void contentButtonUpdate(Phase fase, GameObject button)
     {
         button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = fase.name;
@@ -82,12 +98,24 @@ public class StoryCreator : MonoBehaviour
         button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.toString();
         button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.messages.Count.ToString() + " Line";
     }
+    //phase content button handler
+    //get button index and throw editPhase(Phase)
     public void editPhase()
     {
         int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex();
         Phase fase = (Phase)_targetStory.phases[phaseIndex];
         editPhase(fase);
     }
+    //phase content button handler
+    //display phase editor and edit phase with it's interfacce  
+    public void editPhase(Phase fase)
+    {
+        phaseCreator.gameObject.SetActive(true);
+        phaseCreator.loadPhase(fase);
+        gameObject.SetActive(false);
+    }
+    //handle X button on phase content button
+    //destroy and delete phase 
     public void deletePhase()
     {
         int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex();
@@ -95,25 +123,24 @@ public class StoryCreator : MonoBehaviour
         Vector3 newpos = newPhaseButton.GetComponent<RectTransform>().localPosition;
         newpos.y += 250;
         newPhaseButton.GetComponent<RectTransform>().localPosition = newpos;
-        for (int i = phaseIndex + 1; i < phaseScrollView.content.childCount; i++)
-        {
-            var newButton = phaseScrollView.content.GetChild(i);
-            newpos = newButton.GetComponent<RectTransform>().localPosition;
-            newpos.y += 250;
-            newButton.GetComponent<RectTransform>().localPosition = newpos;
 
-        }
+        //DELETE THIS LATER
+        // for (int i = phaseIndex + 1; i < phaseScrollView.content.childCount; i++)
+        // {
+        //     var newButton = phaseScrollView.content.GetChild(i);
+        //     newpos = newButton.GetComponent<RectTransform>().localPosition;
+        //     newpos.y += 250;
+        //     newButton.GetComponent<RectTransform>().localPosition = newpos;
+
+        // }
 
         _targetStory.phases.RemoveAt(phaseIndex);
         // contentResize();
 
     }
-    public void editPhase(Phase fase)
-    {
-        phaseCreator.gameObject.SetActive(true);
-        phaseCreator.loadPhase(fase);
-        gameObject.SetActive(false);
-    }
+
+    //Handle play Button
+    //open player scene and play the active story content
     public void playScene()
     {
         _targetStory.name = storyNameField.text;
@@ -122,7 +149,8 @@ public class StoryCreator : MonoBehaviour
         StoryManager.nextScene = "Creator";
         SceneManager.LoadScene("Player");
     }
-
+    //handle save button on simple file manager 
+    //save story into a complete filename path 
     void saveStory(string path)
     {
         _targetStory.name = storyNameField.text;
@@ -130,11 +158,14 @@ public class StoryCreator : MonoBehaviour
         sr.Write(_targetStory.toJson());
         sr.Close();
     }
+    //Handle Save and Load Button
+    //call file browser 
     public void OpenFileBrowser(bool save)
     {
         if (save) OpenFileBrowser(FileBrowserMode.Save);
         else OpenFileBrowser(FileBrowserMode.Load);
     }
+    //call file browser based on Simple File Manager 
     public void OpenFileBrowser(FileBrowserMode fileBrowserMode)
     {
         // Create the file browser and name it
@@ -147,10 +178,13 @@ public class StoryCreator : MonoBehaviour
         else
             fileBrowserScript.OpenFilePanel(this, "readStory", "json");
     }
+    //handle load button on Simple File Manager
+    //set target story to loaded story 
     void readStory(string path)
     {
         targetStory = new Story(path);
     }
+    //load story content to interface
     void loadStory()
     {
         storyNameField.text = _targetStory.name;
@@ -159,11 +193,8 @@ public class StoryCreator : MonoBehaviour
             newContentButton();
         }
     }
-
-    #endregion
-
-    #region Look and Feel
-
+    //handle bundle selection change
+    //add option of comic inside bandle into the comic dropdown 
     public void bundleChange()
     {
         comicDropdown.options.Clear();
@@ -175,7 +206,7 @@ public class StoryCreator : MonoBehaviour
         comicDropdown.value = 0;
         comicDropdown.captionText.text = comicDropdown.options[0].text;
     }
-
+    //display/hide phase panel and disable/enable story interface
     void typeWindowActive(bool mode)
     {
         phasePanel.SetActive(mode);
@@ -186,6 +217,8 @@ public class StoryCreator : MonoBehaviour
             button.interactable = !mode;
         }
     }
+    //handle add phase button 
+    //create phase content button and reset add phase button position 
     void newContentButton()
     {
         GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.content);
@@ -195,11 +228,13 @@ public class StoryCreator : MonoBehaviour
         contentButtonUpdate(newButton);
         // contentResize();
     }
+    //place add phase button to last sibling (last place) 
     void resetAddPhaseButton()
     {
         newPhaseButton.transform.SetAsLastSibling();
     }
 
+    //Empty phase and reset add phase button position 
     public void resetPhase()
     {
         var children = new List<GameObject>();
@@ -211,6 +246,12 @@ public class StoryCreator : MonoBehaviour
         _targetStory.phases.Clear();
         resetAddPhaseButton();
     }
+
+    #endregion
+
+    #region Look and Feel
+
+
     #endregion
     /* =============== */
     /* ==STATIC-ABLE== */

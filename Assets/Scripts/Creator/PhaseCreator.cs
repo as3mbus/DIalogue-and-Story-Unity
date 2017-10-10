@@ -24,13 +24,15 @@ public class PhaseCreator : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        //add listener to change background color based on color picker
         picker.SetOnValueChangeCallback((color) =>
             {
                 changeBGColor(color);
             });
 
     }
+
+    //change background color and toggle color to certain color
     public void changeBGColor(Color color)
     {
         cam.backgroundColor = color;
@@ -43,12 +45,23 @@ public class PhaseCreator : MonoBehaviour
 
     #region main-function
 
+
+    // handler for addLine button to either add/insert line
+    public void addLine()
+    {
+        if (lineDDown.value >= targetPhase.messages.Count - 1)
+            newLine();
+        else
+            insertLine();
+    }
+    //Create New Line at last inded 
     public void newLine()
     {
         targetPhase.newLine();
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
         lineDDown.value++;
     }
+    //Insert New Line at current index +1
     public void insertLine()
     {
         if (targetPhase.messages.Count == 0)
@@ -57,6 +70,8 @@ public class PhaseCreator : MonoBehaviour
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
         lineDDown.value++;
     }
+
+    //delete currently selected line 
     public void deleteLine()
     {
         if (targetPhase.messages.Count == 0)
@@ -67,13 +82,8 @@ public class PhaseCreator : MonoBehaviour
         if (targetPhase.messages.Count <= 0)
             lineDDown.captionText.text = "";
     }
-    public void addLine()
-    {
-        if (lineDDown.value >= targetPhase.messages.Count - 1)
-            newLine();
-        else
-            insertLine();
-    }
+
+    //handler for changing selected line(Line Dropdown)
     public void changeLine()
     {
         if (targetPhase.messages.Count <= 1)
@@ -82,6 +92,8 @@ public class PhaseCreator : MonoBehaviour
         currentLine = lineDDown.value;
         loadLine(currentLine);
     }
+
+    //save value for selected line
     public void saveLine()
     {
         if (targetPhase.messages.Count == 0) return;
@@ -98,6 +110,8 @@ public class PhaseCreator : MonoBehaviour
             durationSlider.value,
             currentLine);
     }
+    
+    // Save Active phase into the story and change canvas to story creator
     public void savePhase()
     {
         saveLine();
@@ -106,6 +120,8 @@ public class PhaseCreator : MonoBehaviour
         storyController.contentButtonUpdate(targetPhase);
         this.gameObject.SetActive(false);
     }
+
+    //load line by index into the interface
     public void loadLine(int index)
     {
         if (targetPhase.messages.Count > 0)
@@ -148,6 +164,8 @@ public class PhaseCreator : MonoBehaviour
         }
 
     }
+
+    //load phases into the phase creator and load first line
     public void loadPhase(Phase fase)
     {
         targetPhase = fase;
@@ -161,43 +179,45 @@ public class PhaseCreator : MonoBehaviour
     }
     #endregion
 
-    /* =============== */
-    /* =LOOK AND FEEL= */
-    /* =============== */
-
-
+    #region look-and-feel
+    //handle color picker toggle  
     public void pickerToggled()
     {
         pickerPanel.SetActive(!pickerToggle.isOn);
     }
+    //set cam control to enable on UI enable 
     void OnEnable()
     {
         cam.GetComponent<MouseCamControlPan>().enabled = true;
     }
+    //disable camera control and reset interface on disable
     void OnDisable()
     {
         resetInterface();
         cam.GetComponent<MouseCamControlPan>().enabled = false;
     }
+    //reset camera position and size
     public void resetCam()
     {
         cam.transform.position = new Vector3(0, 0, -10);
         cam.orthographicSize = 5;
     }
-
+    //handle shake slider value change 
     public void changeShake()
     {
         shakeText.text = shakeSlider.value.ToString();
     }
+    //handle duration slider value change 
     public void changeDuration()
     {
         durationText.text = "Duration : " + durationSlider.value.ToString();
     }
+    //handle page dropdown change to change the comic as well
     public void changePage()
     {
         backgroundSprite.sprite = targetPhase.comic.pages[pageDDown.value];
     }
-
+    //reset interface value to empty state for next call 
     void resetInterface()
     {
         pageDDown.ClearOptions();
@@ -209,7 +229,7 @@ public class PhaseCreator : MonoBehaviour
         lineDDown.captionText.text = "";
         resetCam();
     }
-
+    //handle Text Baloon display/hide and control
     public void toggleBaloon()
     {
         TextBaloon.transform.localPosition = new Vector3(0, 0, 8);
@@ -217,9 +237,7 @@ public class PhaseCreator : MonoBehaviour
         TextBaloon.SetActive(baloonToggle.isOn);
     }
 
-    /* ====END OF===== */
-    /* =LOOK AND FEEL= */
-    /* =============== */
+    #endregion
 
     /* =============== */
     /* ==STATIC-ABLE== */
