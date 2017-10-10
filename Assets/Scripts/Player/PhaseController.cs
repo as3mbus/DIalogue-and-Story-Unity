@@ -24,7 +24,7 @@ public class PhaseController : MonoBehaviour
     public bool pageLR = true;
     public float shake = 0.2f;
 
-    //Start phase by setting active phae and load phase 
+    //Start phase by setting active phase and load phase 
     public void startPhase(Phase fase)
     {
         this.activePhase = fase;
@@ -35,46 +35,64 @@ public class PhaseController : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
+        //access story controller 
         ssControl = FindObjectOfType<StoryController>();
     }
-
+ 
     void Update()
     {
         if (currentLine >= activePhase.messages.Count) return;
+        //read fire 1 button pressed  
         if (Input.GetButtonDown("Fire1"))
         {
+            //skip transition 
             times = duration;
             spriteFade(activePhase.fademode[currentLine]);
             camRoute();
+
+            //if line finished reading 
+            // read next line or hide phase (complete phase) 
             if (currentChar >= activePhase.messages[currentLine].Length)
             {
+                //if there are more line after current line
+                //read next line 
                 if (currentLine < activePhase.messages.Count - 1)
                 {
                     currentLine++;
                     readLine(currentLine);
                 }
+                //hide / complete the phase 
                 else
                 {
                     hidePhase();
                 }
             }
+            // read complete line
             else
             {
                 showLine(activePhase.messages[currentLine]);
             }
         }
+        //fade transition 
         spriteFade(activePhase.fademode[currentLine]);
+        //text per sec 
         textPerSec(typeDelay);
+        //if not using color fade
+        //slowly move camera position (pan and zoom) 
         if (activePhase.fademode[currentLine] != fadeMode.color)
             camRoute();
+        //shake camera
         shakeCamera(activePhase.shake[currentLine], shake);
+        //show talking baloon
         showBaloon();
     }
+    //read complete line 
     public void showLine(string line)
     {
         dText.text = line;
         currentChar = line.Length;
     }
+    //show talking baloon 
     public void showBaloon()
     {
         if (times >= duration && !baloonPos.gameObject.activeSelf)
@@ -83,10 +101,11 @@ public class PhaseController : MonoBehaviour
             baloonPos.GetComponent<Animation>().Play();
         }
     }
-
+    //read every data about the line and use it to make player interface/ looks
     public void readLine(int line)
     {
         if (line >= activePhase.messages.Count) return;
+        //swapping page on fademode and loading it 
         if (activePhase.fademode[line] != fadeMode.none)
         {
             pageLR = !pageLR;
@@ -115,8 +134,8 @@ public class PhaseController : MonoBehaviour
         }
         else
             baloonPos.gameObject.SetActive(false);
-
     }
+    //type a character after a delay 
     public void textPerSec(float delay)
     {
         if (times < duration)
@@ -133,6 +152,7 @@ public class PhaseController : MonoBehaviour
             timeCount = 0;
         }
     }
+    //fading effect
     void spriteFade(fadeMode fadeM)
     {
         if (times < duration)
@@ -142,11 +162,13 @@ public class PhaseController : MonoBehaviour
         else if (fadeM == fadeMode.transition)
             transitionFade();
     }
+    //Transition Fade 
     void transitionFade()
     {
         inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), times / duration);
         activePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 1), times / duration);
     }
+    //color fade 
     void colorFade()
     {
         if (times < duration / 2)
@@ -159,6 +181,7 @@ public class PhaseController : MonoBehaviour
             activePage().color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (times * 2 - duration) / duration);
         }
     }
+    // shake camera 
     void shakeCamera(float frequency, float magnitude)
     {
         Vector2 shakeVector;
@@ -171,15 +194,17 @@ public class PhaseController : MonoBehaviour
         kamera.localPosition = shakeVector;
 
     }
+    //accessing active page sprite 
     public SpriteRenderer activePage()
     {
         return pageLR ? pageL : pageR;
     }
+    //accessing inactive page sprite 
     public SpriteRenderer inactivePage()
     {
         return !pageLR ? pageL : pageR;
     }
-
+    //moving camera to designated point 
     public void camRoute()
     {
         float distance = Vector3.Distance(activePhase.paths[currentLine], kameraRoute.position);
@@ -194,11 +219,12 @@ public class PhaseController : MonoBehaviour
         //     currentLine++;
         // }
     }
+    //set camera position
     public void camPos()
     {
         kameraRoute.position = activePhase.paths[currentLine];
     }
-
+    //hide phase and call story controller next phase
     public void hidePhase()
     {
         pageLR = true;

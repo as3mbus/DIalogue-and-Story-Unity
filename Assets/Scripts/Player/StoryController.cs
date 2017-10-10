@@ -16,6 +16,7 @@ public class StoryController : MonoBehaviour
     {
         // try
         // {
+        //load story based on static class story manager 
         cerita = new Story(StoryManager.storyType);
         nextScene = StoryManager.nextScene;
         // }
@@ -26,6 +27,7 @@ public class StoryController : MonoBehaviour
         currentPhase = -1;
         nextPhase();
     }
+    //load phase at index and play it with phase controller 
     void loadPhase(int number)
     {
         if (number >= cerita.phases.Count)
@@ -36,6 +38,7 @@ public class StoryController : MonoBehaviour
 
     }
 
+    //call next phase 
     public void nextPhase()
     {
         currentPhase++;

@@ -13,6 +13,7 @@ public class MouseCamControlPan : MonoBehaviour
     {
 
     }
+    //read mouse movement and limit it's movement 
     void mouseRead()
     {
         //get mouse movement
@@ -21,7 +22,7 @@ public class MouseCamControlPan : MonoBehaviour
         //limit lookup and lookdown
         mouseY = Mathf.Clamp(mouseY, -60f, 60f);
     }
-    //moving cam based on mouse position
+    //moving cam based on mouse drag
     void camPanning()
     {
         //rotating center point
