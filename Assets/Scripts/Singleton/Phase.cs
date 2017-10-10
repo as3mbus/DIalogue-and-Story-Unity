@@ -6,6 +6,7 @@ using LitJson;
 
 namespace as3mbus.Story
 {
+
     public enum fadeMode
     {
         none, color, transition
@@ -38,11 +39,14 @@ namespace as3mbus.Story
         {
 
         }
+
+        //new empty phase with loaded comic 
         public Phase(string name, string bundleName, string comicPath)
         {
             this.name = name;
             this.comic = new Comic(bundleName, comicPath);
         }
+        //new phase by loading json that contain message and character speaking it @deprecated
         public Phase(JsonData chara, JsonData msg)
         {
             for (int i = 0; i < chara.Count; i++)
@@ -51,14 +55,14 @@ namespace as3mbus.Story
                 this.messages.Add(msg[i].ToString());
             }
         }
-
+        //parse json data to phase object
         public Phase parseJson(JsonData phaseData)
         {
             Phase fase = new Phase();
             try
             {
                 fase.name = phaseData["name"].ToString();
-                fase.comic = new Comic(phaseData["comicsource"].ToString(),phaseData["comicname"].ToString());
+                fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
                 for (int i = 0; i < phaseData["message"].Count; i++)
                 {
 
@@ -113,7 +117,7 @@ namespace as3mbus.Story
             return fase;
 
         }
-
+        //create json date (string) based on a phase content
         public string toJson()
         {
             StringBuilder sb = new StringBuilder();
@@ -123,7 +127,7 @@ namespace as3mbus.Story
             toJson(writer);
             return sb.ToString();
         }
-
+        //writer json data using json writer 
         public void toJson(JsonWriter writer)
         {
 
@@ -215,7 +219,7 @@ namespace as3mbus.Story
             writer.WriteArrayStart();
             foreach (var item in this.bgcolor)
             {
-                writer.Write("#"+ColorUtility.ToHtmlStringRGB(item));
+                writer.Write("#" + ColorUtility.ToHtmlStringRGB(item));
             }
             writer.WriteArrayEnd();
             writer.WritePropertyName("duration");
@@ -231,7 +235,7 @@ namespace as3mbus.Story
 
             writer.WriteObjectEnd();
         }
-
+        //create new line for a phase
         public void newLine()
         {
             this.pages.Add(0);
@@ -246,7 +250,7 @@ namespace as3mbus.Story
             this.bgcolor.Add(Color.black);
             this.duration.Add(1);
         }
-
+        //delete a line on certain index
         public void deleteLine(int index)
         {
 
@@ -262,7 +266,7 @@ namespace as3mbus.Story
             this.bgcolor.RemoveAt(index);
             this.duration.RemoveAt(index);
         }
-
+        //update line
         public void UpdateLine(
             string character,
              string message,
@@ -316,7 +320,7 @@ namespace as3mbus.Story
             UpdateLine(character, message, pageNo, zoom, path, shake, balooncor, baloonsize, fadeMode, bakgron, index);
             this.duration[index] = duration;
         }
-
+        //insert new line at certain index 
         public void insertLine(int index)
         {
             this.pages.Insert(index, 0);
@@ -331,6 +335,7 @@ namespace as3mbus.Story
             this.bgcolor.Insert(index, Color.black);
             this.duration.Insert(index, 1);
         }
+        //parse color from a hexa string 
         public static Color parseColorFromString(string s)
         {
             Color c;

@@ -5,7 +5,7 @@ using System.IO;
 using as3mbus.Story;
 using UnityEngine.SceneManagement;
 
-
+//Demo calling  
 public class callDemo : MonoBehaviour
 {
     Story ayam;

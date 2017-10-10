@@ -18,6 +18,8 @@ namespace as3mbus.Story
         public string source;
         public List<string> pagename = new List<string>();
 
+
+        //create comic data by loading comic folder inside a asset bundle
         public Comic(string bundleName, string comicPath)
         {
             this.name = Path.GetFileName(comicPath);
@@ -34,6 +36,8 @@ namespace as3mbus.Story
         public Comic(JsonData directory) : this(directory.ToString())
         {
         }
+
+        //load comic on resource folder @deprecated 
         public Comic(string resDir)
         {
             this.source = resDir.ToString();

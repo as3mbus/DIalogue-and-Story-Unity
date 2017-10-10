@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-
+//toggle group extended class for getting active toggle 
 public class BetterToggleGroup : ToggleGroup 
 {
     public delegate void ChangedEventHandler(Toggle newActive);

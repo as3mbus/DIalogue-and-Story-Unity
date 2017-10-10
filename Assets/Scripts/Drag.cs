@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//drag class for dragging object in world space using mouse 
 public class Drag : MonoBehaviour
 {
     bool dragged = false;

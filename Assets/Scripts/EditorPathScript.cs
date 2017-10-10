@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO;
 using LitJson;
 
-
+//draw path in editor using gizmos 
 public class EditorPathScript : MonoBehaviour
 {
     public Color rayColor = Color.white;

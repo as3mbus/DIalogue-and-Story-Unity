@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// script controller to control sprite size by using scroll wheel 
 public class ScrollResize : MonoBehaviour
 {
     public MouseCamControlPan cams;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//script to make an object to follow a path 
 public class FollowPath : MonoBehaviour
 {
     public EditorPathScript pathRoute;
