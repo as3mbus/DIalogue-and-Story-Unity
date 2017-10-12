@@ -5,15 +5,13 @@ using System.IO;
 using as3mbus.Story;
 using UnityEngine.SceneManagement;
 
-//Demo calling  
+//Demo story calling  
 public class callDemo : MonoBehaviour
 {
     Story ayam;
     void Start()
     {
         ComicManager.readComicsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
-        
-
     }
     public void panggilCerita()
     {
@@ -22,7 +20,7 @@ public class callDemo : MonoBehaviour
         StoryManager.stori = ayam;
         
 		StoryManager.nextScene = "Player";
-        SceneManager.LoadScene("Player");
+        SceneManager.LoadScene("dynamic player");
 
     }
 }

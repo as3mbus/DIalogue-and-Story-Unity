@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Player.unity
     guid: b2d48b4f24cbf410fad7d04a0fac7b19
+  - enabled: 1
+    path: Assets/Scenes/dynamic player.unity
+    guid: 93cb9786efe1b480ebb48eff7bc2bb27
