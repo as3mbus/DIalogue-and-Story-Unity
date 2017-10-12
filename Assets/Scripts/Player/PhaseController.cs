@@ -113,7 +113,7 @@ public class PhaseController : MonoBehaviour
             activePage().sprite = activePhase.comic.pages[activePhase.pages[currentLine]];
         }
         baloonsizer.transform.localScale = new Vector2(activePhase.baloonsize[line], activePhase.baloonsize[line]);
-        originPosition = kameraRoute.position;
+        originPosition = kameraRoute.localPosition;
         originZoom = kamera.GetComponent<Camera>().orthographicSize;
         times = 0;
         duration = activePhase.duration[line];
@@ -207,10 +207,10 @@ public class PhaseController : MonoBehaviour
     //moving camera to designated point 
     public void camRoute()
     {
-        float distance = Vector3.Distance(activePhase.paths[currentLine], kameraRoute.position);
+        float distance = Vector3.Distance(activePhase.paths[currentLine], kameraRoute.localPosition);
         float zoomDistance = Mathf.Abs(kamera.GetComponent<Camera>().orthographicSize - activePhase.zooms[currentLine]);
         if (distance != 0)
-            kameraRoute.position = Vector3.MoveTowards(originPosition, activePhase.paths[currentLine], times / duration);
+            kameraRoute.localPosition = Vector3.MoveTowards(originPosition, activePhase.paths[currentLine], times / duration);
         if (zoomDistance != 0)
             kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(originZoom, activePhase.zooms[currentLine], times / duration);
 
@@ -222,7 +222,7 @@ public class PhaseController : MonoBehaviour
     //set camera position
     public void camPos()
     {
-        kameraRoute.position = activePhase.paths[currentLine];
+        kameraRoute.localPosition = activePhase.paths[currentLine];
     }
     //hide phase and call story controller next phase
     public void hidePhase()
