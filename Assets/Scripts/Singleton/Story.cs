@@ -11,7 +11,7 @@ namespace as3mbus.Story
     public class Story
     {
         public string name;
-        public ArrayList phases = new ArrayList();
+        public List<Phase> phases = new List<Phase>();
         //new empty story 
         public Story()
         {
@@ -35,11 +35,11 @@ namespace as3mbus.Story
                 case storyDataType.TextAsset:
                     loadJsonStory(StoryManager.textAsset);
                     break;
-                // case storyDataType.Story:
-                //     loadJsonStory(StoryManager.stori);
-                //     break;
+                case storyDataType.Story:
+                    loadJsonStory(StoryManager.stori);
+                    break;
                 case storyDataType.New:
-                    phases = new ArrayList();
+                    phases = new List<Phase>();
                     break;
                 default:
                     Debug.Log("Story not Found!");
@@ -109,8 +109,11 @@ namespace as3mbus.Story
             this.name = storyJson["name"].ToString();
             foreach (JsonData cerita in storyJson["phase"])
             {
-                Phase fase = new Phase(); ;
-                fase = fase.parseJson(cerita);
+                Phase fase;
+                if (cerita.Keys.Contains("content"))
+                    fase = Phase.parseJson(cerita);
+                    else 
+                    fase = Phase.parseOldJson(cerita);
                 this.phases.Add(fase);
             }
         }

@@ -17,6 +17,7 @@
                             "x":3.5,
                             "y":-2.6,
                             "size": 2.3,
+                            "shake":1.5,
                             "backgroundcolor":"#123123"
                             
                         }

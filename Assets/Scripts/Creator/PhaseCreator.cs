@@ -14,7 +14,7 @@ public class PhaseCreator : MonoBehaviour
     public StoryCreator storyController;
     public Toggle baloonToggle, colorToggle, pickerToggle;
     public ToggleGroup fadeToggle;
-    public PhaseEx targetPhase;
+    public Phase targetPhase;
     public Slider shakeSlider, durationSlider;
     public Text shakeText, durationText;
     public SpriteRenderer backgroundSprite;
@@ -37,10 +37,6 @@ public class PhaseCreator : MonoBehaviour
     {
         cam.backgroundColor = color;
         pickerToggle.graphic.color = color;
-    }
-    void Update()
-    {
-
     }
 
     #region main-function
@@ -164,15 +160,15 @@ public class PhaseCreator : MonoBehaviour
     }
 
     //load phases into the phase creator and load first line
-    public void loadPhase(PhaseEx fase)
+    public void loadPhase(Phase fase)
     {
         targetPhase = fase;
         for (int i = 0; i < fase.Lines.Count; i++)
             lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
         addDropdownOption(pageDDown, fase.comic.pagename.ToArray());
-
         pageDDown.value = 0;
         pageDDown.captionText.text = pageDDown.options[0].text;
+        changePage();
         loadLine(0);
     }
     #endregion

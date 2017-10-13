@@ -6,6 +6,10 @@ using LitJson;
 
 namespace as3mbus.Story
 {
+    public enum fadeMode
+    {
+        color, transition, none
+    }
 
     public class Effects
     {
@@ -14,10 +18,10 @@ namespace as3mbus.Story
         fadeMode fadeMode;
         CamEffects cameraEffects;
 
-        public int Page { get {return page;} set {page=value;} }
-        public float Duration { get {return duration;} set {duration = value;} }
-        public fadeMode FadeMode { get {return fadeMode;} set {fadeMode=value;} }
-        public CamEffects CameraEffects { get {return cameraEffects;} set {cameraEffects=value;} }
+        public int Page { get { return page; } set { page = value; } }
+        public float Duration { get { return duration; } set { duration = value; } }
+        public fadeMode FadeMode { get { return fadeMode; } set { fadeMode = value; } }
+        public CamEffects CameraEffects { get { return cameraEffects; } set { cameraEffects = value; } }
 
         public static fadeMode parseFadeMode(string fM)
         {

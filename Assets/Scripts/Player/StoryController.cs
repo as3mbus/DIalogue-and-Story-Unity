@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using as3mbus.Story;
+using System.IO;
 
 public class StoryController : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class StoryController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        ComicManager.readComicsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+
         // try
         // {
         //load story based on static class story manager 
@@ -33,7 +36,7 @@ public class StoryController : MonoBehaviour
         if (number >= cerita.phases.Count)
             return;
         phaseCanvas.SetActive(true);
-        Phase fase = (Phase)cerita.phases[number];
+        Phase fase = cerita.phases[number];
         phaseCanvas.GetComponent<PhaseController>().startPhase(fase);
 
     }
