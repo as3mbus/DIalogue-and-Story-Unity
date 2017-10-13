@@ -8,17 +8,17 @@ using as3mbus.Story;
 
 namespace as3mbus.Story
 {
-    public class Story
+    public class StoryEx
     {
         public string name;
-        public ArrayList phases = new ArrayList();
+        public List<PhaseEx> phases = new List<PhaseEx>();
         //new empty story 
-        public Story()
+        public StoryEx()
         {
 
         }
         //load/create story based on static class story manager 
-        public Story(storyDataType storyType)
+        public StoryEx(storyDataType storyType)
         {
             switch (storyType)
             {
@@ -35,11 +35,11 @@ namespace as3mbus.Story
                 case storyDataType.TextAsset:
                     loadJsonStory(StoryManager.textAsset);
                     break;
-                // case storyDataType.Story:
-                //     loadJsonStory(StoryManager.stori);
-                //     break;
+                case storyDataType.Story:
+                    loadJsonStory(StoryManager.stori);
+                    break;
                 case storyDataType.New:
-                    phases = new ArrayList();
+                    phases = new List<PhaseEx>();
                     break;
                 default:
                     Debug.Log("Story not Found!");
@@ -66,7 +66,7 @@ namespace as3mbus.Story
             writer.WritePropertyName("phase");
             writer.WriteArrayStart();
 
-            foreach (Phase phase in phases)
+            foreach (PhaseEx phase in phases)
             {
                 phase.toJson(writer);
             }
@@ -74,14 +74,14 @@ namespace as3mbus.Story
             writer.WriteObjectEnd();
         }
         //read story with filepath 
-        public Story(string filePath)
+        public StoryEx(string filePath)
         {
             this.name = Path.GetFileNameWithoutExtension(filePath);
             JsonData jsonStory = JsonMapper.ToObject(File.ReadAllText(filePath));
             loadJsonStory(jsonStory);
         }
         //read story data using text asset 
-        public Story(TextAsset storyJson)
+        public StoryEx(TextAsset storyJson)
         {
             loadJsonStory(storyJson);
         }
@@ -99,7 +99,7 @@ namespace as3mbus.Story
             loadJsonStory(jsonStory);
         }
         //read json story based on another story
-        void loadJsonStory(Story story)
+        void loadJsonStory(StoryEx story)
         {
             loadJsonStory(story.toJson());
         }
@@ -109,8 +109,11 @@ namespace as3mbus.Story
             this.name = storyJson["name"].ToString();
             foreach (JsonData cerita in storyJson["phase"])
             {
-                Phase fase = new Phase(); ;
-                fase = fase.parseJson(cerita);
+                PhaseEx fase;
+                if (cerita.Keys.Contains("content"))
+                    fase = PhaseEx.parseJson(cerita);
+                    else 
+                    fase = PhaseEx.parseOldJson(cerita);
                 this.phases.Add(fase);
             }
         }

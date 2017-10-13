@@ -14,7 +14,7 @@ public class PhaseCreator : MonoBehaviour
     public StoryCreator storyController;
     public Toggle baloonToggle, colorToggle, pickerToggle;
     public ToggleGroup fadeToggle;
-    public Phase targetPhase;
+    public PhaseEx targetPhase;
     public Slider shakeSlider, durationSlider;
     public Text shakeText, durationText;
     public SpriteRenderer backgroundSprite;
@@ -49,7 +49,7 @@ public class PhaseCreator : MonoBehaviour
     // handler for addLine button to either add/insert line
     public void addLine()
     {
-        if (lineDDown.value >= targetPhase.messages.Count - 1)
+        if (lineDDown.value >= targetPhase.Lines.Count - 1)
             newLine();
         else
             insertLine();
@@ -58,59 +58,61 @@ public class PhaseCreator : MonoBehaviour
     public void newLine()
     {
         targetPhase.newLine();
-        lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
+        lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.Lines.Count));
         lineDDown.value++;
     }
     //Insert New Line at current index +1
     public void insertLine()
     {
-        if (targetPhase.messages.Count == 0)
+        if (targetPhase.Lines.Count == 0)
             lineDDown.captionText.text = "Line 1";
         targetPhase.insertLine(lineDDown.value + 1);
-        lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.messages.Count));
+        lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.Lines.Count));
         lineDDown.value++;
     }
 
     //delete currently selected line 
     public void deleteLine()
     {
-        if (targetPhase.messages.Count == 0)
+        if (targetPhase.Lines.Count == 0)
             return;
         lineDDown.value--;
         targetPhase.deleteLine(lineDDown.value);
-        lineDDown.options.RemoveAt(targetPhase.messages.Count);
-        if (targetPhase.messages.Count <= 0)
+        lineDDown.options.RemoveAt(targetPhase.Lines.Count);
+        if (targetPhase.Lines.Count <= 0)
             lineDDown.captionText.text = "";
     }
 
     //handler for changing selected line(Line Dropdown)
     public void changeLine()
     {
-        if (targetPhase.messages.Count <= 1)
+        if (targetPhase.Lines.Count <= 1)
             return;
         saveLine();
         currentLine = lineDDown.value;
+        print(targetPhase.toJson());
         loadLine(currentLine);
     }
 
     //save value for selected line
     public void saveLine()
     {
-        if (targetPhase.messages.Count == 0) return;
-        targetPhase.UpdateLine(
+        if (targetPhase.Lines.Count == 0) return;
+        targetPhase.UpdateAll(
             characterDDown.captionText.text,
-            messageField.text, pageDDown.value,
+            messageField.text,
+            pageDDown.value,
+            durationSlider.value,
+            Effects.parseFadeMode(fadeToggle.ActiveToggles().FirstOrDefault().GetComponentInChildren<Text>().text),
             cam.orthographicSize,
             cam.transform.position,
             shakeSlider.value,
-            baloonToggle.isOn ? TextBaloon.transform.localPosition : Vector3.zero,
-            baloonToggle.isOn ? TextBaloon.transform.localScale.x : 0,
-            Phase.parseFadeMode(fadeToggle.ActiveToggles().FirstOrDefault().GetComponentInChildren<Text>().text),
             colorToggle.isOn ? picker.Color : Color.black,
-            durationSlider.value,
+            // baloonToggle.isOn ? TextBaloon.transform.localPosition : Vector3.zero,
+            // baloonToggle.isOn ? TextBaloon.transform.localScale.x : 0,
             currentLine);
     }
-    
+
     // Save Active phase into the story and change canvas to story creator
     public void savePhase()
     {
@@ -124,38 +126,34 @@ public class PhaseCreator : MonoBehaviour
     //load line by index into the interface
     public void loadLine(int index)
     {
-        if (targetPhase.messages.Count > 0)
+        if (targetPhase.Lines.Count > 0)
         {
-
-
             lineDDown.captionText.text = lineDDown.options[index].text;
-            characterDDown.value = characterDDown.options.IndexOf(characterDDown.options.Find(x => x.text == targetPhase.characters[index]));
-            messageField.text = targetPhase.messages[index];
-            pageDDown.value = targetPhase.pages[index];
-            cam.transform.position = targetPhase.paths[index];
-            cam.orthographicSize = targetPhase.zooms[index];
-            shakeSlider.value = targetPhase.shake[index];
-            if (Mathf.Abs(targetPhase.baloonpos[index].x)
-            + Mathf.Abs(targetPhase.baloonpos[index].y) != 0)
-            {
-                baloonToggle.isOn = true;
-                TextBaloon.transform.localPosition = targetPhase.baloonpos[index];
-                TextBaloon.transform.localScale = new Vector2(targetPhase.baloonsize[index], targetPhase.baloonsize[index]);
-            }
-            else baloonToggle.isOn = false;
-            shakeSlider.value = targetPhase.shake[index];
-            print("color change called");
-            changeBGColor(targetPhase.bgcolor[index]);
-            picker.Color = (targetPhase.bgcolor[index]);
-
+            characterDDown.value = characterDDown.options.IndexOf(
+                characterDDown.options.Find(
+                    x => x.text == targetPhase.Lines[index].Character));
+            messageField.text = targetPhase.Lines[index].Message;
+            pageDDown.value = targetPhase.Lines[index].Effects.Page;
             foreach (Toggle togle in fadeToggle.GetComponentsInChildren<Toggle>())
-                if (togle.GetComponentInChildren<Text>().text.ToLower() == targetPhase.fademode[index].ToString("g").ToLower())
+                if (togle.GetComponentInChildren<Text>().text.ToLower() == targetPhase.Lines[index].Effects.FadeMode.ToString("g").ToLower())
                     togle.isOn = true;
                 else
                     togle.isOn = false;
-            durationSlider.value = targetPhase.duration[index];
-
-
+            durationSlider.value = targetPhase.Lines[index].Effects.Duration;
+            cam.transform.position = targetPhase.Lines[index].Effects.CameraEffects.Position;
+            cam.orthographicSize = targetPhase.Lines[index].Effects.CameraEffects.Size;
+            shakeSlider.value = targetPhase.Lines[index].Effects.CameraEffects.Shake;
+            // if (Mathf.Abs(targetPhase.baloonpos[index].x)
+            // + Mathf.Abs(targetPhase.baloonpos[index].y) != 0)
+            // {
+            //     baloonToggle.isOn = true;
+            //     TextBaloon.transform.localPosition = targetPhase.baloonpos[index];
+            //     TextBaloon.transform.localScale = new Vector2(targetPhase.baloonsize[index], targetPhase.baloonsize[index]);
+            // }
+            // else baloonToggle.isOn = false;
+            // print("color change called");
+            changeBGColor(targetPhase.Lines[index].Effects.CameraEffects.BackgroundColor);
+            picker.Color = (targetPhase.Lines[index].Effects.CameraEffects.BackgroundColor);
         }
         else
         {
@@ -166,10 +164,10 @@ public class PhaseCreator : MonoBehaviour
     }
 
     //load phases into the phase creator and load first line
-    public void loadPhase(Phase fase)
+    public void loadPhase(PhaseEx fase)
     {
         targetPhase = fase;
-        for (int i = 0; i < fase.messages.Count; i++)
+        for (int i = 0; i < fase.Lines.Count; i++)
             lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
         addDropdownOption(pageDDown, fase.comic.pagename.ToArray());
 

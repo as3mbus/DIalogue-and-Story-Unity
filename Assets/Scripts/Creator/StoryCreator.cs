@@ -11,7 +11,7 @@ using GracesGames;
 public class StoryCreator : MonoBehaviour
 {
     //getter and setter for target story 
-    public Story targetStory
+    public StoryEx targetStory
     {
         get { return _targetStory; }
         set
@@ -21,7 +21,7 @@ public class StoryCreator : MonoBehaviour
             loadStory();
         }
     }
-    Story _targetStory;
+    StoryEx _targetStory;
     public GameObject phasePanel, phaseButton, newPhaseButton;
     public ScrollRect phaseScrollView;
     public PhaseCreator phaseCreator;
@@ -34,7 +34,7 @@ public class StoryCreator : MonoBehaviour
     void Start()
     {
         //create/load new/existing story based on static class story manager 
-        _targetStory = new Story(StoryManager.storyType);
+        _targetStory = new StoryEx(StoryManager.storyType);
         loadStory();
         // print(Comic.listComicsJson());
         // Comic.writeComicsJson();
@@ -64,7 +64,7 @@ public class StoryCreator : MonoBehaviour
     // adding new phase button and enable story creator interface 
     public void createPhase()
     {
-        _targetStory.phases.Add(new Phase(phaseNameField.text, bundleDropdown.captionText.text, comicDropdown.captionText.text));
+        _targetStory.phases.Add(new PhaseEx(phaseNameField.text, bundleDropdown.captionText.text, comicDropdown.captionText.text));
         typeWindowActive(false);
         newContentButton();
     }
@@ -80,35 +80,35 @@ public class StoryCreator : MonoBehaviour
         int index = button.transform.GetSiblingIndex();
         print(phaseScrollView.content.transform.childCount);
 
-        Phase fase = (Phase)_targetStory.phases[index];
+        PhaseEx fase = _targetStory.phases[index];
         contentButtonUpdate(fase, button);
     }
     //update content button value of a phase 
-    public void contentButtonUpdate(Phase fase)
+    public void contentButtonUpdate(PhaseEx fase)
     {
         int index = _targetStory.phases.IndexOf(fase);
         GameObject button = phaseScrollView.content.GetChild(index).gameObject;
         contentButtonUpdate(fase, button);
     }
     //update content button value based on a phase 
-    public void contentButtonUpdate(Phase fase, GameObject button)
+    public void contentButtonUpdate(PhaseEx fase, GameObject button)
     {
         button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = fase.name;
         button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "";
         button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.toString();
-        button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.messages.Count.ToString() + " Line";
+        button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.Lines.Count.ToString() + " Line";
     }
     //phase content button handler
     //get button index and throw editPhase(Phase)
     public void editPhase()
     {
         int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex();
-        Phase fase = (Phase)_targetStory.phases[phaseIndex];
+        PhaseEx fase =_targetStory.phases[phaseIndex];
         editPhase(fase);
     }
     //phase content button handler
     //display phase editor and edit phase with it's interfacce  
-    public void editPhase(Phase fase)
+    public void editPhase(PhaseEx fase)
     {
         phaseCreator.gameObject.SetActive(true);
         phaseCreator.loadPhase(fase);
@@ -146,8 +146,8 @@ public class StoryCreator : MonoBehaviour
         _targetStory.name = storyNameField.text;
         StoryManager.storyType = storyDataType.Story;
         StoryManager.stori = _targetStory;
-        StoryManager.nextScene = "Creator";
-        SceneManager.LoadScene("Player");
+        StoryManager.nextScene = "StoryEx";
+        SceneManager.LoadScene("StoryEx");
     }
     //handle save button on simple file manager 
     //save story into a complete filename path 
@@ -182,7 +182,7 @@ public class StoryCreator : MonoBehaviour
     //set target story to loaded story 
     void readStory(string path)
     {
-        targetStory = new Story(path);
+        targetStory = new StoryEx(path);
     }
     //load story content to interface
     void loadStory()

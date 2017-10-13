@@ -18,7 +18,7 @@ namespace as3mbus.Story
         public static JsonData json;
         public static string stringOrPath;
         public static TextAsset textAsset;
-        public static Story stori;
+        public static StoryEx stori;
 
         public static string nextScene;
     }
