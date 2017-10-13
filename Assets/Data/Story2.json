@@ -22,6 +22,23 @@
                             
                         }
                     }
+                },
+                {
+                    "message":"yoholo",
+                    "character":"yorha",
+                    "effect":{
+                        "page": 3,
+                        "duration": 5,
+                        "fademode":"transition",
+                        "camera":{
+                            "x":-3.5,
+                            "y":2.6,
+                            "size": 10,
+                            "shake":7,
+                            "backgroundcolor":"#999"
+                            
+                        }
+                    }
                 }
             ],
             "page": [

@@ -7,12 +7,6 @@ public class MouseCamControlPan : MonoBehaviour
     public float camSensitivity = 1f, zoomSensitivity = 1f ;
 
     public float mouseX, mouseY,zoom = 5;
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
     //read mouse movement and limit it's movement 
     void mouseRead()
     {
@@ -25,9 +19,7 @@ public class MouseCamControlPan : MonoBehaviour
     //moving cam based on mouse drag
     void camPanning()
     {
-        //rotating center point
         transform.position = new Vector3(mouseX, mouseY, 0) * Time.deltaTime + transform.position;
-        //rotating camera to always look at center
     }
     // Update is called once per frame
     void Update()
