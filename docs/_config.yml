@@ -18,7 +18,7 @@ email: asembus@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Project Pages for Unity3D Open Stories
 baseurl: "/Dialogue-and-Story-Unity" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://as3mbus.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: as3mbus
 github_username:  as3mbus
 
