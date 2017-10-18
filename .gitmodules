@@ -6,3 +6,6 @@
 [submodule "docs"]
 	path = docs
 	url = https://github.com/as3mbus/Unity-Open-Story-Docs.git
+[submodule "Assets/Extern/SimpleFileBrowser"]
+	path = Assets/Extern/SimpleFileBrowser
+	url = https://github.com/as3mbus/SimpleFileBrowser.git
