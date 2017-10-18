@@ -5,3 +5,6 @@
 [submodule "Assets/Extern/cui_color_picker"]
 	path = Assets/Extern/cui_color_picker
 	url = https://github.com/as3mbus/cui_color_picker.git
+[submodule "docs"]
+	path = docs
+	url = https://github.com/as3mbus/Unity-Open-Story-Docs.git
