@@ -41,3 +41,5 @@ Build/
 Assets/StreamingAssets
 Assets/AssetBundles
 Assets/Extern/*.meta
+Assets/StreamingAssets.meta
+Assets/AssetBundles.meta

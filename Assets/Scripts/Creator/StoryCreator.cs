@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using as3mbus.Story;
-using GracesGames;
+using SimpleFileBrowser.Scripts.GracesGames;
 
 public class StoryCreator : MonoBehaviour
 {
