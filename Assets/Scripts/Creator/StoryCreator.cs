@@ -169,7 +169,7 @@ public class StoryCreator : MonoBehaviour
     public void OpenFileBrowser(FileBrowserMode fileBrowserMode)
     {
         // Create the file browser and name it
-        GameObject fileBrowserObject = Instantiate(FileBrowserPrefab, this.transform);
+        GameObject fileBrowserObject = Instantiate(FileBrowserPrefab, this.transform, false);
         fileBrowserObject.name = "FileBrowser";
         // Set the mode to save or load
         FileBrowser fileBrowserScript = fileBrowserObject.GetComponent<FileBrowser>();
@@ -221,7 +221,7 @@ public class StoryCreator : MonoBehaviour
     //create phase content button and reset add phase button position 
     void newContentButton()
     {
-        GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.content);
+        GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.content, false);
         newButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => editPhase());
         newButton.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => deletePhase());
         resetAddPhaseButton();
