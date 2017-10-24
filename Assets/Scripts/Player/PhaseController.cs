@@ -214,11 +214,6 @@ public class PhaseController : MonoBehaviour
     {
         kameraRoute.position = Vector3.Lerp(originPosition, activePhase.paths[currentLine], times / duration);
         kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(originZoom, activePhase.zooms[currentLine], times / duration);
-
-        // if (Input.GetButtonDown("Fire1") && currentLine < activePhase.paths.Count)
-        // {
-        //     currentLine++;
-        // }
     }
     //set camera position
     public void camPos()
