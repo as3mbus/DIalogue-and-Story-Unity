@@ -4,7 +4,7 @@
         {
             "name": "test dialogue",
             "comicname": "sample comic",
-            "comicsource": "comic 3",
+            "comicsource": "comic 2",
             "content":[
                 {
                     "message":"",
@@ -97,7 +97,7 @@
         {
             "name": "test dialogue 2",
             "comicname": "sample comic",
-            "comicsource": "comic 3",
+            "comicsource": "comic 2",
             "page": [
                 1,
                 0

@@ -73,18 +73,22 @@ public class PhaseController : MonoBehaviour
                 showLine(activePhase.Lines[currentLine].Message);
             }
         }
-        //fade transition 
-        spriteFade(activePhase.Lines[currentLine].Effects.FadeMode);
+
+        if (times < duration)
+        {
+            //fade transition 
+            spriteFade(activePhase.Lines[currentLine].Effects.FadeMode);
+            //if not using color fade
+            //slowly move camera position (pan and zoom) 
+            if (activePhase.Lines[currentLine].Effects.FadeMode != fadeMode.color)
+                camRoute();
+        }
         //text per sec 
         textPerSec(typeDelay);
-        //if not using color fade
-        //slowly move camera position (pan and zoom) 
-        if (activePhase.Lines[currentLine].Effects.FadeMode != fadeMode.color)
-            camRoute();
-        //shake camera
-        shakeCamera(activePhase.Lines[currentLine].Effects.CameraEffects.Shake, shake);
         //show talking baloon
         showBaloon();
+        //shake camera
+        shakeCamera(activePhase.Lines[currentLine].Effects.CameraEffects.Shake, shake);
     }
     //read complete line 
     public void showLine(string line)
@@ -114,6 +118,12 @@ public class PhaseController : MonoBehaviour
             activePhase.comic.pages[
                 activePhase.Lines[
                     currentLine].Effects.Page];
+        }
+        else
+        {
+            inactivePage().color = new Color(1, 1, 1, 0);
+            activePage().color = Color.white;
+            activePage().sprite = activePhase.comic.pages[activePhase.Lines[currentLine].Effects.Page];
         }
         // baloonsizer.transform.localScale = new Vector2(activePhase.baloonsize[line], activePhase.baloonsize[line]);
         originPosition = kameraRoute.localPosition;
@@ -160,6 +170,7 @@ public class PhaseController : MonoBehaviour
     {
         if (times < duration)
             times += Time.deltaTime;
+        else times = duration;
         if (fadeM == fadeMode.color)
             colorFade();
         else if (fadeM == fadeMode.transition)
@@ -174,15 +185,10 @@ public class PhaseController : MonoBehaviour
     //color fade 
     void colorFade()
     {
-        if (times < duration / 2)
-        {
-            inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (times * 2) / duration);
-        }
-        else
-        {
+        inactivePage().color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), (times * 2) / duration);
+        activePage().color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (times * 2 - duration) / duration);
+        if (times >= duration / 2)
             camPos();
-            activePage().color = Color.Lerp(new Color(1, 1, 1, 0), Color.white, (times * 2 - duration) / duration);
-        }
     }
     // shake camera 
     void shakeCamera(float frequency, float magnitude)
@@ -210,12 +216,9 @@ public class PhaseController : MonoBehaviour
     //moving camera to designated point 
     public void camRoute()
     {
-        float distance = Vector3.Distance(activePhase.Lines[currentLine].Effects.CameraEffects.Position, kameraRoute.localPosition);
-        float zoomDistance = Mathf.Abs(kamera.GetComponent<Camera>().orthographicSize - activePhase.Lines[currentLine].Effects.CameraEffects.Size);
-        if (distance != 0)
-            kameraRoute.localPosition = Vector3.MoveTowards(originPosition, activePhase.Lines[currentLine].Effects.CameraEffects.Position, times / duration);
-        if (zoomDistance != 0)
-            kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(originZoom, activePhase.Lines[currentLine].Effects.CameraEffects.Size, times / duration);
+
+        kameraRoute.localPosition = Vector3.Lerp(originPosition, activePhase.Lines[currentLine].Effects.CameraEffects.Position, times / duration);
+        kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(originZoom, activePhase.Lines[currentLine].Effects.CameraEffects.Size, times / duration);
 
         // if (Input.GetButtonDown("Fire1") && currentLine < activePhase.paths.Count)
         // {
@@ -226,6 +229,8 @@ public class PhaseController : MonoBehaviour
     public void camPos()
     {
         kameraRoute.localPosition = activePhase.Lines[currentLine].Effects.CameraEffects.Position;
+        kamera.GetComponent<Camera>().orthographicSize = activePhase.Lines[currentLine].Effects.CameraEffects.Size;
+
     }
     //hide phase and call story controller next phase
     public void hidePhase()
