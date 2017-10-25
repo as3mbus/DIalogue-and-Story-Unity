@@ -14,7 +14,7 @@ public static class ComicManager
         List<string> comBunCon = new List<string>();
         foreach (string asset in comicBundle.GetAllAssetNames())
         {
-            if (asset.Contains(".png") && !comBunCon.Contains(Path.GetDirectoryName(asset)))
+            if ((asset.Contains(".png") ||asset.Contains(".jpg")||asset.Contains(".jpeg") )  && !comBunCon.Contains(Path.GetDirectoryName(asset)))
             {
                 comBunCon.Add(Path.GetDirectoryName(asset));
                 // Debug.Log(Path.GetDirectoryName(asset));
