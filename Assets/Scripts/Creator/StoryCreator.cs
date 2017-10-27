@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using as3mbus.Story;
-using SimpleFileBrowser.Scripts.GracesGames;
+using GracesGames;
 
 public class StoryCreator : MonoBehaviour
 {
@@ -173,7 +173,6 @@ public class StoryCreator : MonoBehaviour
         fileBrowserObject.name = "FileBrowser";
         // Set the mode to save or load
         FileBrowser fileBrowserScript = fileBrowserObject.GetComponent<FileBrowser>();
-        fileBrowserScript.SetupFileBrowser(ViewMode.Portrait);
         if (fileBrowserMode == FileBrowserMode.Save)
             fileBrowserScript.SaveFilePanel(this, "saveStory", storyNameField.text, "json");
         else
