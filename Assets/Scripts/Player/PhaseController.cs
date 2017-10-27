@@ -86,7 +86,7 @@ public class PhaseController : MonoBehaviour
         //text per sec 
         textPerSec(typeDelay);
         //show talking baloon
-        showBaloon();
+        // showBaloon();
         //shake camera
         shakeCamera(activePhase.Lines[currentLine].Effects.CameraEffects.Shake, shake);
     }
