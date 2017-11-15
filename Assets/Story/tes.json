@@ -1,0 +1,50 @@
+
+{
+    "name" : "",
+    "phase" : [
+        {
+            "name" : "",
+            "comicname" : "sample comic",
+            "comicsource" : "comic 2",
+            "page"        : [
+                2
+            ],
+            "character"   : [
+                "Character 1"
+            ],
+            "message"     : [
+                ""
+            ],
+            "camx"        : [
+                -4.66000270843506
+            ],
+            "camy"        : [
+                1.06554007530212
+            ],
+            "zoom"        : [
+                4.0
+            ],
+            "shake"       : [
+                0.0
+            ],
+            "baloonx"     : [
+                0.0
+            ],
+            "baloony"     : [
+                0.0
+            ],
+            "baloonsize"  : [
+                0.0
+            ],
+            "fademode"    : [
+                "transition"
+            ],
+            "background"  : [
+                "#000000"
+            ],
+            "duration"    : [
+                1.0
+            ]
+        }
+    ]
+}

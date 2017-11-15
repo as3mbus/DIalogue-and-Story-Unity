@@ -11,7 +11,7 @@ public class callDemo : MonoBehaviour
     Story ayam;
     void Start()
     {
-        ComicManager.readComicsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        DataManager.readStreamingAssetsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         ayam = new Story(Path.Combine(Application.dataPath, "Data/Story2.json"));
     }
     public void panggilCerita()

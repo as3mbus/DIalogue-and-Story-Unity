@@ -13241,7 +13241,7 @@ MonoBehaviour:
   phaseNameField: {fileID: 117406916}
   comicDropdown: {fileID: 861081945}
   bundleDropdown: {fileID: 368552198}
-  FileBrowserPrefab: {fileID: 1760643962491650, guid: 4599b5ba3543545db92bb18160cea721,
+  FileBrowserPrefab: {fileID: 1948882122172210, guid: e617467d5bf0f42608b442de29212799,
     type: 2}
 --- !u!1 &2144305494
 GameObject:

@@ -24,7 +24,7 @@ namespace as3mbus.Story
         {
             this.name = Path.GetFileName(comicPath);
             this.source = bundleName.ToString();
-            AssetBundle comicBundle = ComicManager.readStreamBundles(ComicManager.bundlePath(bundleName));
+            AssetBundle comicBundle = DataManager.readStreamingAssetsBundles(DataManager.bundlePath(bundleName));
             foreach (string asetname in comicBundle.GetAllAssetNames())
                 if (asetname.Contains(comicPath))
                 {

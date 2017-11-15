@@ -1,0 +1,76 @@
+
+{
+    "name" : "",
+    "phase" : [
+        {
+            "name" : "Fase O",
+            "comicname" : "sample comic",
+            "comicsource" : "comic 2",
+            "page"        : [
+                2,
+                2,
+                2
+            ],
+            "character"   : [
+                "Character 1",
+                "Character 1",
+                "Character 2"
+            ],
+            "message"     : [
+                "hufft",
+                "",
+                "heaaaa"
+            ],
+            "camx"        : [
+                4.75445890426636,
+                5.38322067260742,
+                0.209685087203979
+            ],
+            "camy"        : [
+                3.01425242424011,
+                -1.88037323951721,
+                -1.52530288696289
+            ],
+            "zoom"        : [
+                2.0,
+                4.5,
+                4.0
+            ],
+            "shake"       : [
+                1.0,
+                5.0,
+                10.0
+            ],
+            "baloonx"     : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "baloony"     : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "baloonsize"  : [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "fademode"    : [
+                "none",
+                "transition",
+                "color"
+            ],
+            "background"  : [
+                "#000000",
+                "#000000",
+                "#000000"
+            ],
+            "duration"    : [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    ]
+}

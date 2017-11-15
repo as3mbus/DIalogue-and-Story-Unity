@@ -41,11 +41,11 @@ public class StoryCreator : MonoBehaviour
         // loadComics();
         resetAddPhaseButton();
         //list and write streaming asset bundle data 
-        ComicManager.listStreamingComicsBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        DataManager.listStreamingAssetsBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         //read streaming asset bundle data 
-        ComicManager.readComicsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        DataManager.readStreamingAssetsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         //add options of bundle in streaming assets 
-        addDropdownOptions(bundleDropdown, ComicManager.streamBundleList.ToArray());
+        addDropdownOptions(bundleDropdown, DataManager.streamingAssetsBundleList.ToArray());
         //set to load 1st available bundle 
         bundleDropdown.value = 0;
         bundleDropdown.captionText.text = bundleDropdown.options[0].text;
@@ -198,10 +198,10 @@ public class StoryCreator : MonoBehaviour
     public void bundleChange()
     {
         comicDropdown.options.Clear();
-        if (ComicManager.streamContent(bundleDropdown.captionText.text))
-            activeComics = ComicManager.getComics(ComicManager.readStreamBundles(Path.Combine(Application.streamingAssetsPath, bundleDropdown.captionText.text)));
+        if (DataManager.isStreamingAssetsContent(bundleDropdown.captionText.text))
+            activeComics = ComicManager.getComics(DataManager.readStreamingAssetsBundles(Path.Combine(Application.streamingAssetsPath, bundleDropdown.captionText.text)));
         else
-            activeComics = ComicManager.getComics(ComicManager.readStreamBundles(Path.Combine(Application.persistentDataPath, bundleDropdown.captionText.text)));
+            activeComics = ComicManager.getComics(DataManager.readStreamingAssetsBundles(Path.Combine(Application.persistentDataPath, bundleDropdown.captionText.text)));
         addDropdownOptions(comicDropdown, activeComics);
         comicDropdown.value = 0;
         comicDropdown.captionText.text = comicDropdown.options[0].text;
