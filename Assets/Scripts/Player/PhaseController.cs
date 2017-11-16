@@ -44,13 +44,18 @@ public class PhaseController : MonoBehaviour
     void Update()
     {
         if (currentLine >= activePhase.Lines.Count) return;
+
         //read fire 1 button pressed  
         if (Input.GetButtonDown("Fire1"))
         {
-            //skip transition 
-            times = duration;
-            spriteFade(activePhase.Lines[currentLine].Effects.FadeMode);
-            camRoute();
+            //skip transition if there are any duration
+            if (duration > 0)
+            {
+                //skip transition 
+                times = duration;
+                spriteFade(activePhase.Lines[currentLine].Effects.FadeMode);
+                camRoute();
+            }
 
             //if line finished reading 
             // read next line or hide phase (complete phase) 
@@ -69,13 +74,13 @@ public class PhaseController : MonoBehaviour
                     hidePhase();
                 }
             }
+
             // read complete line
             else
-            {
                 showLine(activePhase.Lines[currentLine].Message);
-            }
         }
 
+        //transitioning camera and fading effect if there are any duration
         if (times < duration)
         {
             //fade transition 
@@ -85,10 +90,16 @@ public class PhaseController : MonoBehaviour
             if (activePhase.Lines[currentLine].Effects.FadeMode != fadeMode.color)
                 camRoute();
         }
+        //if there arent just set the camera to designated position and size
+        else
+            camPos();
+
         //text per sec 
         textPerSec(typeDelay);
+
         //show talking baloon
         // showBaloon();
+
         //shake camera
         shakeCamera(activePhase.Lines[currentLine].Effects.CameraEffects.Shake, shake);
     }
@@ -111,8 +122,8 @@ public class PhaseController : MonoBehaviour
     public void readLine(int line)
     {
         if (line >= activePhase.Lines.Count) return;
-        //swapping page on fademode and loading it 
-        if (activePhase.Lines[line].Effects.FadeMode != fadeMode.none)
+        //swapping page on fademode and loading it if there are any transition and duration
+        if (activePhase.Lines[line].Effects.FadeMode != fadeMode.none && duration > 0)
         {
             pageLR = !pageLR;
             activePage().color = new Color(1, 1, 1, 0);
@@ -121,12 +132,14 @@ public class PhaseController : MonoBehaviour
                 activePhase.Lines[
                     currentLine].Effects.Page];
         }
+        //if there are no transition nor duration just change page without any page swap
         else
         {
             inactivePage().color = new Color(1, 1, 1, 0);
             activePage().color = Color.white;
             activePage().sprite = activePhase.comic.pages[activePhase.Lines[currentLine].Effects.Page];
         }
+        
         // baloonsizer.transform.localScale = new Vector2(activePhase.baloonsize[line], activePhase.baloonsize[line]);
         originPosition = kameraRoute.localPosition;
         originZoom = kamera.GetComponent<Camera>().orthographicSize;
@@ -150,6 +163,7 @@ public class PhaseController : MonoBehaviour
         // else
         //     baloonPos.gameObject.SetActive(false);
     }
+
     //type a character after a delay 
     public void textPerSec(float delay)
     {
@@ -215,18 +229,14 @@ public class PhaseController : MonoBehaviour
     {
         return !pageLR ? pageL : pageR;
     }
+
     //moving camera to designated point 
     public void camRoute()
     {
-
         kameraRoute.localPosition = Vector3.Lerp(originPosition, activePhase.Lines[currentLine].Effects.CameraEffects.Position, times / duration);
         kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(originZoom, activePhase.Lines[currentLine].Effects.CameraEffects.Size, times / duration);
-
-        // if (Input.GetButtonDown("Fire1") && currentLine < activePhase.paths.Count)
-        // {
-        //     currentLine++;
-        // }
     }
+
     //set camera position
     public void camPos()
     {
