@@ -30,6 +30,8 @@ public class PhaseController : MonoBehaviour
         this.activePhase = fase;
         // Debug.Log(fase.toJson());
         currentLine = 0;
+        kameraRoute.position = activePhase.Lines[currentLine].Effects.CameraEffects.Position;
+        kamera.GetComponent<Camera>().orthographicSize = activePhase.Lines[currentLine].Effects.CameraEffects.Size;
         readLine(currentLine);
     }
     // Update is called once per frame
