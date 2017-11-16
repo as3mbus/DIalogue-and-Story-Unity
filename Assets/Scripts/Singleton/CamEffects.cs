@@ -24,6 +24,13 @@ namespace as3mbus.Story
             BackgroundColor = Color.black;
             Position = new Vector3(0, 0, -10);
         }
+        public CamEffects(CamEffects cloneTarget)
+        {
+            Size = cloneTarget.size;
+            Shake = cloneTarget.shake;
+            BackgroundColor = cloneTarget.backgroundColor;
+            Position = cloneTarget.position;
+        }
         public CamEffects(Vector3 camPos, float camsz, float camshake, Color bgcolor){
             update(camPos,camsz,camshake,bgcolor);
         }

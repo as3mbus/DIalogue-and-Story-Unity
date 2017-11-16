@@ -129,6 +129,10 @@ namespace as3mbus.Story
         {
             Lines.Add(new PhaseLine());
         }
+        public void newLine(Effects efek)
+        {
+            Lines.Add(new PhaseLine(efek));
+        }
         //delete a line on certain index
 
         public void deleteLine(int index)
@@ -183,6 +187,10 @@ namespace as3mbus.Story
         public void insertLine(int index)
         {
             this.Lines.Insert(index, new PhaseLine());
+        }
+        public void insertLine(int index,Effects efek)
+        {
+            this.Lines.Insert(index, new PhaseLine(efek));
         }
         //parse color from a hexa string 
 

@@ -53,7 +53,13 @@ public class PhaseCreator : MonoBehaviour
     //Create New Line at last index
     public void newLine()
     {
-        targetPhase.newLine();
+        if (targetPhase.Lines.Count < 1)
+            targetPhase.newLine();
+        else
+        {
+            saveLine();
+            targetPhase.newLine(targetPhase.Lines[lineDDown.value].Effects);
+        }
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.Lines.Count));
         lineDDown.value++;
     }
@@ -62,7 +68,8 @@ public class PhaseCreator : MonoBehaviour
     {
         if (targetPhase.Lines.Count == 0)
             lineDDown.captionText.text = "Line 1";
-        targetPhase.insertLine(lineDDown.value + 1);
+        saveLine();
+        targetPhase.insertLine(lineDDown.value + 1, targetPhase.Lines[lineDDown.value].Effects);
         lineDDown.options.Add(new Dropdown.OptionData("Line " + targetPhase.Lines.Count));
         lineDDown.value++;
     }
@@ -207,7 +214,7 @@ public class PhaseCreator : MonoBehaviour
     //handle duration slider value change 
     public void changeDuration()
     {
-        durationText.text = "Duration : " + durationSlider.value.ToString();
+        durationText.text = "Duration : " + durationSlider.value.ToString("0.00");
     }
     //handle page dropdown change to change the comic as well
     public void changePage()
@@ -233,7 +240,7 @@ public class PhaseCreator : MonoBehaviour
         shakeSlider.value = 0;
         changeBGColor(Color.black);
         picker.Color = (Color.black);
-        fadeToggle.GetComponentInChildren<Toggle>().isOn=true;
+        fadeToggle.GetComponentInChildren<Toggle>().isOn = true;
         resetCam();
     }
     //handle Text Baloon display/hide and control

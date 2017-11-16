@@ -44,6 +44,12 @@ namespace as3mbus.Story
             fadeMode = fadeMode.none;
             cameraEffects = new CamEffects();
         }
+        public Effects(Effects cloneTarget){
+            page = cloneTarget.page;
+            duration = cloneTarget.duration;
+            fadeMode = cloneTarget.fadeMode;
+            cameraEffects = new CamEffects(cloneTarget.cameraEffects);
+        }
         public Effects(int pej, float durat, fadeMode fm, CamEffects camfx)
         {
             update(pej, durat, fm, camfx);

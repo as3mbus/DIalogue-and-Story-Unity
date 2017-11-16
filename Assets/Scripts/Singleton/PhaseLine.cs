@@ -21,6 +21,13 @@ namespace as3mbus.Story
             Character = "";
             Effects = new Effects();
         }
+        public PhaseLine(Effects efek)
+        {
+            Message = "";
+            Character = "";
+            Effects = new Effects(efek);
+        }
+        
         public bool update(string msg, string chara, Effects fx)
         {
             try
