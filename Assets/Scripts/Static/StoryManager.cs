@@ -20,6 +20,7 @@ namespace as3mbus.Story
         public static string stringOrPath2;
         public static TextAsset textAsset;
         public static Story stori;
+        public static bool skipable = false;
 
         public static string nextScene;
     }

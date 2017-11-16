@@ -12,6 +12,7 @@ public class StoryController : MonoBehaviour
     public int currentPhase;
     public TextAsset storyJson;
     public string nextScene;
+    public GameObject skipButton;
     // Use this for initialization
     void Start()
     {
@@ -22,6 +23,7 @@ public class StoryController : MonoBehaviour
         //load story based on static class story manager 
         cerita = new Story(StoryManager.storyType);
         nextScene = StoryManager.nextScene;
+        skipButton.SetActive(StoryManager.skipable);
         // }
         // catch (System.Exception)
         // {
@@ -30,6 +32,7 @@ public class StoryController : MonoBehaviour
         currentPhase = -1;
         nextPhase();
     }
+    
     //load phase at index and play it with phase controller 
     void loadPhase(int number)
     {
@@ -41,15 +44,20 @@ public class StoryController : MonoBehaviour
 
     }
 
-    //call next phase 
+    //call next phase or finish story if there are none
     public void nextPhase()
     {
         currentPhase++;
         if (currentPhase < cerita.phases.Count)
-
             loadPhase(currentPhase);
 
-        else SceneManager.LoadScene(nextScene);
+        else endStory();
 
+    }
+
+    //end story scene
+    public void endStory(){
+        SceneManager.LoadScene(nextScene);
+        StoryManager.skipable = false;
     }
 }

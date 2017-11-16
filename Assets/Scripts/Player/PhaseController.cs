@@ -29,10 +29,16 @@ public class PhaseController : MonoBehaviour
     {
         this.activePhase = fase;
         // Debug.Log(fase.toJson());
-        currentLine = 0;
-        kameraRoute.position = activePhase.Lines[currentLine].Effects.CameraEffects.Position;
-        kamera.GetComponent<Camera>().orthographicSize = activePhase.Lines[currentLine].Effects.CameraEffects.Size;
-        readLine(currentLine);
+        // if phase empty, end phase;
+        if (activePhase.Lines.Count <= 0) endPhase();
+        else
+        {
+            currentLine = 0;
+            kameraRoute.position = activePhase.Lines[currentLine].Effects.CameraEffects.Position;
+            kamera.GetComponent<Camera>().orthographicSize = activePhase.Lines[currentLine].Effects.CameraEffects.Size;
+            readLine(currentLine);
+        }
+
     }
     // Update is called once per frame
     void Start()
@@ -43,6 +49,8 @@ public class PhaseController : MonoBehaviour
 
     void Update()
     {
+        //handle update when empty story or empty phase
+        if (activePhase == null) return;
         if (currentLine >= activePhase.Lines.Count) return;
 
         //read fire 1 button pressed  
@@ -71,7 +79,7 @@ public class PhaseController : MonoBehaviour
                 //hide / complete the phase 
                 else
                 {
-                    hidePhase();
+                    endPhase();
                 }
             }
 
@@ -139,7 +147,7 @@ public class PhaseController : MonoBehaviour
             activePage().color = Color.white;
             activePage().sprite = activePhase.comic.pages[activePhase.Lines[currentLine].Effects.Page];
         }
-        
+
         // baloonsizer.transform.localScale = new Vector2(activePhase.baloonsize[line], activePhase.baloonsize[line]);
         originPosition = kameraRoute.localPosition;
         originZoom = kamera.GetComponent<Camera>().orthographicSize;
@@ -244,8 +252,8 @@ public class PhaseController : MonoBehaviour
         kamera.GetComponent<Camera>().orthographicSize = activePhase.Lines[currentLine].Effects.CameraEffects.Size;
 
     }
-    //hide phase and call story controller next phase
-    public void hidePhase()
+    //end phase and call story controller next phase
+    public void endPhase()
     {
         pageLR = true;
         pageL.color = Color.white;

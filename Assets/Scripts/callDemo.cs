@@ -12,15 +12,15 @@ public class callDemo : MonoBehaviour
     void Start()
     {
         DataManager.readStreamingAssetsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
-        ayam = new Story(Path.Combine(Application.dataPath, "Data/Story2.json"));
+        ayam = new Story(Path.Combine(Application.dataPath, "Story/Story2.json"));
     }
     public void panggilCerita()
     {
         StoryManager.storyType = storyDataType.Story;
         StoryManager.stori = ayam;
         
-		StoryManager.nextScene = "dynamic player";
-        SceneManager.LoadScene("dynamic player");
+		StoryManager.nextScene = "Player";
+        SceneManager.LoadScene("Player");
 
     }
 }

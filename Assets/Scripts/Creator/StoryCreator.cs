@@ -147,6 +147,7 @@ public class StoryCreator : MonoBehaviour
         StoryManager.storyType = storyDataType.Story;
         StoryManager.stori = _targetStory;
         StoryManager.nextScene = "Creator";
+        StoryManager.skipable = true;
         SceneManager.LoadScene("Player");
     }
     //handle save button on simple file manager 
