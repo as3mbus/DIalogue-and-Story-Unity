@@ -72,11 +72,15 @@ public class PhaseCreator : MonoBehaviour
     {
         if (targetPhase.Lines.Count == 0)
             return;
-        lineDDown.value--;
-        targetPhase.deleteLine(lineDDown.value);
+        int targetLine = lineDDown.value;
+        if (targetLine < 1) lineDDown.value++;
+        else lineDDown.value--;
+        targetPhase.deleteLine(targetLine);
         lineDDown.options.RemoveAt(targetPhase.Lines.Count);
+        if (targetLine < 1) lineDDown.value--;
         if (targetPhase.Lines.Count <= 0)
-            lineDDown.captionText.text = "";
+            resetLine();
+
     }
 
     //handler for changing selected line(Line Dropdown)
@@ -216,9 +220,18 @@ public class PhaseCreator : MonoBehaviour
     {
         pageDDown.ClearOptions();
         pageDDown.value = 0;
-        lineDDown.captionText.text = "";
+        pageDDown.captionText.text = "";
         messageField.text = "";
         lineDDown.ClearOptions();
+        lineDDown.value = 0;
+        lineDDown.captionText.text = "";
+        resetCam();
+    }
+    //reset line value to empty state to display empty phase 
+    void resetLine()
+    {
+        pageDDown.value = 0;
+        messageField.text = "";
         lineDDown.value = 0;
         lineDDown.captionText.text = "";
         resetCam();
