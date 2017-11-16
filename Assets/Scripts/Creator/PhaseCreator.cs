@@ -50,7 +50,7 @@ public class PhaseCreator : MonoBehaviour
         else
             insertLine();
     }
-    //Create New Line at last inded 
+    //Create New Line at last index
     public void newLine()
     {
         targetPhase.newLine();
@@ -157,8 +157,7 @@ public class PhaseCreator : MonoBehaviour
         }
         else
         {
-            lineDDown.value = -1;
-            lineDDown.captionText.text = "";
+            resetLine();
         }
 
     }
@@ -218,14 +217,10 @@ public class PhaseCreator : MonoBehaviour
     //reset interface value to empty state for next call 
     void resetInterface()
     {
+        resetLine();
         pageDDown.ClearOptions();
-        pageDDown.value = 0;
         pageDDown.captionText.text = "";
-        messageField.text = "";
         lineDDown.ClearOptions();
-        lineDDown.value = 0;
-        lineDDown.captionText.text = "";
-        resetCam();
     }
     //reset line value to empty state to display empty phase 
     void resetLine()
@@ -234,6 +229,11 @@ public class PhaseCreator : MonoBehaviour
         messageField.text = "";
         lineDDown.value = 0;
         lineDDown.captionText.text = "";
+        durationSlider.value = 0;
+        shakeSlider.value = 0;
+        changeBGColor(Color.black);
+        picker.Color = (Color.black);
+        fadeToggle.GetComponentInChildren<Toggle>().isOn=true;
         resetCam();
     }
     //handle Text Baloon display/hide and control
