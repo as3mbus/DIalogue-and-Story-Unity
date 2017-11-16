@@ -19,8 +19,8 @@ public class callDemo : MonoBehaviour
         StoryManager.storyType = storyDataType.Story;
         StoryManager.stori = ayam;
         
-		StoryManager.nextScene = "Player";
-        SceneManager.LoadScene("Player");
+		StoryManager.nextScene = "Dynamic Player";
+        SceneManager.LoadScene("Dynamic Player");
 
     }
 }
