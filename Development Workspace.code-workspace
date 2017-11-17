@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "Assets/Unity-Open-Stories/Creator/Plugins/cui_color_picker"
+		},
+		{
+			"path": "Assets/Unity-Open-Stories/Creator/Plugins/SimpleFileBrowser"
+		},
+		{
+			"path": "docs"
+		}
+	],
+	"settings": {}
+}
