@@ -36,7 +36,7 @@ public static class DataManager
     //read json data about asset bundle inside streaming assets folder. to access streaming asset in android build 
     public static string[] readStreamingAssetsBundleList(string filePath)
     {
-        streamingAssetsBundleList = new List<string>(parseStreamingAssetBundleListJson(readStreamingAssetsTextFile(filePath)));
+        streamingAssetsBundleList = new List<string>(parseStreamingAssetBundleListJson(readAssetsTextFile(filePath)));
         return streamingAssetsBundleList.ToArray();
     }
 
@@ -51,22 +51,22 @@ public static class DataManager
     }
 
     //read bundle inside streaming asset path 
-    public static AssetBundle readStreamingAssetsBundles(string bundlePath)
+    public static AssetBundle readAssetsBundles(string bundlePath)
     {
-        byte[] bundleByte = loadStreamingAssetsFile(bundlePath);
+        byte[] bundleByte = loadAssetsFile(bundlePath);
         return AssetBundle.LoadFromMemory(bundleByte);
     }
 
     //read textfile in streaming asset path into string 
-    public static string readStreamingAssetsTextFile(string pathFile)
+    public static string readAssetsTextFile(string pathFile)
     {
-        byte[] jsonByte = loadStreamingAssetsFile(pathFile);
+        byte[] jsonByte = loadAssetsFile(pathFile);
         string jsonText = System.Text.Encoding.Default.GetString(jsonByte);
         return jsonText;
     }
 
     //load file in streaming assets as bytes [] 
-    static byte[] loadStreamingAssetsFile(string filePath)
+    static byte[] loadAssetsFile(string filePath)
     {
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -91,7 +91,7 @@ public static class DataManager
     {
         return streamingAssetsBundleList.Contains(bundleName);
     }
-
+    
     //fetch streaming asset path for updating and new content after build release 
     public static string bundlePath(string bundleName)
     {
@@ -99,5 +99,19 @@ public static class DataManager
             return Path.Combine(Application.streamingAssetsPath, bundleName);
         else
             return Path.Combine(Application.persistentDataPath, bundleName);
+    }
+
+    public static string findItemInBundle(AssetBundle bundle, string keyword){
+        foreach (string item in bundle.AllAssetNames())
+            if (item.Contains(keyword))
+                return item;
+        return "";
+    }
+    public static string[] filterItemInBundle(AssetBundle bundle, string keyword){
+        List<string> filteredItem = new List<string>();
+        foreach (string item in bundle.AllAssetNames())
+            if (item.Contains(keyword))
+                filteredItem.Add(item);
+        return filteredItem.ToArray();
     }
 }

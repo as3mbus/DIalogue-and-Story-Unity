@@ -32,7 +32,11 @@ namespace as3mbus.Story
         {
             Phase fase = new Phase();
             fase.name = phaseData["name"].ToString();
-            fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
+            // handling comic inside the same bundle as story
+            if(phaseData["comicsource"].ToString()=="")
+                fase.comic = new Comic(StoryManager.bundle, phaseData["comicname"].ToString());
+            else
+                fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
             for (int i = 0; i < phaseData["message"].Count; i++)
             {
                 fase.Lines.Add(
@@ -65,7 +69,11 @@ namespace as3mbus.Story
             Phase fase = new Phase();
             JsonData contentjson;
             fase.name = phaseData["name"].ToString();
-            fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
+            // handling comic inside the same bundle as story
+            if(phaseData["comicsource"].ToString()=="")
+                fase.comic = new Comic(StoryManager.bundle, phaseData["comicname"].ToString());
+            else
+                fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
             for (int i = 0; i < phaseData["content"].Count; i++)
             {
                 contentjson = phaseData["content"][i];

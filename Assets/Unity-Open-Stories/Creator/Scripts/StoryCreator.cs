@@ -200,9 +200,9 @@ public class StoryCreator : MonoBehaviour
     {
         comicDropdown.options.Clear();
         if (DataManager.isStreamingAssetsContent(bundleDropdown.captionText.text))
-            activeComics = ComicManager.getComics(DataManager.readStreamingAssetsBundles(Path.Combine(Application.streamingAssetsPath, bundleDropdown.captionText.text)));
+            activeComics = ComicManager.getComics(DataManager.readAssetsBundles(Path.Combine(Application.streamingAssetsPath, bundleDropdown.captionText.text)));
         else
-            activeComics = ComicManager.getComics(DataManager.readStreamingAssetsBundles(Path.Combine(Application.persistentDataPath, bundleDropdown.captionText.text)));
+            activeComics = ComicManager.getComics(DataManager.readAssetsBundles(Path.Combine(Application.persistentDataPath, bundleDropdown.captionText.text)));
         addDropdownOptions(comicDropdown, activeComics);
         comicDropdown.value = 0;
         comicDropdown.captionText.text = comicDropdown.options[0].text;

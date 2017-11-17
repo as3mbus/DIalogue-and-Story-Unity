@@ -24,14 +24,26 @@ namespace as3mbus.Story
         {
             this.name = Path.GetFileName(comicPath);
             this.source = bundleName.ToString();
-            AssetBundle comicBundle = DataManager.readStreamingAssetsBundles(DataManager.bundlePath(bundleName));
+            AssetBundle comicBundle = DataManager.readAssetsBundles(DataManager.bundlePath(bundleName));
             foreach (string asetname in comicBundle.GetAllAssetNames())
                 if (asetname.Contains(comicPath))
                 {
                     this.pages.Add(comicBundle.LoadAsset<Sprite>(asetname));
                     this.pagename.Add(Path.GetFileNameWithoutExtension(asetname));
                 }
-            comicBundle.Unload(false);
+                comicBundle.Unload(false);
+        }
+
+        // handle story and comic in the same bundle
+        public Comic(AssetBundle bundle, string comicPath){
+            this.name = Path.GetFileName(comicPath);
+            this.source = "";
+            foreach (string asetname in bundle.GetAllAssetNames())
+                if (asetname.Contains(comicPath))
+                {
+                    this.pages.Add(bundle.LoadAsset<Sprite>(asetname));
+                    this.pagename.Add(Path.GetFileNameWithoutExtension(asetname));
+                }
         }
         public Comic(JsonData directory) : this(directory.ToString())
         {
