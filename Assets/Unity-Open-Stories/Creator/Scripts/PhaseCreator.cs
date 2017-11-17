@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using as3mbus.Story;
+using LitJson;
 
 public class PhaseCreator : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class PhaseCreator : MonoBehaviour
     public SpriteRenderer backgroundSprite;
     public GameObject TextBaloon, pickerPanel;
     public CUIColorPicker picker;
+    public TextAsset charactersDatabase;
     public int currentLine = 0;
     // Use this for initialization
     void Start()
@@ -41,6 +43,16 @@ public class PhaseCreator : MonoBehaviour
 
     #region main-function
 
+    public String[] readCharacterDB(TextAsset source)
+    {
+        JsonData CharaDB = JsonMapper.ToObject(source.text);
+        String[] ayam = new String[CharaDB["characters"].Count];
+        for (int i = 0; i < CharaDB["characters"].Count; i++)
+        {
+            ayam[i] = (CharaDB["characters"][i].ToString());
+        }
+        return ayam;
+    }
 
     // handler for addLine button to either add/insert line
     public void addLine()
@@ -178,6 +190,11 @@ public class PhaseCreator : MonoBehaviour
         addDropdownOption(pageDDown, fase.comic.pagename.ToArray());
         pageDDown.value = 0;
         pageDDown.captionText.text = pageDDown.options[0].text;
+        String[] Characters = fase.getCharacters().Concat(readCharacterDB(charactersDatabase)).Distinct().ToArray();
+        Array.Sort(Characters,StringComparer.InvariantCulture);
+        addDropdownOption(characterDDown, Characters);
+        characterDDown.value = 0;
+        characterDDown.captionText.text = characterDDown.options[0].text;
         changePage();
         loadLine(0);
     }
@@ -227,13 +244,16 @@ public class PhaseCreator : MonoBehaviour
         resetLine();
         pageDDown.ClearOptions();
         pageDDown.captionText.text = "";
+        characterDDown.ClearOptions();
+        characterDDown.captionText.text = "";
         lineDDown.ClearOptions();
     }
     //reset line value to empty state to display empty phase 
     void resetLine()
     {
-        pageDDown.value = 0;
         messageField.text = "";
+        characterDDown.value = 0;
+        pageDDown.value = 0;
         lineDDown.value = 0;
         lineDDown.captionText.text = "";
         durationSlider.value = 0;

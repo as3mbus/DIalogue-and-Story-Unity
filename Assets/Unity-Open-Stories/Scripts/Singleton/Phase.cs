@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using UnityEngine;
 using LitJson;
 
@@ -133,8 +134,8 @@ namespace as3mbus.Story
         {
             Lines.Add(new PhaseLine(efek));
         }
+        
         //delete a line on certain index
-
         public void deleteLine(int index)
         {
             this.Lines.RemoveAt(index);
@@ -188,11 +189,21 @@ namespace as3mbus.Story
         {
             this.Lines.Insert(index, new PhaseLine());
         }
-        public void insertLine(int index,Effects efek)
+        //with this effects
+        public void insertLine(int index, Effects efek)
         {
             this.Lines.Insert(index, new PhaseLine(efek));
         }
-        //parse color from a hexa string 
+
+        //get all character inside a phase
+        public string[] getCharacters()
+        {
+            string[] characters = new string[this.Lines.Count];
+            for(int i = 0; i<this.Lines.Count; i++){
+                characters[i] = this.Lines[i].Character;
+            }
+            return characters.Distinct().ToArray();
+        }
 
     }
 }

@@ -6132,15 +6132,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Character 1
-      m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Character 2
-      m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Character 3
-      m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
-    - m_Text: Character 4
-      m_Image: {fileID: 21300000, guid: bd0a2f9d018aeb442ad27291d0ab1c4f, type: 3}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -8891,6 +8883,7 @@ MonoBehaviour:
   TextBaloon: {fileID: 2017419706}
   pickerPanel: {fileID: 1676996469}
   picker: {fileID: 1668369955}
+  charactersDatabase: {fileID: 4900000, guid: a5264f681fcb9414798c5372044ae81e, type: 3}
   currentLine: 0
 --- !u!222 &1448860105
 CanvasRenderer:
