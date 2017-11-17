@@ -102,14 +102,14 @@ public static class DataManager
     }
 
     public static string findItemInBundle(AssetBundle bundle, string keyword){
-        foreach (string item in bundle.AllAssetNames())
+        foreach (string item in bundle.GetAllAssetNames())
             if (item.Contains(keyword))
                 return item;
         return "";
     }
     public static string[] filterItemInBundle(AssetBundle bundle, string keyword){
         List<string> filteredItem = new List<string>();
-        foreach (string item in bundle.AllAssetNames())
+        foreach (string item in bundle.GetAllAssetNames())
             if (item.Contains(keyword))
                 filteredItem.Add(item);
         return filteredItem.ToArray();

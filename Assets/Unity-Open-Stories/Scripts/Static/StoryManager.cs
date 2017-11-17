@@ -16,8 +16,8 @@ namespace as3mbus.Story
         public static storyDataType storyType = storyDataType.New;
         public static string source;
         public static JsonData json;
-        public static string stringOrPath;
-        public static string stringOrPath2;
+        public static string stringOrBundlePath;
+        public static string stringOrDataPath;
         public static AssetBundle bundle;
         public static TextAsset textAsset;
         public static Story stori;

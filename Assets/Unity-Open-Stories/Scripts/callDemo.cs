@@ -18,9 +18,9 @@ public class callDemo : MonoBehaviour
     public void panggilCerita()
     {
         StoryManager.storyType = storyDataType.BundlePath;
-        StoryManager.stringOrPath= "comic 2";
-        StoryManager.stringOrPath2 = "story2.json";
-        print(StoryManager.stringOrPath);
+        StoryManager.stringOrBundlePath= "comic 2";
+        StoryManager.stringOrDataPath = "story2.json";
+        print(StoryManager.stringOrBundlePath);
         
 		StoryManager.nextScene = "Dynamic Player";
         SceneManager.LoadScene("Player");

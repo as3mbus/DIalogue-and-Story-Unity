@@ -20,19 +20,19 @@ namespace as3mbus.Story
             switch (storyType)
             {
                 case storyDataType.AssetBundle:
-                    loadJsonStory(StoryManager.bundle, StoryManager.stringOrPath2);
+                    loadJsonStory(StoryManager.bundle, StoryManager.stringOrDataPath);
                     break;
                 case storyDataType.BundlePath:
-                    loadJsonStory(StoryManager.stringOrPath, StoryManager.stringOrPath2);
+                    loadJsonStory(StoryManager.stringOrBundlePath, StoryManager.stringOrDataPath);
                     break;
                 case storyDataType.DataPath:
-                    loadJsonStory(StoryManager.stringOrPath);
+                    loadJsonStory(StoryManager.stringOrDataPath);
                     break;
                 case storyDataType.JsonData:
                     parseJsonStory(StoryManager.json);
                     break;
                 case storyDataType.String:
-                    parseJsonStory(StoryManager.stringOrPath);
+                    parseJsonStory(StoryManager.stringOrDataPath);
                     break;
                 case storyDataType.TextAsset:
                     loadJsonStory(StoryManager.textAsset);
@@ -88,13 +88,17 @@ namespace as3mbus.Story
         //read json story from bundle in designated path
         void loadJsonStory(string bundleName, string dataPath)
         {
+            StoryManager.stringOrBundlePath = bundleName;
             AssetBundle storyBundle = DataManager.readAssetsBundles(DataManager.bundlePath(bundleName));
+            Debug.Log(storyBundle.name);
             loadJsonStory(storyBundle, dataPath);
         }
 
         //read json story inside bundle
         void loadJsonStory(AssetBundle storyBundle, string dataPath)
         {
+            StoryManager.stringOrBundlePath = storyBundle.name;
+            Debug.Log(storyBundle.name);
             StoryManager.bundle = storyBundle;
             loadJsonStory(storyBundle.LoadAsset<TextAsset>(DataManager.findItemInBundle(storyBundle, dataPath)));
             storyBundle.Unload(false);
