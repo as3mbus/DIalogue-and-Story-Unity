@@ -222,7 +222,7 @@ public class StoryCreator : MonoBehaviour
     //create phase content button and reset add phase button position 
     void newContentButton()
     {
-        GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.content);
+        GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.content, false);
         newButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => editPhase());
         newButton.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => deletePhase());
         resetAddPhaseButton();
