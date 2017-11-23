@@ -91,7 +91,7 @@ public static class DataManager
     {
         return streamingAssetsBundleList.Contains(bundleName);
     }
-    
+
     //fetch streaming asset path for updating and new content after build release 
     public static string bundlePath(string bundleName)
     {
@@ -101,13 +101,18 @@ public static class DataManager
             return Path.Combine(Application.persistentDataPath, bundleName);
     }
 
-    public static string findItemInBundle(AssetBundle bundle, string keyword){
+    public static string findItemInBundle(AssetBundle bundle, string keyword)
+    {
         foreach (string item in bundle.GetAllAssetNames())
+        {
+            Debug.Log(item);
             if (item.Contains(keyword))
                 return item;
+        }
         return "";
     }
-    public static string[] filterItemInBundle(AssetBundle bundle, string keyword){
+    public static string[] filterItemInBundle(AssetBundle bundle, string keyword)
+    {
         List<string> filteredItem = new List<string>();
         foreach (string item in bundle.GetAllAssetNames())
             if (item.Contains(keyword))
