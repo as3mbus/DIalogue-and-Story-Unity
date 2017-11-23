@@ -491,6 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c0ece284a1d846108dc733fc9565f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textAsset: {fileID: 4900000, guid: 10783f649d06dc941b9276b3fabc744c, type: 3}
 --- !u!81 &1861995599
 AudioListener:
   m_ObjectHideFlags: 0
