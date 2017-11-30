@@ -33,10 +33,6 @@ namespace as3mbus.Story
             Phase fase = new Phase();
             fase.name = phaseData["name"].ToString();
             // handling comic inside the same bundle as story
-            if (StoryManager.stringOrBundlePath == phaseData["comicsource"].ToString())
-                fase.comic = new Comic(StoryManager.bundle, phaseData["comicname"].ToString());
-            else
-                fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
             for (int i = 0; i < phaseData["message"].Count; i++)
             {
                 fase.Lines.Add(
@@ -62,6 +58,11 @@ namespace as3mbus.Story
                 );
                 Debug.Log(fase.Lines[i].toJson());
             }
+            if (StoryManager.stringOrBundlePath == phaseData["comicsource"].ToString())
+                fase.comic = new Comic(StoryManager.bundle, phaseData["comicname"].ToString(),fase.getPages());
+            else
+                fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
+            
             return fase;
         }
         public static Phase parseJson(JsonData phaseData)
@@ -70,10 +71,6 @@ namespace as3mbus.Story
             JsonData contentjson;
             fase.name = phaseData["name"].ToString();
             // handling comic inside the same bundle as story
-            if (StoryManager.stringOrBundlePath == phaseData["comicsource"].ToString())
-                fase.comic = new Comic(StoryManager.bundle, phaseData["comicname"].ToString());
-            else
-                fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
             for (int i = 0; i < phaseData["content"].Count; i++)
             {
                 contentjson = phaseData["content"][i];
@@ -100,6 +97,11 @@ namespace as3mbus.Story
                     )
                 );
             }
+            if (StoryManager.stringOrBundlePath == phaseData["comicsource"].ToString())
+                fase.comic = new Comic(StoryManager.bundle, phaseData["comicname"].ToString(),fase.getPages());
+            else
+                fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
+            
             return fase;
         }
         //create json date (string) based on a phase content

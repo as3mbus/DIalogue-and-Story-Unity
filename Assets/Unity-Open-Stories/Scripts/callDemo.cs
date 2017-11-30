@@ -16,20 +16,21 @@ public class callDemo : MonoBehaviour
     {
         DataManager.listStreamingAssetsBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         DataManager.readStreamingAssetsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
-        ayam = new Story(Path.Combine(Application.dataPath, "Story/Prologue 1.json"));
+        ayam = new Story(Path.Combine(Application.dataPath, "Story/Story A/Story2.json"));
 
         // print(DataManager.findItemInBundle(bundle, "story/prologue 1.json"));
     }
     public void panggilCerita()
     {
         StoryManager.storyType = storyDataType.BundlePath;
-        StoryManager.stringOrBundlePath = "comic 2";
-        StoryManager.stringOrDataPath = "story/story a/story2.json";
+
+        StoryManager.stringOrBundlePath = "prologue 1";
+        StoryManager.stringOrDataPath = "story/prologue 1.json";
 
         // StoryManager.storyType = storyDataType.DataPath;
-        // StoryManager.stringOrDataPath = Path.Combine(Application.dataPath, "Story/Prologue 1.json");
+        // StoryManager.stringOrDataPath = Path.Combine(Application.dataPath, "Story/Story A/Story2.json");
 
-        // JsonData jsondat = JsonMapper.ToObject(DataManager.readAssetsTextFile(Path.Combine(Application.dataPath, "Story/Prologue 1.json")));
+        // JsonData jsondat = JsonMapper.ToObject(DataManager.readAssetsTextFile(Path.Combine(Application.dataPath, "Story/Story A/Story2.json")));
         // StoryManager.storyType = storyDataType.JsonData;
         // StoryManager.json = jsondat;
 
