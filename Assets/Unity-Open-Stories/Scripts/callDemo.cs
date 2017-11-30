@@ -16,6 +16,8 @@ public class callDemo : MonoBehaviour
     {
         DataManager.listStreamingAssetsBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         DataManager.readStreamingAssetsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        ayam = new Story(Path.Combine(Application.dataPath, "Story/Prologue 1.json"));
+
         // print(DataManager.findItemInBundle(bundle, "story/prologue 1.json"));
     }
     public void panggilCerita()
@@ -38,9 +40,8 @@ public class callDemo : MonoBehaviour
         // StoryManager.storyType = storyDataType.TextAsset;
         // StoryManager.textAsset = textAsset;
 
-        // ayam = new Story(Path.Combine(Application.dataPath, "Story/Prologue 1.json"));
-        // StoryManager.storyType = storyDataType.Story;
-        // StoryManager.stori = ayam;
+        StoryManager.storyType = storyDataType.Story;
+        StoryManager.stori = ayam;
 
 
         // bundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, "AssetBundles/prologue 1"));
@@ -49,7 +50,7 @@ public class callDemo : MonoBehaviour
         // StoryManager.stringOrDataPath = "story/prologue 1.json";
         print(StoryManager.stringOrBundlePath);
 
-        StoryManager.nextScene = "Dynamic Player";
+        StoryManager.nextScene = "Demo";
         SceneManager.LoadScene("Player");
 
     }
