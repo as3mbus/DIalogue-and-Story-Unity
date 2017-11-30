@@ -38,7 +38,7 @@ namespace as3mbus.Story
                     loadJsonStory(StoryManager.textAsset);
                     break;
                 case storyDataType.Story:
-                    cloneJsonStory(StoryManager.stori);
+                    loadExisting(StoryManager.stori);
                     break;
                 case storyDataType.New:
                     phases = new List<Phase>();
@@ -120,6 +120,10 @@ namespace as3mbus.Story
         void cloneJsonStory(Story story)
         {
             parseJsonStory(story.toJson());
+        }
+        void loadExisting(Story story){
+            this.name = story.name;
+            this.phases = story.phases;
         }
         //read json story based on json string
         void parseJsonStory(string storyJsonString)
