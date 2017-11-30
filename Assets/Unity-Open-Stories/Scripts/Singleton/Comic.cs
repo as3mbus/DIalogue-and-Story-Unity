@@ -14,6 +14,7 @@ namespace as3mbus.Story
         {
             return source;
         }
+
         public List<Sprite> pages = new List<Sprite>();
         public string source;
         public List<string> pagename = new List<string>();
@@ -25,19 +26,19 @@ namespace as3mbus.Story
             this.name = Path.GetFileName(comicPath);
             this.source = bundleName.ToString();
             AssetBundle comicBundle = DataManager.readAssetsBundles(DataManager.bundlePath(bundleName));
-            foreach (string asetname in comicBundle.GetAllAssetNames())
-                if (asetname.Contains(comicPath))
-                {
-                    this.pages.Add(comicBundle.LoadAsset<Sprite>(asetname));
-                    this.pagename.Add(Path.GetFileNameWithoutExtension(asetname));
-                }
-                comicBundle.Unload(false);
+            loadAllPages(comicBundle,comicPath);
+            comicBundle.Unload(false);
         }
 
         // handle story and comic in the same bundle
-        public Comic(AssetBundle bundle, string comicPath){
+        public Comic(AssetBundle bundle, string comicPath)
+        {
             this.name = Path.GetFileName(comicPath);
-            this.source = "";
+            this.source = bundle.name;
+            loadAllPages(bundle,comicPath);
+        }
+        public void loadAllPages(AssetBundle bundle,string comicPath)
+        {
             foreach (string asetname in bundle.GetAllAssetNames())
                 if (asetname.Contains(comicPath))
                 {
@@ -45,6 +46,7 @@ namespace as3mbus.Story
                     this.pagename.Add(Path.GetFileNameWithoutExtension(asetname));
                 }
         }
+
         public Comic(JsonData directory) : this(directory.ToString())
         {
         }

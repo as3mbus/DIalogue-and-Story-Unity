@@ -33,7 +33,7 @@ namespace as3mbus.Story
             Phase fase = new Phase();
             fase.name = phaseData["name"].ToString();
             // handling comic inside the same bundle as story
-            if(StoryManager.stringOrBundlePath==phaseData["comicsource"].ToString())
+            if (StoryManager.stringOrBundlePath == phaseData["comicsource"].ToString())
                 fase.comic = new Comic(StoryManager.bundle, phaseData["comicname"].ToString());
             else
                 fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
@@ -70,7 +70,7 @@ namespace as3mbus.Story
             JsonData contentjson;
             fase.name = phaseData["name"].ToString();
             // handling comic inside the same bundle as story
-            if(StoryManager.stringOrBundlePath==phaseData["comicsource"].ToString())
+            if (StoryManager.stringOrBundlePath == phaseData["comicsource"].ToString())
                 fase.comic = new Comic(StoryManager.bundle, phaseData["comicname"].ToString());
             else
                 fase.comic = new Comic(phaseData["comicsource"].ToString(), phaseData["comicname"].ToString());
@@ -142,7 +142,7 @@ namespace as3mbus.Story
         {
             Lines.Add(new PhaseLine(efek));
         }
-        
+
         //delete a line on certain index
         public void deleteLine(int index)
         {
@@ -207,10 +207,16 @@ namespace as3mbus.Story
         public string[] getCharacters()
         {
             string[] characters = new string[this.Lines.Count];
-            for(int i = 0; i<this.Lines.Count; i++){
+            for (int i = 0; i < this.Lines.Count; i++)
                 characters[i] = this.Lines[i].Character;
-            }
             return characters.Distinct().ToArray();
+        }
+        public int[] getPages()
+        {
+            int[] pages = new int[this.Lines.Count];
+            for (int i = 0; i < this.Lines.Count; i++)
+                pages[i] = this.Lines[i].Effects.Page;
+            return pages.Distinct().ToArray();
         }
 
     }
