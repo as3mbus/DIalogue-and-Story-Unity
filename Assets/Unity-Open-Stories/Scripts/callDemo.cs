@@ -23,9 +23,14 @@ public class callDemo : MonoBehaviour
     public void panggilCerita()
     {
         StoryManager.storyType = storyDataType.BundlePath;
+<<<<<<< 12298132c883da0c8de38a0f694cd0a1e3b3aceb
 
         StoryManager.stringOrBundlePath = "prologue 1";
         StoryManager.stringOrDataPath = "story/prologue 1.json";
+=======
+        StoryManager.stringOrBundlePath = "comic 2";
+        StoryManager.stringOrDataPath = "story/story a/story2.json";
+>>>>>>> change call param for demo bundle
 
         // StoryManager.storyType = storyDataType.DataPath;
         // StoryManager.stringOrDataPath = Path.Combine(Application.dataPath, "Story/Story A/Story2.json");
