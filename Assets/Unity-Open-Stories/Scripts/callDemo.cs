@@ -22,9 +22,9 @@ public class callDemo : MonoBehaviour
     }
     public void panggilCerita()
     {
-        // StoryManager.storyType = storyDataType.BundlePath;
-        // StoryManager.stringOrBundlePath = "prologue 1";
-        // StoryManager.stringOrDataPath = "story/prologue 1.json";
+        StoryManager.storyType = storyDataType.BundlePath;
+        StoryManager.stringOrBundlePath = "comic 2";
+        StoryManager.stringOrDataPath = "story/story a/story2.json";
 
         // StoryManager.storyType = storyDataType.DataPath;
         // StoryManager.stringOrDataPath = Path.Combine(Application.dataPath, "Story/Prologue 1.json");
@@ -40,8 +40,8 @@ public class callDemo : MonoBehaviour
         // StoryManager.storyType = storyDataType.TextAsset;
         // StoryManager.textAsset = textAsset;
 
-        StoryManager.storyType = storyDataType.Story;
-        StoryManager.stori = ayam;
+        // StoryManager.storyType = storyDataType.Story;
+        // StoryManager.stori = ayam;
 
 
         // bundle = AssetBundle.LoadFromFile(Path.Combine(Application.dataPath, "AssetBundles/prologue 1"));
