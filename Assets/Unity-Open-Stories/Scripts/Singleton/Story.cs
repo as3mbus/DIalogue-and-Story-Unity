@@ -13,6 +13,7 @@ namespace as3mbus.Story
         public string name;
         public List<Phase> phases = new List<Phase>();
         //new empty story 
+        public AssetBundle assetBundle = null;
         public Story() { }
         //load/create story based on static class story manager 
         public Story(storyDataType storyType)
@@ -44,7 +45,7 @@ namespace as3mbus.Story
                     phases = new List<Phase>();
                     break;
                 default:
-                    Debug.Log("Story not Found!");
+                    Debug.Log("Story type not found!");
                     break;
             }
         }
@@ -89,16 +90,17 @@ namespace as3mbus.Story
         void loadJsonStory(string bundleName, string dataPath)
         {
             StoryManager.stringOrBundlePath = bundleName;
-            AssetBundle storyBundle = DataManager.readAssetsBundles(DataManager.bundlePath(bundleName));
-            Debug.Log(storyBundle.name);
+            AssetBundle storyBundle = DataManager.readAssetBundles(DataManager.bundlePath(bundleName));
+            // Debug.Log(storyBundle.name);
             loadJsonStory(storyBundle, dataPath);
         }
 
         //read json story inside bundle
         void loadJsonStory(AssetBundle storyBundle, string dataPath)
         {
+            assetBundle = storyBundle;
             StoryManager.stringOrBundlePath = storyBundle.name;
-            Debug.Log(storyBundle.name);
+            // Debug.Log(storyBundle.name);
             StoryManager.bundle = storyBundle;
             loadJsonStory(storyBundle.LoadAsset<TextAsset>(DataManager.findItemInBundle(storyBundle, dataPath)));
             storyBundle.Unload(false);
@@ -138,10 +140,12 @@ namespace as3mbus.Story
             foreach (JsonData cerita in storyJson["phase"])
             {
                 Phase fase;
-                if (cerita.Keys.Contains("content"))
-                    fase = Phase.parseJson(cerita);
+                if (cerita.Keys.Contains("bgmAssetBundle"))
+                    fase = Phase.parseJson_1_2(cerita, assetBundle);
+                else if (cerita.Keys.Contains("content"))
+                    fase = Phase.parseJson_1_1(cerita, assetBundle);
                 else
-                    fase = Phase.parseOldJson(cerita);
+                    fase = Phase.parseJson_1_0(cerita, assetBundle);
                 this.phases.Add(fase);
             }
         }

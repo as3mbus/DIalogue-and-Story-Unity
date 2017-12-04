@@ -78,7 +78,7 @@ namespace as3mbus.Story
             writer.Write(this.page);
             writer.WritePropertyName("duration");
             writer.Write(this.duration);
-            writer.WritePropertyName("fademode");
+            writer.WritePropertyName("fadeMode");
             writer.Write(this.fadeMode.ToString("g"));
             writer.WritePropertyName("camera");
             this.cameraEffects.toJson(writer);

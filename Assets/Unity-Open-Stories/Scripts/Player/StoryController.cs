@@ -16,7 +16,7 @@ public class StoryController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        DataManager.readStreamingAssetsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        DataManager.readStreamingAssetBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
 
         // try
         // {

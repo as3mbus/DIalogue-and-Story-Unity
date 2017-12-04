@@ -14,8 +14,8 @@ public class callDemo : MonoBehaviour
     Story ayam;
     void Start()
     {
-        DataManager.listStreamingAssetsBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
-        DataManager.readStreamingAssetsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        DataManager.listStreamingAssetBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        DataManager.readStreamingAssetBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         ayam = new Story(Path.Combine(Application.dataPath, "Story/Story A/Story2.json"));
 
         // print(DataManager.findItemInBundle(bundle, "story/prologue 1.json"));
@@ -49,7 +49,7 @@ public class callDemo : MonoBehaviour
         // StoryManager.storyType = storyDataType.AssetBundle;
         // StoryManager.bundle= bundle;
         // StoryManager.stringOrDataPath = "story/prologue 1.json";
-        print(StoryManager.stringOrBundlePath);
+        // print(StoryManager.stringOrBundlePath);
 
         StoryManager.nextScene = "Demo";
         SceneManager.LoadScene("Player");

@@ -30,6 +30,10 @@ public class StoryCreator : MonoBehaviour
     public GameObject FileBrowserPrefab;
     string[] activeComics;
 
+    void OnEnable(){
+        print(_targetStory.toJson());
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -41,11 +45,11 @@ public class StoryCreator : MonoBehaviour
         // loadComics();
         resetAddPhaseButton();
         //list and write streaming asset bundle data 
-        DataManager.listStreamingAssetsBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        DataManager.listStreamingAssetBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         //read streaming asset bundle data 
-        DataManager.readStreamingAssetsBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
+        DataManager.readStreamingAssetBundleList(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         //add options of bundle in streaming assets 
-        addDropdownOptions(bundleDropdown, DataManager.streamingAssetsBundleList.ToArray());
+        addDropdownOptions(bundleDropdown, DataManager.streamingAssetBundleList.ToArray());
         //set to load 1st available bundle 
         bundleDropdown.value = 0;
         bundleDropdown.captionText.text = bundleDropdown.options[0].text;
@@ -78,7 +82,7 @@ public class StoryCreator : MonoBehaviour
     public void contentButtonUpdate(GameObject button)
     {
         int index = button.transform.GetSiblingIndex();
-        print(phaseScrollView.content.transform.childCount);
+        // print(phaseScrollView.content.transform.childCount);
 
         Phase fase = _targetStory.phases[index];
         contentButtonUpdate(fase, button);
@@ -200,9 +204,9 @@ public class StoryCreator : MonoBehaviour
     {
         comicDropdown.options.Clear();
         if (DataManager.isStreamingAssetsContent(bundleDropdown.captionText.text))
-            activeComics = ComicManager.getComics(DataManager.readAssetsBundles(Path.Combine(Application.streamingAssetsPath, bundleDropdown.captionText.text)));
+            activeComics = ComicManager.getComics(DataManager.readAssetBundles(Path.Combine(Application.streamingAssetsPath, bundleDropdown.captionText.text)));
         else
-            activeComics = ComicManager.getComics(DataManager.readAssetsBundles(Path.Combine(Application.persistentDataPath, bundleDropdown.captionText.text)));
+            activeComics = ComicManager.getComics(DataManager.readAssetBundles(Path.Combine(Application.persistentDataPath, bundleDropdown.captionText.text)));
         addDropdownOptions(comicDropdown, activeComics);
         comicDropdown.value = 0;
         comicDropdown.captionText.text = comicDropdown.options[0].text;

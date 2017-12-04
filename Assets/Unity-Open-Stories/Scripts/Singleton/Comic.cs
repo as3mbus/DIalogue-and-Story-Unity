@@ -24,14 +24,14 @@ namespace as3mbus.Story
         //create comic data by loading comic folder inside a asset bundle
         public Comic(string bundleName, string comicPath)
         {
-            AssetBundle comicBundle = DataManager.readAssetsBundles(DataManager.bundlePath(bundleName));
+            AssetBundle comicBundle = DataManager.readAssetBundles(DataManager.bundlePath(bundleName));
             loadAllPages(comicBundle, comicPath);
             comicBundle.Unload(false);
         }
 
         public Comic(string bundleName, string comicPath, int[] pageNums)
         {
-            AssetBundle comicBundle = DataManager.readAssetsBundles(DataManager.bundlePath(bundleName));
+            AssetBundle comicBundle = DataManager.readAssetBundles(DataManager.bundlePath(bundleName));
             loadPages(comicBundle, comicPath, pageNums);
             comicBundle.Unload(false);
         }

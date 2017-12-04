@@ -60,7 +60,7 @@ namespace as3mbus.Story
             writer.Write(this.Size);
             writer.WritePropertyName("shake");
             writer.Write(this.Shake);
-            writer.WritePropertyName("backgroundcolor");
+            writer.WritePropertyName("backgroundColor");
             writer.Write("#" + ColorUtility.ToHtmlStringRGB(this.BackgroundColor));
             writer.WriteObjectEnd();
             

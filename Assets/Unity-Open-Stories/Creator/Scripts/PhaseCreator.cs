@@ -109,7 +109,7 @@ public class PhaseCreator : MonoBehaviour
             return;
         saveLine();
         currentLine = lineDDown.value;
-        print(targetPhase.toJson());
+        // print(targetPhase.toJson());
         loadLine(currentLine);
     }
 

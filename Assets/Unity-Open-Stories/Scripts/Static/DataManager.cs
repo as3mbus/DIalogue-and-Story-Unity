@@ -7,10 +7,10 @@ using LitJson;
 
 public static class DataManager
 {
-    public static List<string> streamingAssetsBundleList;
+    public static List<string> streamingAssetBundleList;
 
     //list all asset bundle inside streaming asset folder which is packaged into apk on built 
-    public static void listStreamingAssetsBundleJson(string filePath)
+    public static void listStreamingAssetBundleJson(string filePath)
     {
         var streamingPath = Application.streamingAssetsPath;
         StringBuilder sb = new StringBuilder();
@@ -34,10 +34,10 @@ public static class DataManager
     }
 
     //read json data about asset bundle inside streaming assets folder. to access streaming asset in android build 
-    public static string[] readStreamingAssetsBundleList(string filePath)
+    public static string[] readStreamingAssetBundleList(string filePath)
     {
-        streamingAssetsBundleList = new List<string>(parseStreamingAssetBundleListJson(readAssetsTextFile(filePath)));
-        return streamingAssetsBundleList.ToArray();
+        streamingAssetBundleList = new List<string>(parseStreamingAssetBundleListJson(readAssetsTextFile(filePath)));
+        return streamingAssetBundleList.ToArray();
     }
 
     //parse json that contain list of asset bundle in streaming asset
@@ -51,7 +51,7 @@ public static class DataManager
     }
 
     //read bundle inside streaming asset path 
-    public static AssetBundle readAssetsBundles(string bundlePath)
+    public static AssetBundle readAssetBundles(string bundlePath)
     {
         byte[] bundleByte = loadAssetsFile(bundlePath);
         return AssetBundle.LoadFromMemory(bundleByte);
@@ -89,7 +89,7 @@ public static class DataManager
     //check if bundle name is a content of streaming asset bundles 
     public static bool isStreamingAssetsContent(string bundleName)
     {
-        return streamingAssetsBundleList.Contains(bundleName);
+        return streamingAssetBundleList.Contains(bundleName);
     }
 
     //fetch streaming asset path for updating and new content after build release 
