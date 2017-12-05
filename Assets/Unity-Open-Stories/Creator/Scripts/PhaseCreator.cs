@@ -160,8 +160,8 @@ public class PhaseCreator : MonoBehaviour
                     togle.isOn = false;
             durationSlider.value = targetPhase.Lines[index].Effects.Duration;
             cam.transform.position = targetPhase.Lines[index].Effects.CameraEffects.Position;
-            cam.orthographicSize = targetPhase.Lines[index].Effects.CameraEffects.Size;
-            shakeSlider.value = targetPhase.Lines[index].Effects.CameraEffects.Shake;
+            cam.orthographicSize = targetPhase.Lines[index].Effects.CameraEffects.orthographicSize;
+            shakeSlider.value = targetPhase.Lines[index].Effects.CameraEffects.shakeFrequency;
             // if (Mathf.Abs(targetPhase.baloonpos[index].x)
             // + Mathf.Abs(targetPhase.baloonpos[index].y) != 0)
             // {

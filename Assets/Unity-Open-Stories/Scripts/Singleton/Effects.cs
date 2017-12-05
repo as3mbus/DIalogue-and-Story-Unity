@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -16,12 +17,12 @@ namespace as3mbus.Story
         int page;
         float duration;
         fadeMode fadeMode;
-        CamEffects cameraEffects;
+        CameraEffects cameraEffects;
 
         public int Page { get { return page; } set { page = value; } }
         public float Duration { get { return duration; } set { duration = value; } }
         public fadeMode FadeMode { get { return fadeMode; } set { fadeMode = value; } }
-        public CamEffects CameraEffects { get { return cameraEffects; } set { cameraEffects = value; } }
+        public CameraEffects CameraEffects { get { return cameraEffects; } set { cameraEffects = value; } }
 
         public static fadeMode parseFadeMode(string fM)
         {
@@ -42,19 +43,20 @@ namespace as3mbus.Story
             page = 0;
             duration = 1;
             fadeMode = fadeMode.none;
-            cameraEffects = new CamEffects();
+            cameraEffects = new CameraEffects();
         }
-        public Effects(Effects cloneTarget){
+        public Effects(Effects cloneTarget)
+        {
             page = cloneTarget.page;
             duration = cloneTarget.duration;
             fadeMode = cloneTarget.fadeMode;
-            cameraEffects = new CamEffects(cloneTarget.cameraEffects);
+            cameraEffects = new CameraEffects(cloneTarget.cameraEffects);
         }
-        public Effects(int pej, float durat, fadeMode fm, CamEffects camfx)
+        public Effects(int pej, float durat, fadeMode fm, CameraEffects camfx)
         {
             update(pej, durat, fm, camfx);
         }
-        public bool update(int pej, float durat, fadeMode fm, CamEffects camfx)
+        public bool update(int pej, float durat, fadeMode fm, CameraEffects camfx)
         {
             try
             {
@@ -93,6 +95,41 @@ namespace as3mbus.Story
             writer.IndentValue = 4;
             toJson(writer);
             return sb.ToString();
+        }
+
+        public static Effects parseJson_1_0(JsonData fxJsonData, int lineIndex)
+        {
+            Effects fx = Effects.parseJson_1_0(fxJsonData,lineIndex,EffectsJsonKey.V_1_0);
+            return fx;
+        }
+        public static Effects parseJson_1_0(JsonData fxJsonData, int indexLine, EffectsJsonKey fxKey)
+        {
+            Effects fx = new Effects();
+            fx.page = (int)fxJsonData[fxKey.keys[0]][indexLine];
+            fx.duration = float.Parse(fxJsonData[fxKey.keys[1]][indexLine].ToString());
+            fx.fadeMode = Effects.parseFadeMode(fxJsonData[fxKey.keys[2]][indexLine].ToString());
+            fx.cameraEffects = CameraEffects.parseJson_1_0(fxJsonData, indexLine, fxKey.cameraEffectsKey);
+            return fx;
+        }
+
+    }
+    public class EffectsJsonKey
+    {
+        public string[] keys = new string[] { "comicPage", "duration", "fadeMode", "camera" };
+        public CameraEffectsJsonKey cameraEffectsKey = new CameraEffectsJsonKey();
+        public EffectsJsonKey(string[] newKeys, CameraEffectsJsonKey newCameraEffectsKey)
+        {
+            for (int i = 0; i < newKeys.Length; i++)
+                if (!String.IsNullOrEmpty(newKeys[i]))
+                    keys[i] = newKeys[i];
+            if (newCameraEffectsKey != null)
+                cameraEffectsKey = newCameraEffectsKey;
+        }
+        public EffectsJsonKey() { }
+
+        public static EffectsJsonKey V_1_0
+        {
+            get { return new EffectsJsonKey(new string[] { "page", "duration", "fademode", "camera" }, CameraEffectsJsonKey.V_1_0); }
         }
 
     }

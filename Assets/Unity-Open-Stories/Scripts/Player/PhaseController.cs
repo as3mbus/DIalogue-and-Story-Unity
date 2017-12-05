@@ -35,7 +35,7 @@ public class PhaseController : MonoBehaviour
         {
             currentLine = 0;
             kameraRoute.position = activePhase.Lines[currentLine].Effects.CameraEffects.Position;
-            kamera.GetComponent<Camera>().orthographicSize = activePhase.Lines[currentLine].Effects.CameraEffects.Size;
+            kamera.GetComponent<Camera>().orthographicSize = activePhase.Lines[currentLine].Effects.CameraEffects.orthographicSize;
             readLine(currentLine);
         }
 
@@ -109,7 +109,7 @@ public class PhaseController : MonoBehaviour
         // showBaloon();
 
         //shake camera
-        shakeCamera(activePhase.Lines[currentLine].Effects.CameraEffects.Shake, shake);
+        shakeCamera(activePhase.Lines[currentLine].Effects.CameraEffects.shakeFrequency, shake);
     }
     //read complete line 
     public void showLine(string line)
@@ -242,14 +242,14 @@ public class PhaseController : MonoBehaviour
     public void camRoute()
     {
         kameraRoute.localPosition = Vector3.Lerp(originPosition, activePhase.Lines[currentLine].Effects.CameraEffects.Position, times / duration);
-        kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(originZoom, activePhase.Lines[currentLine].Effects.CameraEffects.Size, times / duration);
+        kamera.GetComponent<Camera>().orthographicSize = Mathf.Lerp(originZoom, activePhase.Lines[currentLine].Effects.CameraEffects.orthographicSize, times / duration);
     }
 
     //set camera position
     public void camPos()
     {
         kameraRoute.localPosition = activePhase.Lines[currentLine].Effects.CameraEffects.Position;
-        kamera.GetComponent<Camera>().orthographicSize = activePhase.Lines[currentLine].Effects.CameraEffects.Size;
+        kamera.GetComponent<Camera>().orthographicSize = activePhase.Lines[currentLine].Effects.CameraEffects.orthographicSize;
 
     }
     //end phase and call story controller next phase

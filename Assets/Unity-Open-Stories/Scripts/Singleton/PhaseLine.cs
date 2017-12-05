@@ -1,11 +1,12 @@
-using System.Collections.Generic;
+using System;
 using System.Text;
+using System.Collections.Generic;
 using UnityEngine;
 using LitJson;
 
 namespace as3mbus.Story
 {
-    public class PhaseLine
+    public class Line
     {
         Effects effects;
         string message;
@@ -15,19 +16,19 @@ namespace as3mbus.Story
         public string Message { get { return message; } set { message = value; } }
         public Effects Effects { get { return effects; } set { effects = value; } }
 
-        public PhaseLine()
+        public Line()
         {
             Message = "";
             Character = "";
             Effects = new Effects();
         }
-        public PhaseLine(Effects efek)
+        public Line(Effects efek)
         {
             Message = "";
             Character = "";
             Effects = new Effects(efek);
         }
-        
+
         public bool update(string msg, string chara, Effects fx)
         {
             try
@@ -42,7 +43,7 @@ namespace as3mbus.Story
                 return false;
             }
         }
-        public PhaseLine(string msg, string chara, Effects fx)
+        public Line(string msg, string chara, Effects fx)
         {
             update(msg, chara, fx);
         }
@@ -66,6 +67,38 @@ namespace as3mbus.Story
             writer.IndentValue = 4;
             toJson(writer);
             return sb.ToString();
+        }
+
+        public static Line parseJson_1_0(JsonData phaseLineJsonData, int lineIndex)
+        {
+            Line line = Line.parseJson_1_0(phaseLineJsonData,lineIndex,LineJsonKey.V_1_0);
+            return line;
+        }
+        public static Line parseJson_1_0(JsonData phaseLineJsonData, int lineIndex, LineJsonKey lineKey)
+        {
+            Line line = new Line();
+            line.message = phaseLineJsonData[lineKey.keys[0]][lineIndex].ToString();
+            line.character = phaseLineJsonData[lineKey.keys[1]][lineIndex].ToString();
+            line.effects = Effects.parseJson_1_0(phaseLineJsonData, lineIndex, lineKey.effectsKey);
+            return line;
+        }
+    }
+    public class LineJsonKey
+    {
+        public string[] keys = new string[] { "message", "character", "effects" };
+        public EffectsJsonKey effectsKey = new EffectsJsonKey();
+        public LineJsonKey(string[] newKeys, EffectsJsonKey newEffectsKey)
+        {
+            for (int i = 0; i < newKeys.Length; i++)
+                if (!String.IsNullOrEmpty(newKeys[i]))
+                    keys[i] = newKeys[i];
+            if (newEffectsKey != null)
+                effectsKey = newEffectsKey;
+        }
+        public LineJsonKey() { }
+        public static LineJsonKey V_1_0
+        {
+            get { return new LineJsonKey(new string[] { "message", "character", "effects" }, EffectsJsonKey.V_1_0); }
         }
     }
 }

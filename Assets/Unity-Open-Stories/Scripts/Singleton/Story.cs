@@ -1,7 +1,8 @@
+using System;
+using System.IO;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using UnityEngine;
 using LitJson;
 using as3mbus.Story;
@@ -123,7 +124,8 @@ namespace as3mbus.Story
         {
             parseJsonStory(story.toJson());
         }
-        void loadExisting(Story story){
+        void loadExisting(Story story)
+        {
             this.name = story.name;
             this.phases = story.phases;
         }
@@ -150,6 +152,24 @@ namespace as3mbus.Story
             }
         }
 
+    }
+    public class StoryJsonKey
+    {
+        public string[] keys = new string[] { "name", "phase" };
+        public PhaseJsonKey phaseKey = new as3mbus.Story.PhaseJsonKey();
+        public StoryJsonKey(string[] newKeys, PhaseJsonKey newPhaseKey)
+        {
+            for (int i = 0; i < newKeys.Length; i++)
+                if (!String.IsNullOrEmpty(newKeys[i]))
+                    keys[i] = newKeys[i];
+            if (newPhaseKey != null)
+                phaseKey = newPhaseKey;
+        }
+        public StoryJsonKey() { }
+        public static StoryJsonKey V_1_0
+        {
+            get { return new StoryJsonKey(new string[] { "name", "comicsource", "comicname", "", "", "content" }, PhaseJsonKey.V_1_0); }
+        }
     }
 
 }
