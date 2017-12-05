@@ -4,9 +4,9 @@
         {
             "name": "test dialogue",
             "comicDirectoryName": "sample comic",
-            "comicAssetBundle": "comic 2",
+            "comicAssetBundleName": "comic 2",
             "bgmFileName": "sample comic",
-            "bgmAssetBundle": "comic 2",
+            "bgmAssetBundleName": "comic 2",
             "content":[
                 {
                     "message":"",

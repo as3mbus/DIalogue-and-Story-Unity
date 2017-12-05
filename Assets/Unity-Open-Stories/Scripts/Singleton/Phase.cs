@@ -104,9 +104,9 @@ namespace as3mbus.Story
             Phase fase = new Phase();
             JsonData contentjson;
             fase.name = phaseData["name"].ToString();
-            fase.bgmAssetBundle = phaseData["bgmAssetBundle"].ToString();
+            fase.bgmAssetBundle = phaseData["bgmAssetBundleName"].ToString();
             fase.bgmFileName = phaseData["bgmFileName"].ToString();
-            AssetBundle bgmBundle = DataManager.readAssetBundles(DataManager.bundlePath(phaseData["bgmAssetBundle"].ToString()));
+            AssetBundle bgmBundle = DataManager.readAssetBundles(DataManager.bundlePath(phaseData["bgmAssetBundleName"].ToString()));
             fase.bgm = bgmBundle.LoadAsset<AudioClip>(phaseData["bgmFileName"].ToString());
             bgmBundle.Unload(false);
             // handling comic inside the same bundle as story
@@ -136,22 +136,32 @@ namespace as3mbus.Story
                     )
                 );
             }
-            loadComic(storyBundle, phaseData["comicAssetBundle"].ToString(), phaseData["comicDirectoryName"].ToString(), fase);
+            loadComic(storyBundle, phaseData["comicAssetBundleName"].ToString(), phaseData["comicDirectoryName"].ToString(), fase);
             return fase;
         }
 
         public static void loadComic(AssetBundle storyBundle, string comicAssetBundleName, string comicDirectoryName, Phase fase)
         {
-            if (storyBundle != null)
-            {
-                if (storyBundle.name == comicAssetBundleName)
-                    fase.comic = new Comic(storyBundle, comicDirectoryName, fase.getPages());
-                else
-                    fase.comic = new Comic(comicAssetBundleName.ToString(), comicDirectoryName);
-            }
+            if (DataManager.isSameBundle(storyBundle, comicAssetBundleName))
+                fase.comic = new Comic(storyBundle, comicDirectoryName, fase.getPages());
             else
                 fase.comic = new Comic(comicAssetBundleName.ToString(), comicDirectoryName);
         }
+        public static void loadBGM(AssetBundle storyBundle, string bgmAssetBundleName, string bgmFileName, Phase fase)
+        {
+            if (DataManager.isSameBundle(storyBundle, bgmAssetBundleName))
+            {
+                AssetBundle bgmBundle = storyBundle;
+                fase.bgm = bgmBundle.LoadAsset<AudioClip>(bgmFileName);
+            }
+            else
+            {
+                AssetBundle bgmBundle = DataManager.readAssetBundles(DataManager.bundlePath(bgmAssetBundleName));
+                fase.bgm = bgmBundle.LoadAsset<AudioClip>(bgmFileName);
+                bgmBundle.Unload(false);
+            }
+        }
+
 
         //create json date (string) based on a phase content
         public string toJson()
@@ -169,11 +179,11 @@ namespace as3mbus.Story
             writer.WriteObjectStart();
             writer.WritePropertyName("name");
             writer.Write(this.name);
-            writer.WritePropertyName("comicAssetBundle");
+            writer.WritePropertyName("comicAssetBundleName");
             writer.Write(this.comic.source);
             writer.WritePropertyName("comicDirectoryName");
             writer.Write(this.comic.name);
-            writer.WritePropertyName("bgmAssetBundle");
+            writer.WritePropertyName("bgmAssetBundleName");
             writer.Write(this.bgmAssetBundle);
             writer.WritePropertyName("bgmFileName");
             writer.Write(this.bgmFileName);

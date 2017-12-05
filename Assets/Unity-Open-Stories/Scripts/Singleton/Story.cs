@@ -140,7 +140,7 @@ namespace as3mbus.Story
             foreach (JsonData cerita in storyJson["phase"])
             {
                 Phase fase;
-                if (cerita.Keys.Contains("bgmAssetBundle"))
+                if (cerita.Keys.Contains("bgmAssetBundleName"))
                     fase = Phase.parseJson_1_2(cerita, assetBundle);
                 else if (cerita.Keys.Contains("content"))
                     fase = Phase.parseJson_1_1(cerita, assetBundle);
