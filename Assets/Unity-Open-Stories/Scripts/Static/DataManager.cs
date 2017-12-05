@@ -119,4 +119,16 @@ public static class DataManager
                 filteredItem.Add(item);
         return filteredItem.ToArray();
     }
+    public static bool isSameBundle(AssetBundle bundle, string assetBundleName)
+    {
+        if (bundle != null)
+        {
+            if (bundle.name == assetBundleName)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
 }
