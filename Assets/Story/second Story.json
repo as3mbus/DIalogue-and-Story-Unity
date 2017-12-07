@@ -1,0 +1,89 @@
+
+{
+    "version" : "1.2",
+    "name"    : "second Story",
+    "phase"   : [
+        {
+            "name" : "test dialogue",
+            "comicAssetBundleName" : "comic 2",
+            "comicDirectoryName"   : "sample comic",
+            "bgmAssetBundleName"   : "comic 2",
+            "bgmFileName"          : "sample comic",
+            "content"              : [
+                {
+                    "message" : "",
+                    "character" : "",
+                    "effects"   : {
+                        "comicPage" : 1,
+                        "duration"  : 1.29999995231628,
+                        "fadeMode"  : "color",
+                        "camera"    : {
+                            "x" : 3.5,
+                            "y" : -2.59999990463257,
+                            "orthographicSize" : 2.29999995231628,
+                            "shakeFrequency"   : 1.5,
+                            "backgroundColor"  : "#123123"
+                        }
+                    }
+                },
+                {
+                    "message" : "yoholo",
+                    "character" : "yorha",
+                    "effects"   : {
+                        "comicPage" : 3,
+                        "duration"  : 5.0,
+                        "fadeMode"  : "transition",
+                        "camera"    : {
+                            "x" : -3.5,
+                            "y" : 2.59999990463257,
+                            "orthographicSize" : 10.0,
+                            "shakeFrequency"   : 7.0,
+                            "backgroundColor"  : "#999999"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name" : "test dialogue",
+            "comicAssetBundleName" : "comic 2",
+            "comicDirectoryName"   : "sample comic",
+            "bgmAssetBundleName"   : "comic 2",
+            "bgmFileName"          : "sample comic",
+            "content"              : [
+                {
+                    "message" : "",
+                    "character" : "",
+                    "effects"   : {
+                        "comicPage" : 1,
+                        "duration"  : 1.29999995231628,
+                        "fadeMode"  : "color",
+                        "camera"    : {
+                            "x" : 3.5,
+                            "y" : -2.59999990463257,
+                            "orthographicSize" : 2.29999995231628,
+                            "shakeFrequency"   : 1.5,
+                            "backgroundColor"  : "#123123"
+                        }
+                    }
+                },
+                {
+                    "message" : "yoholo",
+                    "character" : "yorha",
+                    "effects"   : {
+                        "comicPage" : 3,
+                        "duration"  : 5.0,
+                        "fadeMode"  : "transition",
+                        "camera"    : {
+                            "x" : -3.5,
+                            "y" : 2.59999990463257,
+                            "orthographicSize" : 10.0,
+                            "shakeFrequency"   : 7.0,
+                            "backgroundColor"  : "#999999"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

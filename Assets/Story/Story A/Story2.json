@@ -1,154 +1,83 @@
 {
     "name": "second Story",
-    "phase": [
-        {
+    "phase": [{
             "name": "test dialogue",
             "comicname": "sample comic",
             "comicsource": "comic 2",
-            "content":[
-                {
-                    "message":"",
-                    "character":"",
-                    "effect":{
+            "content": [{
+                    "message": "",
+                    "character": "",
+                    "effect": {
                         "page": 1,
                         "duration": 1.3,
-                        "fademode":"color",
-                        "camera":{
-                            "x":3.5,
-                            "y":-2.6,
+                        "fademode": "color",
+                        "camera": {
+                            "x": 3.5,
+                            "y": -2.6,
                             "size": 2.3,
-                            "shake":1.5,
-                            "backgroundcolor":"#123123"
-                            
+                            "shake": 1.5,
+                            "backgroundcolor": "#123123"
+
                         }
                     }
                 },
                 {
-                    "message":"yoholo",
-                    "character":"yorha",
-                    "effect":{
+                    "message": "yoholo",
+                    "character": "yorha",
+                    "effect": {
                         "page": 3,
                         "duration": 5,
-                        "fademode":"transition",
-                        "camera":{
-                            "x":-3.5,
-                            "y":2.6,
+                        "fademode": "transition",
+                        "camera": {
+                            "x": -3.5,
+                            "y": 2.6,
                             "size": 10,
-                            "shake":7,
-                            "backgroundcolor":"#999"
-                            
+                            "shake": 7,
+                            "backgroundcolor": "#999"
+
                         }
                     }
                 }
-            ],
-            "page": [
-                1,
-                0
-            ],
-            "character": [
-                "luo jiang",
-                "luoluo"
-            ],
-            "message": [
-                "hai coy",
-                ""
-            ],
-            "camx": [
-                1.2,
-                3.3
-            ],
-            "camy": [
-                1.2,
-                3.3
-            ],
-            "zoom": [
-                1.2,
-                3.3
-            ],
-            "shake": [
-                1,
-                5
-            ],
-            "baloonx": [
-                1.5,
-                2.2
-            ],
-            "baloony": [
-                3.5,
-                -1.3
-            ],
-            "baloonsize": [
-                1,
-                2.1
-            ],
-            "fademode": [
-                "color",
-                "transition"
-            ],
-            "background": [
-                "#3CD2AF",
-                "#333333"
-            ],
-            "duration":[
-                1,
-                1.5
             ]
         },
         {
-            "name": "test dialogue 2",
+            "name": "test dialogue",
             "comicname": "sample comic",
             "comicsource": "comic 2",
-            "page": [
-                1,
-                0
-            ],
-            "camx": [
-                -1.2,
-                3.3
-            ],
-            "camy": [
-                5.9,
-                -5.7
-            ],
-            "zoom": [
-                1.2,
-                3.3
-            ],
-            "shake": [
-                1,
-                5
-            ],
-            "baloonx": [
-                1.5,
-                2.2
-            ],
-            "baloony": [
-                3.5,
-                -1.3
-            ],
-            "baloonsize": [
-                1,
-                0
-            ],
-            "character": [
-                "jiang lo",
-                "Jalo"
-            ],
-            "message": [
-                "py coy",
-                "lha py chong"
-            ],
-            "fademode": [
-                "transition",
-                "color"
-            ],
-            "background": [
-                "#3CD2AF",
-                "#333333"
-            ],
-            "duration":[
-                1,
-                1.5
+            "content": [{
+                    "message": "",
+                    "character": "",
+                    "effect": {
+                        "page": 1,
+                        "duration": 1.3,
+                        "fademode": "color",
+                        "camera": {
+                            "x": 3.5,
+                            "y": -2.6,
+                            "size": 2.3,
+                            "shake": 1.5,
+                            "backgroundcolor": "#123123"
+
+                        }
+                    }
+                },
+                {
+                    "message": "yoholo",
+                    "character": "yorha",
+                    "effect": {
+                        "page": 3,
+                        "duration": 5,
+                        "fademode": "transition",
+                        "camera": {
+                            "x": -3.5,
+                            "y": 2.6,
+                            "size": 10,
+                            "shake": 7,
+                            "backgroundcolor": "#999"
+
+                        }
+                    }
+                }
             ]
         }
     ]

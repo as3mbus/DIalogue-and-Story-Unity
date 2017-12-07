@@ -30,119 +30,95 @@ namespace as3mbus.Story
             this.Lines = new List<Line>();
         }
 
-        //parse phase json for v1 format
-        public static Phase parseJson_1_0(JsonData phaseJsonData, AssetBundle storyAssetBundle)
+        // parse json using latest vesion phase json key
+        public static Phase parseJson(JsonData phaseJsonData, AssetBundle storyAssetBundle)
+        {
+            return parseJson(phaseJsonData, storyAssetBundle, StoryJsonKey.Latest.Phase);
+        }
+        // parse json using specified version of json key
+        public static Phase parseJson(JsonData phaseJsonData, AssetBundle storyAssetBundle, JsonKey phaseKey)
         {
             Phase fase = new Phase();
-            fase.name = phaseJsonData["name"].ToString();
-            // handling comic inside the same bundle as story
-            for (int lineIndex = 0; lineIndex < phaseJsonData["message"].Count; lineIndex++)
+            fase.name = phaseJsonData[phaseKey.elementsKeys[0]].ToString();
+            if (phaseJsonData.Keys.Contains(phaseKey.elementsjsonKey[0].objectName))
+                fase.parseLines_1_1(phaseJsonData, phaseKey);
+            else
             {
-                fase.Lines.Add(
-                    Line.parseJson_1_0(phaseJsonData, lineIndex)
+                if (phaseKey.equal(StoryJsonKey.V_1_1.Phase))
+                    fase.parseLines_1_0(phaseJsonData);
+                else
+                    fase.parseLines_1_0(phaseJsonData, phaseKey.elementsjsonKey[0]);
+            }
+            fase.loadComic(storyAssetBundle, phaseJsonData[phaseKey.elementsKeys[1]].ToString(), phaseJsonData[phaseKey.elementsKeys[2]].ToString());
+            if (phaseJsonData.Keys.Contains(phaseKey.elementsKeys[3]))
+                fase.loadBGM(storyAssetBundle, phaseJsonData[phaseKey.elementsKeys[3]].ToString(), phaseJsonData[phaseKey.elementsKeys[4]].ToString());
+
+            return fase;
+        }
+
+        // parse lines of the phase using v1.0 method and v1.0 Line json key
+        public void parseLines_1_0(JsonData phaseJsonData)
+        {
+            // handling comic inside the same bundle as story
+            parseLines_1_0(phaseJsonData, StoryJsonKey.V_1_0.Line);
+        }
+        // parse lines of the phase using v1.0 method and specified Line json key
+        public void parseLines_1_0(JsonData phaseJsonData, JsonKey lineKey)
+        {
+            for (int lineIndex = 0; lineIndex < phaseJsonData[lineKey.elementsKeys[0]].Count; lineIndex++)
+            {
+                this.Lines.Add(
+                    Line.parseJson_1_0(phaseJsonData, lineIndex, lineKey)
                 );
                 // Debug.Log(fase.Lines[i].toJson());
             }
-            loadComic(storyAssetBundle, phaseJsonData["comicsource"].ToString(), phaseJsonData["comicname"].ToString(), fase);
-            return fase;
         }
 
-        //parse phase json for v1.1 format
-        public static Phase parseJson_1_1(JsonData phaseData, AssetBundle storyBundle)
+        // parse lines of a phase using v1.1 method and latest lines json key 
+        public void parseLines_1_1(JsonData phaseJsonData)
         {
-            Phase fase = new Phase();
-            JsonData contentjson;
-            fase.name = phaseData["name"].ToString();
             // handling comic inside the same bundle as story
-            for (int i = 0; i < phaseData["content"].Count; i++)
+            parseLines_1_1(phaseJsonData, StoryJsonKey.Latest.Phase);
+        }
+
+        // parse lines of the phase using v1.0 method and v1.0 Line json key
+        public void parseLines_1_1(JsonData phaseData, JsonKey LineKey)
+        {
+            JsonData contentjson;
+            // handling comic inside the same bundle as story
+            for (int i = 0; i < phaseData[LineKey.elementsjsonKey[0].objectName].Count; i++)
             {
-                contentjson = phaseData["content"][i];
+                contentjson = phaseData[LineKey.elementsjsonKey[0].objectName][i];
                 // Debug.Log(contentjson["effect"]["camera"]["shake"].ToString());
-                fase.Lines.Add(
-                    new Line(
-                        contentjson["message"].ToString(),
-                        contentjson["character"].ToString(),
-                        new Effects(
-                            (int)contentjson["effect"]["page"],
-                            float.Parse(contentjson["effect"]["duration"].ToString()),
-                            Effects.parseFadeMode(contentjson["effect"]["fademode"].ToString()),
-                            new CameraEffects(
-                                new Vector3(
-                                    float.Parse(contentjson["effect"]["camera"]["x"].ToString()),
-                                    float.Parse(contentjson["effect"]["camera"]["y"].ToString()),
-                                    -10f
-                                ),
-                                float.Parse(contentjson["effect"]["camera"]["size"].ToString()),
-                                float.Parse(contentjson["effect"]["camera"]["shake"].ToString()),
-                                Effects.parseColorFromString(contentjson["effect"]["camera"]["backgroundcolor"].ToString())
-                            )
-                        )
-                    )
+                this.Lines.Add(
+                    Line.parseJson_1_1(contentjson, LineKey.elementsjsonKey[0])
                 );
             }
-            loadComic(storyBundle, phaseData["comicsource"].ToString(), phaseData["comicname"].ToString(), fase);
-            return fase;
         }
 
-        public static Phase parseJson_1_2(JsonData phaseData, AssetBundle storyBundle)
+        // load comic from bundle that mentioned in json data (data in this case)
+        public void loadComic(AssetBundle storyBundle, string comicAssetBundleName, string comicDirectoryName)
         {
-            Phase fase = new Phase();
-            JsonData contentjson;
-            fase.name = phaseData["name"].ToString();
-            fase.bgmAssetBundle = phaseData["bgmAssetBundleName"].ToString();
-            fase.bgmFileName = phaseData["bgmFileName"].ToString();
-            AssetBundle bgmBundle = DataManager.readAssetBundles(DataManager.bundlePath(phaseData["bgmAssetBundleName"].ToString()));
-            fase.bgm = bgmBundle.LoadAsset<AudioClip>(phaseData["bgmFileName"].ToString());
-            bgmBundle.Unload(false);
-            // handling comic inside the same bundle as story
-            for (int i = 0; i < phaseData["content"].Count; i++)
-            {
-                contentjson = phaseData["content"][i];
-                // Debug.Log(contentjson["effect"]["camera"]["shake"].ToString());
-                fase.Lines.Add(
-                    new Line(
-                        contentjson["message"].ToString(),
-                        contentjson["character"].ToString(),
-                        new Effects(
-                            (int)contentjson["effect"]["page"],
-                            float.Parse(contentjson["effect"]["duration"].ToString()),
-                            Effects.parseFadeMode(contentjson["effect"]["fadeMode"].ToString()),
-                            new CameraEffects(
-                                new Vector3(
-                                    float.Parse(contentjson["effect"]["camera"]["x"].ToString()),
-                                    float.Parse(contentjson["effect"]["camera"]["y"].ToString()),
-                                    -10f
-                                ),
-                                float.Parse(contentjson["effect"]["camera"]["size"].ToString()),
-                                float.Parse(contentjson["effect"]["camera"]["shake"].ToString()),
-                                Effects.parseColorFromString(contentjson["effect"]["camera"]["backgroundColor"].ToString())
-                            )
-                        )
-                    )
-                );
-            }
-            loadComic(storyBundle, phaseData["comicAssetBundleName"].ToString(), phaseData["comicDirectoryName"].ToString(), fase);
-            return fase;
-        }
-
-        public static void loadComic(AssetBundle storyBundle, string comicAssetBundleName, string comicDirectoryName, Phase fase)
-        {
+            // handling if comic is bundled in story asset bundle 
             if (DataManager.isSameBundle(storyBundle, comicAssetBundleName))
-                fase.comic = new Comic(storyBundle, comicDirectoryName, fase.getPages());
+                this.comic = new Comic(storyBundle, comicDirectoryName, this.getPages());
             else
-                fase.comic = new Comic(comicAssetBundleName.ToString(), comicDirectoryName);
+                this.comic = new Comic(comicAssetBundleName.ToString(), comicDirectoryName);
         }
-        public static void loadBGM(AssetBundle storyBundle, string bgmAssetBundleName, string bgmFileName, Phase fase)
+
+        // load bgm from bundle that mentioned in json data (data in this case)
+        public void loadBGM(AssetBundle storyBundle, string bgmAssetBundleName, string bgmFileName)
         {
+            // handling if bgm is bundled in story asset bundle 
             if (DataManager.isSameBundle(storyBundle, bgmAssetBundleName))
             {
                 AssetBundle bgmBundle = storyBundle;
-                fase.bgm = bgmBundle.LoadAsset<AudioClip>(bgmFileName);
+                this.bgm = bgmBundle.LoadAsset<AudioClip>(bgmFileName);
             }
             else
             {
                 AssetBundle bgmBundle = DataManager.readAssetBundles(DataManager.bundlePath(bgmAssetBundleName));
-                fase.bgm = bgmBundle.LoadAsset<AudioClip>(bgmFileName);
+                this.bgm = bgmBundle.LoadAsset<AudioClip>(bgmFileName);
                 bgmBundle.Unload(false);
             }
         }
@@ -155,37 +131,44 @@ namespace as3mbus.Story
             JsonWriter writer = new JsonWriter(sb);
             writer.PrettyPrint = true;
             writer.IndentValue = 4;
-            toJson(writer);
+            writeJson(writer);
             return sb.ToString();
         }
-        //writer json data using json writer 
-        public void toJson(JsonWriter writer)
+        // write json string using latest phase json key 
+        public void writeJson(JsonWriter writer)
+        {
+            writeJson(writer, StoryJsonKey.Latest.Phase);
+        }
+        // write json string using specified phase json key 
+        public void writeJson(JsonWriter writer, JsonKey phaseKey)
         {
             writer.WriteObjectStart();
-            writer.WritePropertyName("name");
+            writer.WritePropertyName(phaseKey.elementsKeys[0]);
             writer.Write(this.name);
-            writer.WritePropertyName("comicAssetBundleName");
+            writer.WritePropertyName(phaseKey.elementsKeys[1]);
             writer.Write(this.comic.source);
-            writer.WritePropertyName("comicDirectoryName");
+            writer.WritePropertyName(phaseKey.elementsKeys[2]);
             writer.Write(this.comic.name);
-            writer.WritePropertyName("bgmAssetBundleName");
+            writer.WritePropertyName(phaseKey.elementsKeys[3]);
             writer.Write(this.bgmAssetBundle);
-            writer.WritePropertyName("bgmFileName");
+            writer.WritePropertyName(phaseKey.elementsKeys[4]);
             writer.Write(this.bgmFileName);
-            writer.WritePropertyName("content");
+            writer.WritePropertyName(phaseKey.elementsjsonKey[0].objectName);
             writer.WriteArrayStart();
             foreach (Line lines in Lines)
             {
-                lines.toJson(writer);
+                lines.writeJson(writer, phaseKey.elementsjsonKey[0]);
             }
             writer.WriteArrayEnd();
             writer.WriteObjectEnd();
         }
 
+        // new empty line
         public void newLine()
         {
             Lines.Add(new Line());
         }
+        // new line with old effect assigned
         public void newLine(Effects efek)
         {
             Lines.Add(new Line(efek));
@@ -259,6 +242,7 @@ namespace as3mbus.Story
                 characters[i] = this.Lines[i].Character;
             return characters.Distinct().ToArray();
         }
+        // get all needed pages index inside a phase
         public int[] getPages()
         {
             int[] pages = new int[this.Lines.Count];
@@ -267,23 +251,5 @@ namespace as3mbus.Story
             return pages.Distinct().ToArray();
         }
 
-    }
-    public class PhaseJsonKey
-    {
-        public string[] keys = new string[] { "name", "comicAssetBundleName", "comicDirectoryName", "bgmAssetBundleName", "bgmFileName", "content" };
-        public LineJsonKey lineKey = new LineJsonKey();
-        public PhaseJsonKey(string[] newKeys, LineJsonKey newLineKey)
-        {
-            for (int i = 0; i < newKeys.Length; i++)
-                if (!String.IsNullOrEmpty(newKeys[i]))
-                    keys[i] = newKeys[i];
-            if (newLineKey != null)
-                this.lineKey = newLineKey;
-        }
-        public PhaseJsonKey() { }
-        public static PhaseJsonKey V_1_0
-        {
-            get { return new PhaseJsonKey(new string[] { "name", "comicsource", "comicname", "", "", "content" }, LineJsonKey.V_1_0); }
-        }
     }
 }

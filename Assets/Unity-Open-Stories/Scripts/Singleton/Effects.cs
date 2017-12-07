@@ -72,64 +72,65 @@ namespace as3mbus.Story
             }
         }
 
-        public void toJson(JsonWriter writer)
+        // Write Json string with latest version jsonkey using assigned writer
+        public void writeJson(JsonWriter writer)
         {
-
-            writer.WriteObjectStart();
-            writer.WritePropertyName("page");
-            writer.Write(this.page);
-            writer.WritePropertyName("duration");
-            writer.Write(this.duration);
-            writer.WritePropertyName("fadeMode");
-            writer.Write(this.fadeMode.ToString("g"));
-            writer.WritePropertyName("camera");
-            this.cameraEffects.toJson(writer);
-            writer.WriteObjectEnd();
-
+            writeJson(writer, StoryJsonKey.Latest.Effects);
         }
+
+        // Write Json string with latest version using assigned writer
+        public void writeJson(JsonWriter writer, JsonKey fxKey)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(fxKey.elementsKeys[0]);
+            writer.Write(this.page);
+            writer.WritePropertyName(fxKey.elementsKeys[1]);
+            writer.Write(this.duration);
+            writer.WritePropertyName(fxKey.elementsKeys[2]);
+            writer.Write(this.fadeMode.ToString("g"));
+            writer.WritePropertyName(fxKey.elementsjsonKey[0].objectName);
+            this.cameraEffects.writeJson(writer, fxKey.elementsjsonKey[0]);
+            writer.WriteObjectEnd();
+        }
+
+        // return Json string with latest version json key
         public string toJson()
         {
             StringBuilder sb = new StringBuilder();
             JsonWriter writer = new JsonWriter(sb);
             writer.PrettyPrint = true;
             writer.IndentValue = 4;
-            toJson(writer);
+            writeJson(writer);
             return sb.ToString();
         }
 
+        // parse json data using v1.0 method and v1.0 json key
         public static Effects parseJson_1_0(JsonData fxJsonData, int lineIndex)
         {
-            Effects fx = Effects.parseJson_1_0(fxJsonData,lineIndex,EffectsJsonKey.V_1_0);
+            return Effects.parseJson_1_0(fxJsonData, lineIndex, StoryJsonKey.V_1_0.Effects);
+        }
+        
+        // parse json data using v1.0 method and specified json key
+        public static Effects parseJson_1_0(JsonData fxJsonData, int indexLine, JsonKey fxKey)
+        {
+            Debug.Log(fxKey.elementsKeys[0]);
+            Effects fx = new Effects();
+            fx.page = (int)fxJsonData[fxKey.elementsKeys[0]][indexLine];
+            fx.duration = float.Parse(fxJsonData[fxKey.elementsKeys[1]][indexLine].ToString());
+            fx.fadeMode = Effects.parseFadeMode(fxJsonData[fxKey.elementsKeys[2]][indexLine].ToString());
+            fx.cameraEffects = CameraEffects.parseJson_1_0(fxJsonData, indexLine, fxKey.elementsjsonKey[0]);
             return fx;
         }
-        public static Effects parseJson_1_0(JsonData fxJsonData, int indexLine, EffectsJsonKey fxKey)
+        
+        // parse json data using v1.1 method and specified json key
+        public static Effects parseJson_1_1(JsonData fxJsonData, JsonKey fxKey)
         {
             Effects fx = new Effects();
-            fx.page = (int)fxJsonData[fxKey.keys[0]][indexLine];
-            fx.duration = float.Parse(fxJsonData[fxKey.keys[1]][indexLine].ToString());
-            fx.fadeMode = Effects.parseFadeMode(fxJsonData[fxKey.keys[2]][indexLine].ToString());
-            fx.cameraEffects = CameraEffects.parseJson_1_0(fxJsonData, indexLine, fxKey.cameraEffectsKey);
+            fx.page = (int)fxJsonData[fxKey.elementsKeys[0]];
+            fx.duration = float.Parse(fxJsonData[fxKey.elementsKeys[1]].ToString());
+            fx.fadeMode = Effects.parseFadeMode(fxJsonData[fxKey.elementsKeys[2]].ToString());
+            fx.cameraEffects = CameraEffects.parseJson_1_1(fxJsonData[fxKey.elementsjsonKey[0].objectName], fxKey.elementsjsonKey[0]);
             return fx;
-        }
-
-    }
-    public class EffectsJsonKey
-    {
-        public string[] keys = new string[] { "comicPage", "duration", "fadeMode", "camera" };
-        public CameraEffectsJsonKey cameraEffectsKey = new CameraEffectsJsonKey();
-        public EffectsJsonKey(string[] newKeys, CameraEffectsJsonKey newCameraEffectsKey)
-        {
-            for (int i = 0; i < newKeys.Length; i++)
-                if (!String.IsNullOrEmpty(newKeys[i]))
-                    keys[i] = newKeys[i];
-            if (newCameraEffectsKey != null)
-                cameraEffectsKey = newCameraEffectsKey;
-        }
-        public EffectsJsonKey() { }
-
-        public static EffectsJsonKey V_1_0
-        {
-            get { return new EffectsJsonKey(new string[] { "page", "duration", "fademode", "camera" }, CameraEffectsJsonKey.V_1_0); }
         }
 
     }

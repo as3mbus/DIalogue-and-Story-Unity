@@ -47,58 +47,59 @@ namespace as3mbus.Story
         {
             update(msg, chara, fx);
         }
-        public void toJson(JsonWriter writer)
+        // write json string with latest version of json code key
+        public void writeJson(JsonWriter writer)
+        {
+            writeJson(writer, StoryJsonKey.Latest.Line);
+        }
+        // write json string with specified version of json code key
+        public void writeJson(JsonWriter writer, JsonKey lineKey)
         {
             writer.WriteObjectStart();
-            writer.WritePropertyName("message");
+            writer.WritePropertyName(lineKey.elementsKeys[0]);
             writer.Write(this.Message);
-            writer.WritePropertyName("character");
+            writer.WritePropertyName(lineKey.elementsKeys[1]);
             writer.Write(this.Character);
-            writer.WritePropertyName("effect");
-            this.Effects.toJson(writer);
+            writer.WritePropertyName(lineKey.elementsjsonKey[0].objectName);
+            Debug.Log(lineKey.elementsjsonKey[0].objectName);
+            this.Effects.writeJson(writer, lineKey.elementsjsonKey[0]);
             writer.WriteObjectEnd();
 
         }
+        // return json string writed with latest version of json code key
         public string toJson()
         {
             StringBuilder sb = new StringBuilder();
             JsonWriter writer = new JsonWriter(sb);
             writer.PrettyPrint = true;
             writer.IndentValue = 4;
-            toJson(writer);
+            writeJson(writer);
             return sb.ToString();
         }
-
+        // parse json string using v1.0 method and v1.0 line json keycode
         public static Line parseJson_1_0(JsonData phaseLineJsonData, int lineIndex)
         {
-            Line line = Line.parseJson_1_0(phaseLineJsonData,lineIndex,LineJsonKey.V_1_0);
-            return line;
+            return Line.parseJson_1_0(phaseLineJsonData, lineIndex, StoryJsonKey.Latest.Line);
         }
-        public static Line parseJson_1_0(JsonData phaseLineJsonData, int lineIndex, LineJsonKey lineKey)
+        
+        // parse json string using v1.0 method and vspecified json keycode
+        public static Line parseJson_1_0(JsonData phaseLineJsonData, int lineIndex, JsonKey lineKey)
         {
             Line line = new Line();
-            line.message = phaseLineJsonData[lineKey.keys[0]][lineIndex].ToString();
-            line.character = phaseLineJsonData[lineKey.keys[1]][lineIndex].ToString();
-            line.effects = Effects.parseJson_1_0(phaseLineJsonData, lineIndex, lineKey.effectsKey);
+            line.message = phaseLineJsonData[lineKey.elementsKeys[0]][lineIndex].ToString();
+            line.character = phaseLineJsonData[lineKey.elementsKeys[1]][lineIndex].ToString();
+            line.effects = Effects.parseJson_1_0(phaseLineJsonData, lineIndex, lineKey.elementsjsonKey[0]);
             return line;
         }
-    }
-    public class LineJsonKey
-    {
-        public string[] keys = new string[] { "message", "character", "effects" };
-        public EffectsJsonKey effectsKey = new EffectsJsonKey();
-        public LineJsonKey(string[] newKeys, EffectsJsonKey newEffectsKey)
+        
+        // parse json string using v1.1 method and specified json keycode
+        public static Line parseJson_1_1(JsonData phaseLineJsonData, JsonKey lineKey)
         {
-            for (int i = 0; i < newKeys.Length; i++)
-                if (!String.IsNullOrEmpty(newKeys[i]))
-                    keys[i] = newKeys[i];
-            if (newEffectsKey != null)
-                effectsKey = newEffectsKey;
-        }
-        public LineJsonKey() { }
-        public static LineJsonKey V_1_0
-        {
-            get { return new LineJsonKey(new string[] { "message", "character", "effects" }, EffectsJsonKey.V_1_0); }
+            Line line = new Line();
+            line.message = phaseLineJsonData[lineKey.elementsKeys[0]].ToString();
+            line.character = phaseLineJsonData[lineKey.elementsKeys[1]].ToString();
+            line.effects = Effects.parseJson_1_1(phaseLineJsonData[lineKey.elementsjsonKey[0].objectName], lineKey.elementsjsonKey[0]);
+            return line;
         }
     }
 }
