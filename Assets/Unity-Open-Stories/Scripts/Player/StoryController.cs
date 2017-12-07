@@ -21,7 +21,7 @@ public class StoryController : MonoBehaviour
         // try
         // {
         //load story based on static class story manager 
-        cerita = new Story(StoryManager.storyType);
+        cerita = StoryManager.stori;
         nextScene = StoryManager.nextScene;
         skipButton.SetActive(StoryManager.skipable);
         // }
@@ -40,6 +40,7 @@ public class StoryController : MonoBehaviour
             return;
         phaseCanvas.SetActive(true);
         Phase fase = cerita.phases[number];
+        fase.loadResources();
         phaseCanvas.GetComponent<PhaseController>().startPhase(fase);
 
     }

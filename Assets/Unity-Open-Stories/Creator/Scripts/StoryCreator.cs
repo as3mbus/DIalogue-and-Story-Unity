@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using as3mbus.Story;
 using GracesGames;
-
+using LitJson;
 public class StoryCreator : MonoBehaviour
 {
     //getter and setter for target story 
@@ -30,15 +30,21 @@ public class StoryCreator : MonoBehaviour
     public GameObject FileBrowserPrefab;
     string[] activeComics;
 
-    void OnEnable(){
+    void Awake()
+    {
+        //create/load new/existing story based on static class story manager 
+        _targetStory = StoryManager.stori;
+    }
+
+    void OnEnable()
+    {
         print(_targetStory.toJson());
     }
 
     // Use this for initialization
     void Start()
     {
-        //create/load new/existing story based on static class story manager 
-        _targetStory = new Story(StoryManager.storyType);
+
         loadStory();
         // print(Comic.listComicsJson());
         // Comic.writeComicsJson();
@@ -98,8 +104,8 @@ public class StoryCreator : MonoBehaviour
     public void contentButtonUpdate(Phase fase, GameObject button)
     {
         button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = fase.name;
-        button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = "";
-        button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.toString();
+        button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = fase.comic.bundleName;
+        button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.comicDirectory;
         button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.Lines.Count.ToString() + " Line";
     }
     //phase content button handler
@@ -107,13 +113,15 @@ public class StoryCreator : MonoBehaviour
     public void editPhase()
     {
         int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex();
-        Phase fase =_targetStory.phases[phaseIndex];
+        Phase fase = _targetStory.phases[phaseIndex];
         editPhase(fase);
     }
     //phase content button handler
     //display phase editor and edit phase with it's interfacce  
     public void editPhase(Phase fase)
     {
+        fase.comic.loadAllPages();
+        fase.loadBGM();
         phaseCreator.gameObject.SetActive(true);
         phaseCreator.loadPhase(fase);
         gameObject.SetActive(false);
@@ -148,7 +156,6 @@ public class StoryCreator : MonoBehaviour
     public void playScene()
     {
         _targetStory.name = storyNameField.text;
-        StoryManager.storyType = storyDataType.Story;
         StoryManager.stori = _targetStory;
         StoryManager.nextScene = "Creator";
         StoryManager.skipable = true;
@@ -187,7 +194,7 @@ public class StoryCreator : MonoBehaviour
     //set target story to loaded story 
     void readStory(string path)
     {
-        targetStory = new Story(path);
+        targetStory = Story.parseJson(JsonMapper.ToObject(DataManager.readAssetsTextFile(path)));
     }
     //load story content to interface
     void loadStory()

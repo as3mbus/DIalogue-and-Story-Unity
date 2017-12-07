@@ -14,51 +14,38 @@ namespace as3mbus.Story
         public string name, version = "1.2";
         public List<Phase> phases = new List<Phase>();
         //new empty story 
-        public AssetBundle assetBundle = null;
         public Story() { }
         //load/create story based on static class story manager 
-        public Story(storyDataType storyType)
+
+        //read json story inside bundle
+        
+        
+        // parse json story data using version related story json key
+        public static Story parseJson(JsonData storyJsonData)
         {
-            switch (storyType)
-            {
-                case storyDataType.AssetBundle:
-                    loadJson(StoryManager.bundle, StoryManager.stringOrDataPath);
-                    break;
-                case storyDataType.BundlePath:
-                    loadJson(StoryManager.stringOrBundlePath, StoryManager.stringOrDataPath);
-                    break;
-                case storyDataType.DataPath:
-                    loadJson(StoryManager.stringOrDataPath);
-                    break;
-                case storyDataType.JsonData:
-                    parseJson(StoryManager.json);
-                    break;
-                case storyDataType.String:
-                    parseJson(StoryManager.stringOrDataPath);
-                    break;
-                case storyDataType.TextAsset:
-                    loadJson(StoryManager.textAsset);
-                    break;
-                case storyDataType.Story:
-                    loadExisting(StoryManager.stori);
-                    break;
-                case storyDataType.New:
-                    phases = new List<Phase>();
-                    break;
-                default:
-                    Debug.Log("Story type not found!");
-                    break;
+
+            if (storyJsonData.Keys.Contains("version"))
+                return parseJson(storyJsonData, StoryJsonKey.Latest.Story);
+            else
+                return parseJson(storyJsonData, StoryJsonKey.V_1_1.Story);
+
+        }
+        public void loadResources(){
+            foreach(Phase fase in phases){
+                fase.loadResources();
             }
         }
-        //read story with filepath 
-        public Story(string dataPath)
+
+        //  parse json story data using specified story json key
+        public static Story parseJson(JsonData storyJsonData, JsonKey storyKey)
         {
-            loadJson(dataPath);
-        }
-        //read story data using text asset 
-        public Story(TextAsset storyJson)
-        {
-            loadJson(storyJson);
+            Story parseResult = new Story();
+            parseResult.name = storyJsonData[storyKey.elementsKeys[1]].ToString();
+            foreach (JsonData phaseJsonData in storyJsonData[storyKey.elementsjsonKey[0].objectName])
+            {
+                parseResult.phases.Add(Phase.parseJson(phaseJsonData, storyKey.elementsjsonKey[0]));
+            }
+            return parseResult;
         }
         //convert story to json string 
         public string toJson()
@@ -94,75 +81,5 @@ namespace as3mbus.Story
             writer.WriteArrayEnd();
             writer.WriteObjectEnd();
         }
-        //read json story from bundle in designated path
-        void loadJson(string bundleName, string dataPath)
-        {
-            StoryManager.stringOrBundlePath = bundleName;
-            AssetBundle storyBundle = DataManager.readAssetBundles(DataManager.bundlePath(bundleName));
-            // Debug.Log(storyBundle.name);
-            loadJson(storyBundle, dataPath);
-        }
-
-        //read json story inside bundle
-        void loadJson(AssetBundle storyBundle, string dataPath)
-        {
-            assetBundle = storyBundle;
-            StoryManager.stringOrBundlePath = storyBundle.name;
-            // Debug.Log(storyBundle.name);
-            StoryManager.bundle = storyBundle;
-            loadJson(storyBundle.LoadAsset<TextAsset>(DataManager.findItemInBundle(storyBundle, dataPath)));
-            storyBundle.Unload(false);
-        }
-        //read json story from path
-        void loadJson(string dataPath)
-        {
-            this.name = Path.GetFileNameWithoutExtension(dataPath);
-            JsonData jsonStory = JsonMapper.ToObject(File.ReadAllText(dataPath));
-            parseJson(jsonStory);
-        }
-        //read json story from textasset
-        void loadJson(TextAsset storyJson)
-        {
-            this.name = storyJson.name;
-            parseJson(storyJson.text);
-        }
-        //clone json story based on another story
-        void cloneJsonStory(Story story)
-        {
-            parseJson(story.toJson());
-        }
-        // referrence story to a loaded story
-        void loadExisting(Story story)
-        {
-            this.name = story.name;
-            this.phases = story.phases;
-        }
-        // read json story based on json string
-        void parseJson(string storyJsonString)
-        {
-            JsonData jsonStory = JsonMapper.ToObject(storyJsonString);
-            parseJson(jsonStory);
-        }
-        // parse json story data using version related story json key
-        void parseJson(JsonData storyJsonData)
-        {
-            if (storyJsonData.Keys.Contains("version"))
-                parseJson(storyJsonData, StoryJsonKey.Latest.Story);
-            else
-                parseJson(storyJsonData, StoryJsonKey.V_1_1.Story);
-
-        }
-
-        //  parse json story data using specified story json key
-        void parseJson(JsonData storyJsonData, JsonKey storyKey)
-        {
-            this.name = storyJsonData[storyKey.elementsKeys[1]].ToString();
-            foreach (JsonData phaseJsonData in storyJsonData[storyKey.elementsjsonKey[0].objectName])
-            {
-                this.phases.Add(Phase.parseJson(phaseJsonData, this.assetBundle, storyKey.elementsjsonKey[0]));
-            }
-        }
-
     }
-
 }

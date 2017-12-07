@@ -187,7 +187,7 @@ public class PhaseCreator : MonoBehaviour
         targetPhase = fase;
         for (int i = 0; i < fase.Lines.Count; i++)
             lineDDown.options.Add(new Dropdown.OptionData("Line " + (i + 1)));
-        addDropdownOption(pageDDown, fase.comic.pagename.ToArray());
+        addDropdownOption(pageDDown, fase.comic.pageName().ToArray());
         pageDDown.value = 0;
         pageDDown.captionText.text = pageDDown.options[0].text;
         String[] Characters = fase.getCharacters().Concat(readCharacterDB(charactersDatabase)).Distinct().ToArray();

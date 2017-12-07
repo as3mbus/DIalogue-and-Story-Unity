@@ -10,99 +10,75 @@ namespace as3mbus.Story
 {
     public class Comic
     {
-        public string name;
-        public string toString()
-        {
-            return source;
-        }
-
+        public string comicDirectory;
+        public bool loaded = false;
         public List<Sprite> pages = new List<Sprite>();
-        public string source;
-        public List<string> pagename = new List<string>();
+        public string bundleName;
 
 
         //create comic data by loading comic folder inside a asset bundle
-        public Comic(string bundleName, string comicPath)
+        public Comic(string bundleName, string comicDirectory)
         {
-            AssetBundle comicBundle = DataManager.readAssetBundles(DataManager.bundlePath(bundleName));
-            loadAllPages(comicBundle, comicPath);
-            comicBundle.Unload(false);
-        }
-
-        public Comic(string bundleName, string comicPath, int[] pageNums)
-        {
-            AssetBundle comicBundle = DataManager.readAssetBundles(DataManager.bundlePath(bundleName));
-            loadPages(comicBundle, comicPath, pageNums);
-            comicBundle.Unload(false);
-        }
-        public Comic(AssetBundle bundle, string comicDirectoryPath)
-        {
-            loadAllPages(bundle, comicDirectoryPath);
-        }
-        public Comic(AssetBundle bundle, string comicDirectoryPath, int[] pageNums)
-        {
-            loadPages(bundle, comicDirectoryPath, pageNums);
-
+            this.bundleName = bundleName;
+            this.comicDirectory = comicDirectory;
         }
         // handle story and comic in the same bundle
-
-        public void loadAllPages(AssetBundle bundle, string comicPath)
+        public void loadAllPages()
         {
-            this.name = Path.GetFileName(comicPath);
-            this.source = bundle.name;
-            foreach (string asetName in bundle.GetAllAssetNames())
-                if (asetName.Contains(comicPath))
-                {
-                    this.pages.Add(bundle.LoadAsset<Sprite>(asetName));
-                    this.pagename.Add(Path.GetFileNameWithoutExtension(asetName));
-                }
+            if (!this.loaded)
+            {
+                AssetBundle bundle = DataManager.readAssetBundles(DataManager.bundlePath(this.bundleName));
+                this.bundleName = bundle.name;
+                this.pages = new List<Sprite>();
+                foreach (string asetName in bundle.GetAllAssetNames())
+                    if (asetName.Contains(this.comicDirectory))
+                    {
+                        this.pages.Add(bundle.LoadAsset<Sprite>(asetName));
+                    }
+                bundle.Unload(false);
+                this.loaded = true;
+            }
         }
-        public void loadPages(AssetBundle bundle, string comicPath, int[] pageNums)
+        public void loadPages(int[] pageNums)
         {
-            this.name = Path.GetFileName(comicPath);
-            this.source = bundle.name;
+            AssetBundle bundle = DataManager.readAssetBundles(DataManager.bundlePath(this.bundleName));
+            this.bundleName = bundle.name;
             int n = -1;
             foreach (string asetName in bundle.GetAllAssetNames())
             {
-                n++;
-                if (asetName.Contains(comicPath))
+                if (asetName.Contains(comicDirectory))
                 {
+                    n++;
                     if (pageNums.Contains(n))
                     {
-                        Debug.Log("LOAD");
+
+                        Debug.Log(n);
                         this.pages.Add(bundle.LoadAsset<Sprite>(asetName));
-                        this.pagename.Add(Path.GetFileNameWithoutExtension(asetName));
                     }
                     else
-                    {
                         this.pages.Add(null);
-                        this.pagename.Add(null);
-                    }
                 }
             }
+            bundle.Unload(false);
 
-        }
-
-        public Comic(JsonData directory) : this(directory.ToString())
-        {
         }
 
         //load comic on resource folder @deprecated 
         public Comic(string resDir)
         {
-            this.source = resDir.ToString();
+            this.bundleName = resDir.ToString();
             foreach (var item in Resources.LoadAll<Sprite>("Comic/" + resDir.ToString()))
                 this.pages.Add(item);
 
         }
-        public string toJson()
+        public List<string> pageName()
         {
-            return "";
+            List<string> names = new List<string>();
+            foreach (Sprite item in this.pages)
+            {
+                names.Add(item.name);
+            }
+            return names;
         }
-        public void toJson(JsonWriter writer)
-        {
-
-        }
-
     }
 }

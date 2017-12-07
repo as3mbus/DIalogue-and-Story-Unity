@@ -12,15 +12,7 @@ namespace as3mbus.Story
     }
     public static class StoryManager
     {
-
-        public static storyDataType storyType = storyDataType.New;
-        public static string source;
-        public static JsonData json;
-        public static string stringOrBundlePath;
-        public static string stringOrDataPath;
-        public static AssetBundle bundle;
-        public static TextAsset textAsset;
-        public static Story stori;
+        public static Story stori = new Story();
         public static bool skipable = false;
 
         public static string nextScene;
