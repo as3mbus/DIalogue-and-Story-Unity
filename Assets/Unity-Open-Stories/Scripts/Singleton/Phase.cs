@@ -172,7 +172,7 @@ namespace as3mbus.Story
             int index
             )
         {
-            this.Lines[index].setLine(message, character, this.Lines[index].Effects);
+            this.Lines[index].setValue(message, character, this.Lines[index].Effects);
         }
         public void UpdateEffect(
             int pageNo,
