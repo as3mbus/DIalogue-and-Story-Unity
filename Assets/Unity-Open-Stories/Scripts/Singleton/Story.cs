@@ -15,11 +15,7 @@ namespace as3mbus.Story
         public List<Phase> phases = new List<Phase>();
         //new empty story 
         public Story() { }
-        //load/create story based on static class story manager 
 
-        //read json story inside bundle
-        
-        
         // parse json story data using version related story json key
         public static Story parseJson(JsonData storyJsonData)
         {
@@ -30,11 +26,6 @@ namespace as3mbus.Story
                 return parseJson(storyJsonData, StoryJsonKey.V_1_1.Story);
 
         }
-        public void loadResources(){
-            foreach(Phase fase in phases){
-                fase.loadResources();
-            }
-        }
 
         //  parse json story data using specified story json key
         public static Story parseJson(JsonData storyJsonData, JsonKey storyKey)
@@ -42,11 +33,17 @@ namespace as3mbus.Story
             Story parseResult = new Story();
             parseResult.name = storyJsonData[storyKey.elementsKeys[1]].ToString();
             foreach (JsonData phaseJsonData in storyJsonData[storyKey.elementsjsonKey[0].objectName])
-            {
                 parseResult.phases.Add(Phase.parseJson(phaseJsonData, storyKey.elementsjsonKey[0]));
-            }
             return parseResult;
         }
+
+        // load all needed resources
+        public void loadResources()
+        {
+            foreach (Phase fase in phases)
+                fase.loadResources();
+        }
+
         //convert story to json string 
         public string toJson()
         {
@@ -55,7 +52,7 @@ namespace as3mbus.Story
             writer.PrettyPrint = true;
             writer.IndentValue = 4;
 
-            writeJson(writer,StoryJsonKey.Latest.Story);
+            writeJson(writer, StoryJsonKey.Latest.Story);
             return sb.ToString();
         }
 

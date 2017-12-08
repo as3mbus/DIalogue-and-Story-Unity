@@ -215,7 +215,7 @@ public class StoryCreator : MonoBehaviour
     public void bundleChange()
     {
         comicDropdown.options.Clear();
-        activeComics = DataManager.getComics(
+        activeComics = Comic.getComics(
                                         DataManager.readAssetBundles(
                                             DataManager.bundlePath(
                                                 bundleDropdown.captionText.text)

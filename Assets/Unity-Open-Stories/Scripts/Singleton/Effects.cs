@@ -24,20 +24,22 @@ namespace as3mbus.Story
         public fadeMode FadeMode { get { return fadeMode; } set { fadeMode = value; } }
         public CameraEffects CameraEffects { get { return cameraEffects; } set { cameraEffects = value; } }
 
-        public static fadeMode parseFadeMode(string fM)
+
+        public static fadeMode parseFadeMode(string fadeModeString)
         {
             return
-                fM.ToLower() == "transition" ? fadeMode.transition
-                : fM.ToLower() == "color" ? fadeMode.color :
+                fadeModeString.ToLower() == "transition" ? fadeMode.transition :
+                fadeModeString.ToLower() == "color" ? fadeMode.color :
                 fadeMode.none;
         }
-
-        public static Color parseColorFromString(string s)
+        // convert string to color
+        public static Color rgbColorParse(string colorstring)
         {
-            Color c;
-            ColorUtility.TryParseHtmlString(s, out c);
-            return c;
+            Color parsedColor;
+            ColorUtility.TryParseHtmlString(colorstring, out parsedColor);
+            return parsedColor;
         }
+        // create new effect woth default value
         public Effects()
         {
             page = 0;
@@ -45,6 +47,7 @@ namespace as3mbus.Story
             fadeMode = fadeMode.none;
             cameraEffects = new CameraEffects();
         }
+        // clone effect based on other instance
         public Effects(Effects cloneTarget)
         {
             page = cloneTarget.page;
@@ -52,30 +55,21 @@ namespace as3mbus.Story
             fadeMode = cloneTarget.fadeMode;
             cameraEffects = new CameraEffects(cloneTarget.cameraEffects);
         }
-        public Effects(int pej, float durat, fadeMode fm, CameraEffects camfx)
-        {
-            update(pej, durat, fm, camfx);
-        }
-        public bool update(int pej, float durat, fadeMode fm, CameraEffects camfx)
+        // set value 
+        public bool setValue(int newPage, float newDuration, fadeMode newFadeMode, CameraEffects newCameraEffects)
         {
             try
             {
-                this.page = pej;
-                this.duration = durat;
-                this.fadeMode = fm;
-                this.cameraEffects = camfx;
+                this.page = newPage;
+                this.duration = newDuration;
+                this.fadeMode = newFadeMode;
+                this.cameraEffects = newCameraEffects;
                 return true;
             }
             catch (System.Exception)
             {
                 return false;
             }
-        }
-
-        // Write Json string with latest version jsonkey using assigned writer
-        public void writeJson(JsonWriter writer)
-        {
-            writeJson(writer, StoryJsonKey.Latest.Effects);
         }
 
         // Write Json string with latest version using assigned writer
@@ -100,16 +94,9 @@ namespace as3mbus.Story
             JsonWriter writer = new JsonWriter(sb);
             writer.PrettyPrint = true;
             writer.IndentValue = 4;
-            writeJson(writer);
+            writeJson(writer, StoryJsonKey.Latest.Effects);
             return sb.ToString();
         }
-
-        // parse json data using v1.0 method and v1.0 json key
-        public static Effects parseJson_1_0(JsonData fxJsonData, int lineIndex)
-        {
-            return Effects.parseJson_1_0(fxJsonData, lineIndex, StoryJsonKey.V_1_0.Effects);
-        }
-        
         // parse json data using v1.0 method and specified json key
         public static Effects parseJson_1_0(JsonData fxJsonData, int indexLine, JsonKey fxKey)
         {
@@ -121,7 +108,7 @@ namespace as3mbus.Story
             fx.cameraEffects = CameraEffects.parseJson_1_0(fxJsonData, indexLine, fxKey.elementsjsonKey[0]);
             return fx;
         }
-        
+
         // parse json data using v1.1 method and specified json key
         public static Effects parseJson_1_1(JsonData fxJsonData, JsonKey fxKey)
         {

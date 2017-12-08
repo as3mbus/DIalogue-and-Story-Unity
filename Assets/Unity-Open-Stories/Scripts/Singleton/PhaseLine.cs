@@ -15,21 +15,22 @@ namespace as3mbus.Story
         public string Character { get { return character; } set { character = value; } }
         public string Message { get { return message; } set { message = value; } }
         public Effects Effects { get { return effects; } set { effects = value; } }
-
+        // create default line
         public Line()
         {
             Message = "";
             Character = "";
             Effects = new Effects();
         }
+        // create empty line with specified effects
         public Line(Effects efek)
         {
             Message = "";
             Character = "";
             Effects = new Effects(efek);
         }
-
-        public bool update(string msg, string chara, Effects fx)
+        // set value
+        public bool setValue(string msg, string chara, Effects fx)
         {
             try
             {
@@ -45,12 +46,7 @@ namespace as3mbus.Story
         }
         public Line(string msg, string chara, Effects fx)
         {
-            update(msg, chara, fx);
-        }
-        // write json string with latest version of json code key
-        public void writeJson(JsonWriter writer)
-        {
-            writeJson(writer, StoryJsonKey.Latest.Line);
+            setValue(msg, chara, fx);
         }
         // write json string with specified version of json code key
         public void writeJson(JsonWriter writer, JsonKey lineKey)
@@ -73,15 +69,10 @@ namespace as3mbus.Story
             JsonWriter writer = new JsonWriter(sb);
             writer.PrettyPrint = true;
             writer.IndentValue = 4;
-            writeJson(writer);
+            writeJson(writer, StoryJsonKey.Latest.Line);
             return sb.ToString();
         }
-        // parse json string using v1.0 method and v1.0 line json keycode
-        public static Line parseJson_1_0(JsonData phaseLineJsonData, int lineIndex)
-        {
-            return Line.parseJson_1_0(phaseLineJsonData, lineIndex, StoryJsonKey.Latest.Line);
-        }
-        
+
         // parse json string using v1.0 method and vspecified json keycode
         public static Line parseJson_1_0(JsonData phaseLineJsonData, int lineIndex, JsonKey lineKey)
         {
@@ -91,7 +82,7 @@ namespace as3mbus.Story
             line.effects = Effects.parseJson_1_0(phaseLineJsonData, lineIndex, lineKey.elementsjsonKey[0]);
             return line;
         }
-        
+
         // parse json string using v1.1 method and specified json keycode
         public static Line parseJson_1_1(JsonData phaseLineJsonData, JsonKey lineKey)
         {

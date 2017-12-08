@@ -18,6 +18,7 @@ namespace as3mbus.Story
         public float shakeFrequency { get { return _shakeFrequency; } set { _shakeFrequency = value; } }
         public Color BackgroundColor { get { return backgroundColor; } set { backgroundColor = value; } }
 
+        // create new default camera effect
         public CameraEffects()
         {
             orthographicSize = 5f;
@@ -32,10 +33,7 @@ namespace as3mbus.Story
             BackgroundColor = cloneTarget.backgroundColor;
             Position = cloneTarget.position;
         }
-        public CameraEffects(Vector3 camPos, float camsz, float camshake, Color bgcolor)
-        {
-            update(camPos, camsz, camshake, bgcolor);
-        }
+        // set value of object using params
         public bool update(Vector3 camPos, float camsz, float camshake, Color bgcolor)
         {
             try
@@ -50,11 +48,6 @@ namespace as3mbus.Story
                 return false;
             }
             return true;
-        }
-        // Write Jsonstring with latest version
-        public void writeJson(JsonWriter writer)
-        {
-            writeJson(writer, StoryJsonKey.Latest.CameraEffects);
         }
         // Write json with specified version
         public void writeJson(JsonWriter writer, JsonKey camKey)
@@ -79,14 +72,8 @@ namespace as3mbus.Story
             JsonWriter writer = new JsonWriter(sb);
             writer.PrettyPrint = true;
             writer.IndentValue = 4;
-            writeJson(writer);
+            writeJson(writer, StoryJsonKey.Latest.CameraEffects);
             return sb.ToString();
-        }
-        // parse json using v1 method with version 1 key
-        public static CameraEffects parseJson_1_0(JsonData camFxJsonData, int lineIndex)
-        {
-            return CameraEffects.parseJson_1_0(camFxJsonData, lineIndex, StoryJsonKey.V_1_0.CameraEffects);
-
         }
         // parse json using v1 method with specified version jsonkey
         public static CameraEffects parseJson_1_0(JsonData camFxJsonData, int lineIndex, JsonKey camFxKey)
@@ -94,19 +81,14 @@ namespace as3mbus.Story
             CameraEffects camFx = new CameraEffects();
             Debug.Log(camFxKey.elementsKeys[0]);
             camFx.position = new Vector3(
-                                        float.Parse(camFxJsonData[camFxKey.elementsKeys[0]][lineIndex].ToString()),
-                                        float.Parse(camFxJsonData[camFxKey.elementsKeys[1]][lineIndex].ToString()),
-                                        -10f
+                                    float.Parse(camFxJsonData[camFxKey.elementsKeys[0]][lineIndex].ToString()),
+                                    float.Parse(camFxJsonData[camFxKey.elementsKeys[1]][lineIndex].ToString()),
+                                    -10f
                             );
             camFx._orthographicSize = float.Parse(camFxJsonData[camFxKey.elementsKeys[2]][lineIndex].ToString());
             camFx._shakeFrequency = float.Parse(camFxJsonData[camFxKey.elementsKeys[3]][lineIndex].ToString());
-            camFx.backgroundColor = Effects.parseColorFromString(camFxJsonData[camFxKey.elementsKeys[4]][lineIndex].ToString());
+            camFx.backgroundColor = Effects.rgbColorParse(camFxJsonData[camFxKey.elementsKeys[4]][lineIndex].ToString());
             return camFx;
-        }
-        // parse json using v1.1 method with latest version jsonkey
-        public static CameraEffects parseJson_1_1(JsonData camFxJsonData)
-        {
-            return CameraEffects.parseJson_1_1(camFxJsonData, StoryJsonKey.Latest.CameraEffects);
         }
         // parse json using v1.1 method with specified jsonkey
         public static CameraEffects parseJson_1_1(JsonData camFxJsonData, JsonKey camFxKey)
@@ -114,13 +96,13 @@ namespace as3mbus.Story
             CameraEffects camFx = new CameraEffects();
             Debug.Log(camFxKey.elementsKeys[4]);
             camFx.position = new Vector3(
-                                        float.Parse(camFxJsonData[camFxKey.elementsKeys[0]].ToString()),
-                                        float.Parse(camFxJsonData[camFxKey.elementsKeys[1]].ToString()),
-                                        -10f
+                                    float.Parse(camFxJsonData[camFxKey.elementsKeys[0]].ToString()),
+                                    float.Parse(camFxJsonData[camFxKey.elementsKeys[1]].ToString()),
+                                    -10f
                             );
             camFx.orthographicSize = float.Parse(camFxJsonData[camFxKey.elementsKeys[2]].ToString());
             camFx.shakeFrequency = float.Parse(camFxJsonData[camFxKey.elementsKeys[3]].ToString());
-            camFx.backgroundColor = Effects.parseColorFromString(camFxJsonData[camFxKey.elementsKeys[4]].ToString());
+            camFx.backgroundColor = Effects.rgbColorParse(camFxJsonData[camFxKey.elementsKeys[4]].ToString());
             return camFx;
         }
     }

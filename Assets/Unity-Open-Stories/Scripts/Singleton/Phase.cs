@@ -31,7 +31,7 @@ namespace as3mbus.Story
             Lines = new List<Line>();
         }
 
-        //new empty phase with loaded comic 
+        //new empty phase 
         public Phase(string name, string bundleName, string comicPath)
         {
             this.name = name;
@@ -39,11 +39,6 @@ namespace as3mbus.Story
             this.Lines = new List<Line>();
         }
 
-        // parse json using latest vesion phase json key
-        public static Phase parseJson(JsonData phaseJsonData)
-        {
-            return parseJson(phaseJsonData, StoryJsonKey.Latest.Phase);
-        }
         // parse json using specified version of json key
         public static Phase parseJson(JsonData phaseJsonData, JsonKey phaseKey)
         {
@@ -54,7 +49,7 @@ namespace as3mbus.Story
             else
             {
                 if (phaseKey.equal(StoryJsonKey.V_1_1.Phase))
-                    fase.parseLines_1_0(phaseJsonData);
+                    fase.parseLines_1_0(phaseJsonData, StoryJsonKey.V_1_0.Line);
                 else
                     fase.parseLines_1_0(phaseJsonData, phaseKey.elementsjsonKey[0]);
             }
@@ -67,29 +62,13 @@ namespace as3mbus.Story
             return fase;
         }
 
-        // parse lines of the phase using v1.0 method and v1.0 Line json key
-        public void parseLines_1_0(JsonData phaseJsonData)
-        {
-            // handling comic inside the same bundle as story
-            parseLines_1_0(phaseJsonData, StoryJsonKey.V_1_0.Line);
-        }
         // parse lines of the phase using v1.0 method and specified Line json key
         public void parseLines_1_0(JsonData phaseJsonData, JsonKey lineKey)
         {
             for (int lineIndex = 0; lineIndex < phaseJsonData[lineKey.elementsKeys[0]].Count; lineIndex++)
-            {
                 this.Lines.Add(
                     Line.parseJson_1_0(phaseJsonData, lineIndex, lineKey)
                 );
-                // Debug.Log(fase.Lines[i].toJson());
-            }
-        }
-
-        // parse lines of a phase using v1.1 method and latest lines json key 
-        public void parseLines_1_1(JsonData phaseJsonData)
-        {
-            // handling comic inside the same bundle as story
-            parseLines_1_1(phaseJsonData, StoryJsonKey.Latest.Phase);
         }
 
         // parse lines of the phase using v1.0 method and v1.0 Line json key
@@ -143,13 +122,8 @@ namespace as3mbus.Story
             JsonWriter writer = new JsonWriter(sb);
             writer.PrettyPrint = true;
             writer.IndentValue = 4;
-            writeJson(writer);
-            return sb.ToString();
-        }
-        // write json string using latest phase json key 
-        public void writeJson(JsonWriter writer)
-        {
             writeJson(writer, StoryJsonKey.Latest.Phase);
+            return sb.ToString();
         }
         // write json string using specified phase json key 
         public void writeJson(JsonWriter writer, JsonKey phaseKey)
@@ -198,7 +172,7 @@ namespace as3mbus.Story
             int index
             )
         {
-            this.Lines[index].update(message, character, this.Lines[index].Effects);
+            this.Lines[index].setLine(message, character, this.Lines[index].Effects);
         }
         public void UpdateEffect(
             int pageNo,
@@ -207,7 +181,7 @@ namespace as3mbus.Story
             int index
             )
         {
-            this.Lines[index].Effects.update(pageNo, duration, fadeMode, this.Lines[index].Effects.CameraEffects);
+            this.Lines[index].Effects.setValue(pageNo, duration, fadeMode, this.Lines[index].Effects.CameraEffects);
         }
         public void UpdateCameraEffect(
             Vector3 camPos,
