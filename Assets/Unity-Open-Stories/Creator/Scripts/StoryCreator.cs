@@ -74,7 +74,13 @@ public class StoryCreator : MonoBehaviour
     // adding new phase button and enable story creator interface 
     public void createPhase()
     {
-        _targetStory.phases.Add(new Phase(phaseNameField.text, bundleDropdown.captionText.text, comicDropdown.captionText.text));
+        _targetStory.phases.Add(
+            new Phase(
+                phaseNameField.text,
+                bundleDropdown.captionText.text,
+                activeComics[comicDropdown.value]
+                )
+            );
         typeWindowActive(false);
         newContentButton();
     }
@@ -104,8 +110,7 @@ public class StoryCreator : MonoBehaviour
     public void contentButtonUpdate(Phase fase, GameObject button)
     {
         button.transform.GetChild(0).Find("Name").GetComponent<Text>().text = fase.name;
-        button.transform.GetChild(0).Find("Type").GetComponent<Text>().text = fase.comic.bundleName;
-        button.transform.GetChild(0).Find("BG").GetComponent<Text>().text = fase.comic.comicDirectory;
+        button.transform.GetChild(0).Find("BundleFolder").GetComponent<Text>().text = fase.comic.bundleName + " - " + Path.GetFileName(fase.comic.comicDirectory);
         button.transform.GetChild(0).Find("Line").GetComponent<Text>().text = fase.Lines.Count.ToString() + " Line";
     }
     //phase content button handler
@@ -210,10 +215,12 @@ public class StoryCreator : MonoBehaviour
     public void bundleChange()
     {
         comicDropdown.options.Clear();
-        if (DataManager.isStreamingAssetsContent(bundleDropdown.captionText.text))
-            activeComics = ComicManager.getComics(DataManager.readAssetBundles(Path.Combine(Application.streamingAssetsPath, bundleDropdown.captionText.text)));
-        else
-            activeComics = ComicManager.getComics(DataManager.readAssetBundles(Path.Combine(Application.persistentDataPath, bundleDropdown.captionText.text)));
+        activeComics = DataManager.getComics(
+                                        DataManager.readAssetBundles(
+                                            DataManager.bundlePath(
+                                                bundleDropdown.captionText.text)
+                                            )
+                                        );
         addDropdownOptions(comicDropdown, activeComics);
         comicDropdown.value = 0;
         comicDropdown.captionText.text = comicDropdown.options[0].text;

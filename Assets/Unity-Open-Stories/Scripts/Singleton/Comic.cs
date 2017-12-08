@@ -21,6 +21,7 @@ namespace as3mbus.Story
         {
             this.bundleName = bundleName;
             this.comicDirectory = comicDirectory;
+            this.loaded = false;
         }
         // handle story and comic in the same bundle
         public void loadAllPages()
@@ -71,14 +72,18 @@ namespace as3mbus.Story
                 this.pages.Add(item);
 
         }
-        public List<string> pageName()
+        // return page name of every pages
+        public List<string> pageName
         {
-            List<string> names = new List<string>();
-            foreach (Sprite item in this.pages)
+            get
             {
-                names.Add(item.name);
+                List<string> names = new List<string>();
+                foreach (Sprite item in this.pages)
+                {
+                    names.Add(item.name);
+                }
+                return names;
             }
-            return names;
         }
     }
 }

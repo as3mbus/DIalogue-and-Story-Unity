@@ -7,6 +7,21 @@ using LitJson;
 
 public static class DataManager
 {
+    // return list of folder containing file with image extension inside an asset bundle
+    public static string[] getComics(AssetBundle comicBundle)
+    {
+        List<string> comBunCon = new List<string>();
+        foreach (string asset in comicBundle.GetAllAssetNames())
+        {
+            if ((asset.Contains(".png") || asset.Contains(".jpg") || asset.Contains(".jpeg")) && !comBunCon.Contains(Path.GetDirectoryName(asset)))
+            {
+                comBunCon.Add(Path.GetDirectoryName(asset));
+                // Debug.Log(Path.GetDirectoryName(asset));
+            }
+        }
+        comicBundle.Unload(false);
+        return comBunCon.ToArray();
+    }
     public static List<string> streamingAssetBundleList;
 
     //list all asset bundle inside streaming asset folder which is packaged into apk on built 

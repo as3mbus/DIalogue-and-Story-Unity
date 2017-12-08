@@ -32,7 +32,7 @@ public class StoryController : MonoBehaviour
         currentPhase = -1;
         nextPhase();
     }
-    
+
     //load phase at index and play it with phase controller 
     void loadPhase(int number)
     {
@@ -57,8 +57,12 @@ public class StoryController : MonoBehaviour
     }
 
     //end story scene
-    public void endStory(){
-        SceneManager.LoadScene(nextScene);
-        StoryManager.skipable = false;
+    public void endStory()
+    {
+        if (nextScene != null)
+        {
+            StoryManager.skipable = false;
+            SceneManager.LoadScene(nextScene);
+        }
     }
 }

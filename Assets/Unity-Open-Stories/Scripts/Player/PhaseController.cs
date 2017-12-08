@@ -7,13 +7,14 @@ using as3mbus.Story;
 public class PhaseController : MonoBehaviour
 {
     public Transform kameraRoute, kamera, baloonPos, baloonsizer;
-    public Text dName, dText;
-    public GameObject dPanel;
+    public Text characterTextView, messageTextView;
+    public GameObject linePanel;
     int currentLine = 0, currentChar = 0;
     public SpriteRenderer pageL, pageR;
+    public AudioSource bgmPlayer;
+
     public float speed = 5f, routeRadius = 1f, typeDelay = 0.2f;
     public float duration;
-
     public float times;
     float timeCount;
     Phase activePhase;
@@ -28,6 +29,8 @@ public class PhaseController : MonoBehaviour
     public void startPhase(Phase fase)
     {
         this.activePhase = fase;
+        this.playBGM();
+        
         // Debug.Log(fase.toJson());
         // if phase empty, end phase;
         if (activePhase.Lines.Count <= 0) endPhase();
@@ -39,6 +42,14 @@ public class PhaseController : MonoBehaviour
             readLine(currentLine);
         }
 
+    }
+    public void playBGM(){
+        if (activePhase.bgm != null)
+        {
+            this.bgmPlayer.clip = this.activePhase.bgm;
+            this.bgmPlayer.loop = true;
+            this.bgmPlayer.Play();
+        }
     }
     // Update is called once per frame
     void Start()
@@ -114,18 +125,18 @@ public class PhaseController : MonoBehaviour
     //read complete line 
     public void showLine(string line)
     {
-        dText.text = line;
+        messageTextView.text = line;
         currentChar = line.Length;
     }
-    //show talking baloon 
-    public void showBaloon()
-    {
-        if (times >= duration && !baloonPos.gameObject.activeSelf)
-        {
-            baloonPos.gameObject.SetActive(true);
-            baloonPos.GetComponent<Animation>().Play();
-        }
-    }
+    // show talking baloon #deprecated
+    // public void showBaloon()
+    // {
+    //     if (times >= duration && !baloonPos.gameObject.activeSelf)
+    //     {
+    //         baloonPos.gameObject.SetActive(true);
+    //         baloonPos.GetComponent<Animation>().Play();
+    //     }
+    // }
     //read every data about the line and use it to make player interface/ looks
     public void readLine(int line)
     {
@@ -154,9 +165,9 @@ public class PhaseController : MonoBehaviour
         times = 0;
         duration = activePhase.Lines[line].Effects.Duration;
         currentChar = 0;
-        dPanel.SetActive(false);
-        dName.text = activePhase.Lines[line].Character;
-        dText.text = "";
+        linePanel.SetActive(false);
+        characterTextView.text = activePhase.Lines[line].Character;
+        messageTextView.text = "";
         kamera.GetComponent<Camera>().backgroundColor = activePhase.Lines[line].Effects.CameraEffects.BackgroundColor;
 
         // if (
@@ -177,14 +188,14 @@ public class PhaseController : MonoBehaviour
     {
         if (times < duration)
             return;
-        dPanel.SetActive(activePhase.Lines[currentLine].Message != "");
+        linePanel.SetActive(activePhase.Lines[currentLine].Message != "");
         if (currentChar >= activePhase.Lines[currentLine].Message.Length)
             return;
 
         timeCount += Time.deltaTime;
         if (timeCount > delay)
         {
-            dText.text = dText.text + activePhase.Lines[currentLine].Message[currentChar];
+            messageTextView.text = messageTextView.text + activePhase.Lines[currentLine].Message[currentChar];
             currentChar++;
             timeCount = 0;
         }
@@ -259,6 +270,7 @@ public class PhaseController : MonoBehaviour
         pageL.color = Color.white;
         pageR.color = Color.white;
         gameObject.SetActive(false);
+        if(bgmPlayer.isPlaying)bgmPlayer.Stop();
         ssControl.nextPhase();
     }
 }

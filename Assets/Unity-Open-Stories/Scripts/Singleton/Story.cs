@@ -55,13 +55,8 @@ namespace as3mbus.Story
             writer.PrettyPrint = true;
             writer.IndentValue = 4;
 
-            writeJson(writer);
+            writeJson(writer,StoryJsonKey.Latest.Story);
             return sb.ToString();
-        }
-        // write json data using assigned json writer and latest story json key
-        public void writeJson(JsonWriter writer)
-        {
-            writeJson(writer, StoryJsonKey.Latest.Story);
         }
 
         // write json data using assigned json writer and specified story json key

@@ -109,10 +109,7 @@ namespace as3mbus.Story
         public void loadResources()
         {
             if (!comicLoaded)
-            {
-                Debug.Log("comuc should be loaded");
                 loadComic();
-            }
             if (!bgmLoaded)
                 loadBGM();
         }
@@ -139,8 +136,6 @@ namespace as3mbus.Story
                 }
             this.bgmLoaded = true;
         }
-
-
         //create json date (string) based on a phase content
         public string toJson()
         {
