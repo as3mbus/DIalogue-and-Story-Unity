@@ -16,7 +16,7 @@ public class StoryCreator : MonoBehaviour
         get { return _targetStory; }
         set
         {
-            resetPhase();
+            resetStory();
             _targetStory = value;
             loadStory();
         }
@@ -46,7 +46,7 @@ public class StoryCreator : MonoBehaviour
     {
 
         loadStory();
-        resetAddPhaseButton();
+        newPhaseButton.transform.SetAsLastSibling();
         //list and write streaming asset bundle data 
         DataManager.listStreamingAssetBundleJson(Path.Combine(Application.streamingAssetsPath, "streamBundles.json"));
         //read streaming asset bundle data 
@@ -55,6 +55,7 @@ public class StoryCreator : MonoBehaviour
         addDropdownOptions(comicBundleDropdown, DataManager.streamingAssetBundleList.ToArray());
         //set to load 1st available bundle 
         resetDropdownValue(comicBundleDropdown);
+        // also applies to bgm dropdowns
         addDropdownOptions(bgmBundleDropdown, DataManager.streamingAssetBundleList.ToArray());
         resetDropdownValue(bgmBundleDropdown);
 
@@ -84,12 +85,7 @@ public class StoryCreator : MonoBehaviour
         phasePanelActive(false);
         newContentButton();
     }
-    //handle cancel button inside phase panel
-    //enable sstory creator interface
-    public void cancelPhase()
-    {
-        phasePanelActive(false);
-    }
+
     //update content button value (gameobject) 
     public void contentButtonUpdate(GameObject button)
     {
@@ -137,9 +133,9 @@ public class StoryCreator : MonoBehaviour
     {
         int phaseIndex = EventSystem.current.currentSelectedGameObject.transform.parent.GetSiblingIndex();
         Phase fase = _targetStory.phases[phaseIndex];
-        editPhase(fase);
+        loadPhasePanel(fase);
     }
-    public void editPhase(Phase fase)
+    public void loadPhasePanel(Phase fase)
     {
         phasePanelActive(true);
         phaseNameField.text = fase.name;
@@ -226,6 +222,8 @@ public class StoryCreator : MonoBehaviour
         foreach (var item in _targetStory.phases)
             newContentButton();
     }
+
+    // 2 function below can be refactored !!!!!!
     //handle comic bundle selection change
     //add option of comic inside bandle into the comic dropdown 
     public void onComicBundleDropdownChange()
@@ -254,8 +252,9 @@ public class StoryCreator : MonoBehaviour
         addDropdownOptions(bgmDirectoryDropdown, activeBgm);
         resetDropdownValue(bgmDirectoryDropdown);
     }
+    // handle X button in phase panel
     //display/hide phase panel and disable/enable story interface
-    void phasePanelActive(bool mode)
+    public void phasePanelActive(bool mode)
     {
         phasePanel.SetActive(mode);
         var storySelectables = GetComponentsInChildren<Selectable>();
@@ -272,18 +271,13 @@ public class StoryCreator : MonoBehaviour
         newButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => editLines());
         newButton.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => deletePhase());
         newButton.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => editPhase());
-        resetAddPhaseButton();
+        newPhaseButton.transform.SetAsLastSibling();
         contentButtonUpdate(newButton);
         // contentResize();
     }
-    //place add phase button to last sibling (last place) 
-    void resetAddPhaseButton()
-    {
-        newPhaseButton.transform.SetAsLastSibling();
-    }
 
     //Empty phase and reset add phase button position 
-    public void resetPhase()
+    public void resetStory()
     {
         var children = new List<GameObject>();
         foreach (Transform child in phaseScrollView.content.transform) children.Add(child.gameObject);
@@ -292,7 +286,7 @@ public class StoryCreator : MonoBehaviour
             if (!child.name.Contains("Add")) DestroyImmediate(child);
         });
         _targetStory.phases.Clear();
-        resetAddPhaseButton();
+        newPhaseButton.transform.SetAsLastSibling();
     }
 
     #endregion
@@ -304,7 +298,7 @@ public class StoryCreator : MonoBehaviour
     /* =============== */
     /* ==STATIC-ABLE== */
     /* =============== */
-
+    // add dropdown options from array
     void addDropdownOptions(Dropdown DD, string[] optionsArray)
     {
         foreach (string comic in optionsArray)
@@ -312,6 +306,8 @@ public class StoryCreator : MonoBehaviour
             DD.options.Add(new Dropdown.OptionData(Path.GetFileName(comic)));
         }
     }
+
+    //reset dropdown value to index 0 or empty it when there are no options
     void resetDropdownValue(Dropdown DD)
     {
         if (DD.options.Count > 0)
