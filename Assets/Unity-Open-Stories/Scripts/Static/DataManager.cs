@@ -127,6 +127,15 @@ public static class DataManager
         else
             return false;
     }
+    public static string[] getAudio(AssetBundle comicBundle)
+        {
+            List<string> audioFileList = new List<string>();
+            foreach (string asset in comicBundle.GetAllAssetNames())
+                if ((asset.Contains(".wav") || asset.Contains(".mp3") || asset.Contains(".ogg")) && !audioFileList.Contains(Path.GetDirectoryName(asset)))
+                    audioFileList.Add(asset);
+            comicBundle.Unload(false);
+            return audioFileList.ToArray();
+        }
 }
 
 

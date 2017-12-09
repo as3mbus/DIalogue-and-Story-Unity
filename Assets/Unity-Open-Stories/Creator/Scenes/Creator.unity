@@ -3042,7 +3042,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2118616193}
-        m_MethodName: bundleChange
+        m_MethodName: onComicBundleDropdownChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4837,7 +4837,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2118616193}
-        m_MethodName: bundleChange
+        m_MethodName: onBgmBundleDropdownChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9695,7 +9695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1375241698
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15712,10 +15712,10 @@ MonoBehaviour:
   phaseCreator: {fileID: 1448860104}
   storyNameField: {fileID: 794522169}
   phaseNameField: {fileID: 117406916}
-  comicBundleDropdown: {fileID: 0}
-  comicDirectoryDropdown: {fileID: 0}
-  bgmBundleDropdown: {fileID: 0}
-  bgmDirectoryDropdown: {fileID: 0}
+  comicBundleDropdown: {fileID: 368552198}
+  comicDirectoryDropdown: {fileID: 861081945}
+  bgmBundleDropdown: {fileID: 625149049}
+  bgmDirectoryDropdown: {fileID: 1399710032}
   FileBrowserPrefab: {fileID: 1948882122172210, guid: e617467d5bf0f42608b442de29212799,
     type: 2}
 --- !u!1 &2144305494

@@ -28,7 +28,7 @@ public class StoryCreator : MonoBehaviour
     public InputField storyNameField, phaseNameField;
     public Dropdown comicBundleDropdown, comicDirectoryDropdown, bgmBundleDropdown, bgmDirectoryDropdown;
     public GameObject FileBrowserPrefab;
-    string[] activeComics;
+    string[] activeComics, activeBgm;
 
     void Awake()
     {
@@ -54,9 +54,10 @@ public class StoryCreator : MonoBehaviour
         //add options of bundle in streaming assets 
         addDropdownOptions(comicBundleDropdown, DataManager.streamingAssetBundleList.ToArray());
         //set to load 1st available bundle 
-        comicBundleDropdown.value = 0;
-        comicBundleDropdown.captionText.text = comicBundleDropdown.options[0].text;
-        
+        resetDropdownValue(comicBundleDropdown);
+        addDropdownOptions(bgmBundleDropdown, DataManager.streamingAssetBundleList.ToArray());
+        resetDropdownValue(bgmBundleDropdown);
+
     }
 
     #region main function
@@ -66,6 +67,7 @@ public class StoryCreator : MonoBehaviour
     public void newPhases()
     {
         phasePanelActive(true);
+        phasePanel.transform.GetChild(phasePanel.transform.childCount - 1).GetComponent<Button>().onClick.AddListener(() => createPhase());
     }
 
     //handle create phase button inside phase panel
@@ -143,6 +145,21 @@ public class StoryCreator : MonoBehaviour
         phaseNameField.text = fase.name;
         comicBundleDropdown.value = comicBundleDropdown.options.FindIndex(option => option.text == fase.comic.bundleName);
         comicDirectoryDropdown.value = comicDirectoryDropdown.options.FindIndex(option => option.text == Path.GetFileName(fase.comic.comicDirectory));
+        bgmBundleDropdown.value = bgmBundleDropdown.options.FindIndex(option => option.text == fase.bgmAssetBundleName);
+        bgmDirectoryDropdown.value = bgmDirectoryDropdown.options.FindIndex(option => option.text == Path.GetFileName(fase.bgmFileName));
+        phasePanel.transform.GetChild(phasePanel.transform.childCount - 1).GetComponent<Button>().onClick.AddListener(delegate { updatePhase(fase); });
+
+
+    }
+    public void updatePhase(Phase fase)
+    {
+        fase.name = phaseNameField.text;
+        fase.comic.bundleName = comicBundleDropdown.captionText.text;
+        fase.comic.comicDirectory = comicDirectoryDropdown.captionText.text;
+        fase.bgmAssetBundleName = bgmBundleDropdown.captionText.text;
+        fase.bgmFileName = bgmDirectoryDropdown.captionText.text;
+        contentButtonUpdate(fase);
+        phasePanelActive(false);
     }
     //handle X button on phase content button
     //destroy and delete phase 
@@ -209,9 +226,9 @@ public class StoryCreator : MonoBehaviour
         foreach (var item in _targetStory.phases)
             newContentButton();
     }
-    //handle bundle selection change
+    //handle comic bundle selection change
     //add option of comic inside bandle into the comic dropdown 
-    public void bundleChange()
+    public void onComicBundleDropdownChange()
     {
         comicDirectoryDropdown.options.Clear();
         activeComics = Comic.getComics(
@@ -221,8 +238,21 @@ public class StoryCreator : MonoBehaviour
                                             )
                                         );
         addDropdownOptions(comicDirectoryDropdown, activeComics);
-        comicDirectoryDropdown.value = 0;
-        comicDirectoryDropdown.captionText.text = comicDirectoryDropdown.options[0].text;
+        resetDropdownValue(comicDirectoryDropdown);
+    }
+    //handle bgm bundle selection change
+    //add option of bgm inside bandle into the bgm dropdown 
+    public void onBgmBundleDropdownChange()
+    {
+        bgmDirectoryDropdown.options.Clear();
+        activeBgm = DataManager.getAudio(
+                                        DataManager.readAssetBundles(
+                                            DataManager.bundlePath(
+                                                bgmBundleDropdown.captionText.text)
+                                            )
+                                        );
+        addDropdownOptions(bgmDirectoryDropdown, activeBgm);
+        resetDropdownValue(bgmDirectoryDropdown);
     }
     //display/hide phase panel and disable/enable story interface
     void phasePanelActive(bool mode)
@@ -232,6 +262,7 @@ public class StoryCreator : MonoBehaviour
         GetComponentInChildren<InputField>().interactable = !mode;
         foreach (var button in storySelectables)
             button.interactable = !mode;
+        phasePanel.transform.GetChild(phasePanel.transform.childCount - 1).GetComponent<Button>().onClick.RemoveAllListeners();
     }
     //handle add phase button 
     //create phase content button and reset add phase button position 
@@ -240,6 +271,7 @@ public class StoryCreator : MonoBehaviour
         GameObject newButton = Object.Instantiate(phaseButton, phaseScrollView.content, false);
         newButton.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => editLines());
         newButton.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => deletePhase());
+        newButton.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => editPhase());
         resetAddPhaseButton();
         contentButtonUpdate(newButton);
         // contentResize();
@@ -279,6 +311,16 @@ public class StoryCreator : MonoBehaviour
         {
             DD.options.Add(new Dropdown.OptionData(Path.GetFileName(comic)));
         }
+    }
+    void resetDropdownValue(Dropdown DD)
+    {
+        if (DD.options.Count > 0)
+        {
+            DD.value = 0;
+            DD.captionText.text = DD.options[0].text;
+        }
+        else
+            DD.captionText.text = "";
     }
     /* ====END OF===== */
     /* ==STATIC-ABLE== */
