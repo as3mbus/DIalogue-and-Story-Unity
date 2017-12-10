@@ -6,9 +6,9 @@
         {
             "name" : "test phase",
             "comicAssetBundleName" : "comic 2",
-            "comicDirectoryName"   : "assets/comic/sample comic",
-            "bgmAssetBundleName"   : "",
-            "bgmFileName"          : "",
+            "comicDirectoryName"   : "sample comic",
+            "bgmAssetBundleName"   : "comic 1",
+            "bgmFileName"          : "skrux-you & me premiere.mp3",
             "content"              : [
                 {
                     "message" : "Welcome to Unity Open Stories ",
@@ -30,7 +30,7 @@
                     "message" : "here you can create your story just by editting and running the program",
                     "character" : "botak",
                     "effects"   : {
-                        "comicPage" : 14,
+                        "comicPage" : 6,
                         "duration"  : 1.3067831993103,
                         "fadeMode"  : "transition",
                         "camera"    : {
@@ -46,7 +46,7 @@
                     "message" : "you can also contribute to this project in github with the name of unity open stories",
                     "character" : "botak",
                     "effects"   : {
-                        "comicPage" : 16,
+                        "comicPage" : 6,
                         "duration"  : 1.3067831993103,
                         "fadeMode"  : "color",
                         "camera"    : {
@@ -62,7 +62,7 @@
                     "message" : "thank you",
                     "character" : "jengkol",
                     "effects"   : {
-                        "comicPage" : 16,
+                        "comicPage" : 6,
                         "duration"  : 1.3067831993103,
                         "fadeMode"  : "color",
                         "camera"    : {
