@@ -75,13 +75,17 @@ public class StoryCreator : MonoBehaviour
     // adding new phase button and enable story creator interface 
     public void createPhase()
     {
-        _targetStory.phases.Add(
-            new Phase(
+        Phase newFase = new Phase(
                 phaseNameField.text,
                 comicBundleDropdown.captionText.text,
                 activeComics[comicDirectoryDropdown.value]
-                )
-            );
+                );
+        newFase.name = phaseNameField.text;
+        newFase.comic.bundleName = comicBundleDropdown.captionText.text;
+        newFase.comic.comicDirectory = activeComics[comicDirectoryDropdown.value];
+        newFase.bgmAssetBundleName = bgmBundleDropdown.captionText.text;
+        newFase.bgmFileName = activeBgm[bgmDirectoryDropdown.value];
+        _targetStory.phases.Add(newFase);
         phasePanelActive(false);
         newContentButton();
     }
@@ -151,9 +155,9 @@ public class StoryCreator : MonoBehaviour
     {
         fase.name = phaseNameField.text;
         fase.comic.bundleName = comicBundleDropdown.captionText.text;
-        fase.comic.comicDirectory = comicDirectoryDropdown.captionText.text;
+        fase.comic.comicDirectory = activeComics[comicDirectoryDropdown.value];
         fase.bgmAssetBundleName = bgmBundleDropdown.captionText.text;
-        fase.bgmFileName = bgmDirectoryDropdown.captionText.text;
+        fase.bgmFileName = activeBgm[bgmDirectoryDropdown.value];
         contentButtonUpdate(fase);
         phasePanelActive(false);
     }
